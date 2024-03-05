@@ -1,0 +1,64 @@
+root = true
+
+# All files
+[*]
+indent_style = space
+
+# Xml files
+[*.xml]
+indent_size = 2
+
+#CS and VB files
+[*.{cs,vb}]
+
+# Ensure private fields names are camelCase and begin with _ like _varData
+dotnet_naming_rule.private_fields_should_begin_with_underscore.symbols  = private_fields
+dotnet_naming_rule.private_fields_should_begin_with_underscore.style    = begin_with_underscore
+dotnet_naming_rule.private_fields_should_begin_with_underscore.severity = suggestion
+
+dotnet_naming_symbols.private_fields.applicable_kinds           = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.begin_with_underscore.capitalization = camel_case
+dotnet_naming_style.begin_with_underscore.required_prefix = _
+
+# Ensure class names are PascalCase
+dotnet_naming_rule.classes_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.classes_should_be_pascal_case.symbols  = class_symbols
+dotnet_naming_rule.classes_should_be_pascal_case.style    = pascal_case_style
+
+dotnet_naming_symbols.class_symbols.applicable_kinds           = class
+dotnet_naming_symbols.class_symbols.applicable_accessibilities = *
+
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+# Ensure interface names start with 'I' and are PascalCase
+dotnet_naming_rule.interfaces_should_begin_with_i.severity = suggestion
+dotnet_naming_rule.interfaces_should_begin_with_i.symbols  = interface_symbols
+dotnet_naming_rule.interfaces_should_begin_with_i.style    = interface_style
+
+dotnet_naming_symbols.interface_symbols.applicable_kinds           = interface
+dotnet_naming_symbols.interface_symbols.applicable_accessibilities = *
+
+dotnet_naming_style.interface_style.required_prefix = I
+dotnet_naming_style.interface_style.capitalization = pascal_case
+
+# Ensure protected properties are camelCase
+dotnet_naming_rule.protected_properties_should_be_camel_case.severity = suggestion
+dotnet_naming_rule.protected_properties_should_be_camel_case.symbols  = protected_property_symbols
+dotnet_naming_rule.protected_properties_should_be_camel_case.style    = camel_case_style
+
+dotnet_naming_symbols.protected_property_symbols.applicable_kinds           = property
+dotnet_naming_symbols.protected_property_symbols.applicable_accessibilities = protected, protected_internal
+
+dotnet_naming_style.camel_case_style.capitalization = camel_case
+
+# Ensure public properties are PascalCase
+dotnet_naming_rule.public_properties_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.public_properties_should_be_pascal_case.symbols  = public_property_symbols
+dotnet_naming_rule.public_properties_should_be_pascal_case.style    = pascal_case_style
+
+dotnet_naming_symbols.public_property_symbols.applicable_kinds           = property
+dotnet_naming_symbols.public_property_symbols.applicable_accessibilities = public
+
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
