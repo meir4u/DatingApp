@@ -14,6 +14,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Client", "Client\", "{C4FB0F2C-5B25-437D-9F5C-F58B642AC19E}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_54288"
+		Debug.AspNetCompiler.PhysicalPath = "Client\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54288\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_54288"
+		Release.AspNetCompiler.PhysicalPath = "Client\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54288\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "54288"
+		SlnRelativePath = "Client\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,12 +45,17 @@ Global
 		{405E959B-171F-4E60-913A-575808D10569}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{405E959B-171F-4E60-913A-575808D10569}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{405E959B-171F-4E60-913A-575808D10569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4FB0F2C-5B25-437D-9F5C-F58B642AC19E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4FB0F2C-5B25-437D-9F5C-F58B642AC19E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4FB0F2C-5B25-437D-9F5C-F58B642AC19E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4FB0F2C-5B25-437D-9F5C-F58B642AC19E}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{405E959B-171F-4E60-913A-575808D10569} = {F53B93D0-C45E-4A06-88F7-7A56F976A5C7}
+		{C4FB0F2C-5B25-437D-9F5C-F58B642AC19E} = {AAF0E433-5A69-4393-B0B8-D577BEFC14FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19AEE283-5795-43E3-B7AB-6904B9DA1C1B}
