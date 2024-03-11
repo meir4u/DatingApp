@@ -2,6 +2,7 @@
 using DatingApp.Api.Data;
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Interfaces;
+using DatingApp.Api.Middleware;
 using DatingApp.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,14 @@ namespace DatingApp.Api
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+            if (builder.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             // Configure the HTTP request pipeline.
+
+            app.UseMiddleware<ExceptionMiddleware>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
