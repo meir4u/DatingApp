@@ -13,7 +13,7 @@ namespace DatingApp.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +56,20 @@ namespace DatingApp.Api
 
             app.MapControllers();
 
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+
+            try
+            {
+                var dataContext = services.GetRequiredService<DataContext>();
+                await dataContext.Database.MigrateAsync();
+                await Seed.Seedusers(dataContext);
+            }
+            catch(Exception ex)
+            {
+                var logger = services.GetService<ILogger<Program>>();
+                logger.LogError(ex, "An Error occurred during migration");
+            }
             app.Run();
         }
     }

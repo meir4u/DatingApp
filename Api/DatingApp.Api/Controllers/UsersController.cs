@@ -1,5 +1,8 @@
-﻿using DatingApp.Api.Data;
+﻿using AutoMapper;
+using DatingApp.Api.Data;
+using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
+using DatingApp.Api.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,19 +12,21 @@ namespace DatingApp.Api.Controllers
     [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(DataContext context)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _context = context;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
-        [AllowAnonymous]
+
         [HttpGet(Name = "Users")]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
             try
             {
-                var users = await _context.Users.ToListAsync();
+                var users = await _userRepository.GetMembersAsync();
                 return Ok(users);
 
             }catch(Exception ex)
@@ -39,15 +44,40 @@ namespace DatingApp.Api.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetUser(int id)
+//        [HttpGet("{id}")]
+//        public async Task<ActionResult<MemberDto>> GetUser(int id)
+//        {
+//            try
+//            {
+//                var user = await _userRepository.GetUseByIdAsync(id);
+//                var userToReturn = _mapper.Map<MemberDto>(user);
+//                return Ok(userToReturn);
+
+//            }catch(Exception ex)
+//            {
+//#if DEBUG
+
+//                return BadRequest(ex.Message);
+
+//#else
+                
+//                // In release mode, return a generic BadRequest response
+//                return BadRequest("An error occurred while processing your request.");
+                
+//#endif
+//            }
+//        }
+
+        [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDto>> GetUserByUsername(string username)
         {
             try
             {
-                var user = await _context.Users.FindAsync(id);
+                var user = await _userRepository.GetMemberAsync(username);
                 return Ok(user);
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
 #if DEBUG
 
