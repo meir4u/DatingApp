@@ -11,9 +11,9 @@ namespace DatingApp.Api.Helpers
         {
             CreateMap<AppUser, MemberDto>()
                 .ForMember(dest => dest.Age, opt=> opt.MapFrom(src=>src.DateOfBirth.CalculateAge()))
-                .ReverseMap()
-                .ForMember(dest=>dest.Photos,opt=> opt.MapFrom(src=>src.Photos))
-                .ForMember(dest=>dest.Photos, opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault()));
+                .ForMember(dest=>dest.PhotoUrl, opt=>opt.MapFrom(src=>src.Photos.DefaultIfEmpty<Photo>().FirstOrDefault().Url))
+                //.ReverseMap()
+                .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos));
 
             CreateMap<Photo, PhotoDto>().ReverseMap();
         }
