@@ -6,6 +6,7 @@ using DatingApp.Api.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace DatingApp.Api.Controllers
 {
@@ -75,6 +76,37 @@ namespace DatingApp.Api.Controllers
             {
                 var user = await _userRepository.GetMemberAsync(username);
                 return Ok(user);
+
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+
+                return BadRequest(ex.Message);
+
+#else
+                
+                // In release mode, return a generic BadRequest response
+                return BadRequest("An error occurred while processing your request.");
+                
+#endif
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<MemberDto>> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            try
+            {
+                var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await _userRepository.GetUserByUsernameAsync(username);
+                if(user == null) return NotFound();
+
+                _mapper.Map(memberUpdateDto, user);
+
+                if (await _userRepository.SaveAllAsync()) return NoContent();
+
+                return BadRequest("Failed to update user");
 
             }
             catch (Exception ex)
