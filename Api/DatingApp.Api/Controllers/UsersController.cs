@@ -2,6 +2,7 @@
 using DatingApp.Api.Data;
 using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
+using DatingApp.Api.Extensions;
 using DatingApp.Api.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,13 @@ namespace DatingApp.Api.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
         [HttpGet(Name = "Users")]
@@ -70,7 +73,7 @@ namespace DatingApp.Api.Controllers
 //        }
 
         [HttpGet("{username}")]
-        public async Task<ActionResult<MemberDto>> GetUserByUsername(string username)
+        public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
             try
             {
@@ -98,7 +101,7 @@ namespace DatingApp.Api.Controllers
         {
             try
             {
-                var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var username = User.GetUsername();
                 var user = await _userRepository.GetUserByUsernameAsync(username);
                 if(user == null) return NotFound();
 
@@ -122,6 +125,36 @@ namespace DatingApp.Api.Controllers
                 
 #endif
             }
+        }
+
+        [HttpPost("add-photo")]
+        public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+
+            if(user == null) return NotFound();
+
+            var result = await _photoService.AddPhotoAsync(file);
+
+            if(result.Error != null) return BadRequest(result.Error);
+
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId,
+            };
+
+            if(user.Photos.Any() == false) photo.IsMain = true;
+
+            user.Photos.Add(photo);
+
+            if(await _userRepository.SaveAllAsync() )
+            {
+                return CreatedAtAction(nameof(GetUser), new {username = user.UserName}, _mapper.Map<PhotoDto>(photo));
+            }
+
+            return BadRequest("Problem adding photo");
+
         }
     }
 }
