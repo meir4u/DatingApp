@@ -16,7 +16,12 @@ namespace DatingApp.Api.Controllers
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AccountController(IUserRepository userRepository, ITokenService tokenService, IMapper mapper)
+        public AccountController(
+            IUserRepository userRepository, 
+            ITokenService tokenService, 
+            IMapper mapper
+
+            )
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
@@ -26,36 +31,29 @@ namespace DatingApp.Api.Controllers
         [HttpPost("register")] // Post: api/account/register
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            using var hmac = new HMACSHA512();
-
-            try
+            if(await userExists(registerDto.Username))
             {
-                if(await userExists(registerDto.Username))
-                {
-                    return BadRequest("Username already taken");
-                }
-
-                var hashedPassword = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
-
-                var user = new AppUser
-                {
-                    UserName = registerDto.Username.ToLower(),
-                    PasswordHash = hashedPassword,
-                    PasswordSalt = hmac.Key,
-                };
-                await _userRepository.AddUserAsync(user);
-
-                return new UserDto
-                {
-                    Username = registerDto.Username,
-                    Token = _tokenService.CreateToken(user),
-                };
-
-            }catch(Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return BadRequest(ex.ToString());
+                return BadRequest("Username already taken");
             }
+
+            var user = _mapper.Map<AppUser>(registerDto);
+
+            using var hmac = new HMACSHA512();
+            var hashedPassword = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
+
+            user.UserName = registerDto.Username.ToLower();
+            user.PasswordHash = hashedPassword;
+            user.PasswordSalt = hmac.Key;
+
+            await _userRepository.AddUserAsync(user);
+
+            return new UserDto
+            {
+                Username = registerDto.Username,
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x=>x.IsMain)?.Url,
+                KnownAs = registerDto.KnownAs,
+            };
         }
 
         [HttpPost("login")]
