@@ -79,7 +79,8 @@ namespace DatingApp.Api.Controllers
             {
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
-            }; ;
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+            }; 
 
         }
 
