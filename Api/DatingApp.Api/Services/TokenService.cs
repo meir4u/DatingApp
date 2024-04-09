@@ -28,7 +28,8 @@ namespace DatingApp.Api.Services
             // Define the claims to be included in the token. In this case, the user's name.
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
             };
 
             // Creates signing credentials using the symmetric security key and HMAC SHA512 as the algorithm.
