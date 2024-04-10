@@ -13,7 +13,7 @@ namespace DatingApp.Api.Helpers
             if (!resultContext.HttpContext.User.Identity.IsAuthenticated) return;
 
             var userId = resultContext.HttpContext.User.GetUserId();
-            var userIdNum = int.Parse(userId);
+            var userIdNum = userId;
 
             var repo = resultContext.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
 

@@ -1,6 +1,7 @@
 ﻿using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
+using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,22 +22,22 @@ namespace DatingApp.Api.Data.Repository
             return userLikes;
         }
 
-        public async Task<IEnumerable<LikeDto>> GetUserLikes(string predicate, int userId)
+        public async Task<PagedList<LikeDto>> GetUserLikes(LikesParams likesParams)
         {
             var users = _context.Users.OrderBy(u=>u.UserName).AsQueryable();
             var likes = _context.Likes.AsQueryable();
 
-            if(predicate == "liked")
+            if(likesParams.Predicate == "liked")
             {
-                likes = likes.Where(like=>like.SourceUserId == userId);
+                likes = likes.Where(like=>like.SourceUserId == likesParams.UserId);
                 users = likes.Select(like=>like.TargetUser);
-            }else if (predicate == "likedBy")
+            }else if (likesParams.Predicate == "likedBy")
             {
-                likes = likes.Where(like => like.TargetUserId == userId);
+                likes = likes.Where(like => like.TargetUserId == likesParams.UserId);
                 users = likes.Select(like => like.SourceUser);
             }
 
-            var results = await users.Select(user => new LikeDto
+            var likedUsers = users.Select(user => new LikeDto
             {
                 UserName = user.UserName,
                 KnownAs = user.KnownAs,
@@ -45,9 +46,11 @@ namespace DatingApp.Api.Data.Repository
                 City = user.City,
                 Id = user.Id,
 
-            }).ToListAsync();
+            });
 
-            return results;
+            var result = await PagedList<LikeDto>.CreateAsync(likedUsers, likesParams.PageNumber, likesParams.PageSize);
+
+            return result;
         }
 
         public async Task<AppUser> GetUserWithLikes(int userId)
