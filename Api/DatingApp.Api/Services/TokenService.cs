@@ -1,5 +1,6 @@
 ﻿using DatingApp.Api.Entities;
 using DatingApp.Api.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,17 +14,19 @@ namespace DatingApp.Api.Services
     {
         // Holds the symmetric security key used for token signing.
         private readonly SymmetricSecurityKey _symmetricSecurityKey;
+        private readonly UserManager<AppUser> _userManager;
 
         // Constructor that initializes the TokenService with configuration settings.
-        public TokenService(IConfiguration config)
+        public TokenService(IConfiguration config, UserManager<AppUser> userManager)
         {
             var tokenKey = config["TokenKey"];
             // Retrieves the token key from configuration and creates a symmetric security key.
             _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+            _userManager = userManager;
         }
 
         // Creates a JWT token for a given user.
-        public string CreateToken(AppUser user)
+        public async Task<string> CreateToken(AppUser user)
         {
             // Define the claims to be included in the token. In this case, the user's name.
             var claims = new List<Claim>
@@ -31,6 +34,10 @@ namespace DatingApp.Api.Services
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
             };
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             // Creates signing credentials using the symmetric security key and HMAC SHA512 as the algorithm.
             var creds = new SigningCredentials(_symmetricSecurityKey, SecurityAlgorithms.HmacSha512Signature);

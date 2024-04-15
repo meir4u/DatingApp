@@ -26,6 +26,7 @@ namespace DatingApp.Api.Controllers
             _photoService = photoService;
         }
 
+
         [HttpGet(Name = "Users")]
         public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
@@ -59,29 +60,30 @@ namespace DatingApp.Api.Controllers
             }
         }
 
-//        [HttpGet("{id}")]
-//        public async Task<ActionResult<MemberDto>> GetUser(int id)
-//        {
-//            try
-//            {
-//                var user = await _userRepository.GetUseByIdAsync(id);
-//                var userToReturn = _mapper.Map<MemberDto>(user);
-//                return Ok(userToReturn);
+        //        [HttpGet("{id}")]
+        //        public async Task<ActionResult<MemberDto>> GetUser(int id)
+        //        {
+        //            try
+        //            {
+        //                var user = await _userRepository.GetUseByIdAsync(id);
+        //                var userToReturn = _mapper.Map<MemberDto>(user);
+        //                return Ok(userToReturn);
 
-//            }catch(Exception ex)
-//            {
-//#if DEBUG
+        //            }catch(Exception ex)
+        //            {
+        //#if DEBUG
 
-//                return BadRequest(ex.Message);
+        //                return BadRequest(ex.Message);
 
-//#else
-                
-//                // In release mode, return a generic BadRequest response
-//                return BadRequest("An error occurred while processing your request.");
-                
-//#endif
-//            }
-//        }
+        //#else
+
+        //                // In release mode, return a generic BadRequest response
+        //                return BadRequest("An error occurred while processing your request.");
+
+        //#endif
+        //            }
+        //        }
+
 
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
