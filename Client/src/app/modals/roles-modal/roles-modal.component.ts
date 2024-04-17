@@ -7,12 +7,24 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./roles-modal.component.scss']
 })
 export class RolesModalComponent implements OnInit{
-  title = '';
-  list: any;
-  closeBtnName = '';
+  title: string = 'Edit Roles for';
+  closeBtnName: string = 'Submit';
+  username = '';
+  availableRoles: any[] = [];
+  selectedRoles: any[] = [];
 
   constructor(public bsModalRef: BsModalRef) { }
-    ngOnInit(): void {
-        throw new Error('Method not implemented.');
+  ngOnInit(): void {
+
+  }
+
+  updateChecked(checkedValue: string) {
+    const index = this.selectedRoles.indexOf(checkedValue);
+
+    if (index !== -1) {
+      this.selectedRoles.splice(index, 1)
+    } else {
+      this.selectedRoles.push(checkedValue);
     }
+  }
 }
