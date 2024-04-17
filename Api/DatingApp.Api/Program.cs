@@ -5,6 +5,7 @@ using DatingApp.Api.Extensions;
 using DatingApp.Api.Interfaces;
 using DatingApp.Api.Middleware;
 using DatingApp.Api.Services;
+using DatingApp.Api.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -50,13 +51,18 @@ namespace DatingApp.Api
 
             app.UseHttpsRedirection();
 
-            app.UseCors(builder=>builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200", "https://localhost:4200"));
+            app.UseCors(builder=>builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200", "https://localhost:4200"));
             
             app.UseAuthentication();
             //tell what you allowed to do.
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapHub<PresenceHub>("hubs/presence"); //signalR
 
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
