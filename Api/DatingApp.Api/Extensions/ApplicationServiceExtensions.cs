@@ -3,6 +3,7 @@ using DatingApp.Api.Data.Repository;
 using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
 using DatingApp.Api.Services;
+using DatingApp.Api.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -35,6 +36,7 @@ namespace DatingApp.Api.Extensions
             services.AddScoped<IMessageRepository, MessageRepository>();
 
             services.AddSignalR();
+            services.AddSingleton<PresenceTracker>();
 
             return services;
         }
