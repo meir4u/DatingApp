@@ -34,6 +34,14 @@ namespace DatingApp.Api.Data.Repository
             return await _context.Connections.FindAsync(connectionId);
         }
 
+        public async Task<Group> GetGroupForConnection(string connectionId)
+        {
+            return await _context.Groups
+                .Include(x=>x.Connections)
+                .Where(x=>x.Connections.Any(c=>c.ConnectionId == connectionId))
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Message> GetMessage(int id)
         {
             var message = await _context.Messages.FindAsync(id);
