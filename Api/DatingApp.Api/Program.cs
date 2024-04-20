@@ -63,6 +63,7 @@ namespace DatingApp.Api
 
             app.MapControllers();
             app.MapHub<PresenceHub>("hubs/presence"); //signalR
+            app.MapHub<MessageHub>("hubs/message"); //signalR
 
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
@@ -73,6 +74,8 @@ namespace DatingApp.Api
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await dataContext.Database.MigrateAsync();
+                await dataContext.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]");
+
                 await Seed.Seedusers(userManager, roleManager);
             }
             catch(Exception ex)
