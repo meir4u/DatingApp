@@ -34,18 +34,6 @@ namespace DatingApp.Api.Data.Repository
             return await _context.Users.Include(u => u.Photos).ToListAsync();
         }
 
-        public async Task<AppUser> AddUserAsync(AppUser user)
-        {
-            var result = await _context.Users.AddAsync(user);
-            await SaveAllAsync();
-            return result.Entity;
-        }
-
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
-
         public void Udpate(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
@@ -81,6 +69,11 @@ namespace DatingApp.Api.Data.Repository
                 .Where(x => x.UserName == username)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider).SingleOrDefaultAsync();
             
+        }
+
+        public async Task<string> GetUserGender(string username)
+        {
+            return await _context.Users.Where(x=>x.UserName == username).Select(x=>x.Gender).FirstOrDefaultAsync();
         }
     }
 }

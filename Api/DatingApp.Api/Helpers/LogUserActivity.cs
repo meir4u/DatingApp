@@ -15,12 +15,12 @@ namespace DatingApp.Api.Helpers
             var userId = resultContext.HttpContext.User.GetUserId();
             var userIdNum = userId;
 
-            var repo = resultContext.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
+            var repo = resultContext.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
 
-            var user = await repo.GetUseByIdAsync(userIdNum);
+            var user = await repo.UserRepository.GetUseByIdAsync(userIdNum);
 
             user.LastActive = DateTime.UtcNow;
-            await repo.SaveAllAsync();
+            await repo.Complete();
         }
     }
 }
