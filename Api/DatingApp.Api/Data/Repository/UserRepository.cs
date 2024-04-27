@@ -29,6 +29,11 @@ namespace DatingApp.Api.Data.Repository
             return await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
         }
 
+        public async Task<AppUser> GetUserPhotoIdAsync(int photoId)
+        {
+            return await _context.Users.Include(u => u.Photos).IgnoreQueryFilters().SingleOrDefaultAsync(x => x.Photos.FirstOrDefault(p=>p.Id == photoId) != null);
+        }
+
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.Users.Include(u => u.Photos).ToListAsync();
@@ -44,6 +49,7 @@ namespace DatingApp.Api.Data.Repository
             var query = _context.Users.AsQueryable();
             query = query.Where(u=>u.UserName != userParams.CurrentUsername);
             query = query.Where(u=> u.Gender == userParams.Gender);
+            query.IgnoreQueryFilters();
 
             var minDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge - 1));
             var maxDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge - 1));
@@ -63,10 +69,12 @@ namespace DatingApp.Api.Data.Repository
 
         }
 
-        public async Task<MemberDto> GetMemberAsync(string username)
+        public async Task<MemberDto> GetMemberAsync(string username, string currentUser)
         {
-            return await _context.Users
-                .Where(x => x.UserName == username)
+            var query = _context.Users.Where(x => x.UserName == username);
+            if (username.Equals(currentUser)) query = query.IgnoreQueryFilters();
+
+            return await query
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider).SingleOrDefaultAsync();
             
         }

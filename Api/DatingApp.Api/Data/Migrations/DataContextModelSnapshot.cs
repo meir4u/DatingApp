@@ -233,6 +233,9 @@ namespace DatingApp.Api.Data.Migrations
                     b.Property<int>("AppUserid")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsMain")
                         .HasColumnType("INTEGER");
 

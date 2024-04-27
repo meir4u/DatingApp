@@ -37,6 +37,11 @@ namespace DatingApp.Api.Data
             foreach (var user in users)
             {
                 user.UserName = user.UserName.ToLower();
+                var userFirstPhoto = user.Photos.FirstOrDefault();
+                if (userFirstPhoto != null)
+                {
+                    userFirstPhoto.IsApproved = true;
+                }
 
                 await userManager.CreateAsync(user, "Pa$$w0rd");
 

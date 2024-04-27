@@ -22,6 +22,7 @@ namespace DatingApp.Api.Data
         }
 
         public DbSet<UserLike> Likes { get; set; }
+        public DbSet<Photo> Photos{ get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Connection> Connections { get; set; }
@@ -65,6 +66,11 @@ namespace DatingApp.Api.Data
                 .HasOne(u=>u.Sender)
                 .WithMany(m=>m.MessagesSent)
                 .OnDelete(DeleteBehavior.Restrict); //in sql server one must be DeleteBehavior.Noaction
+
+            modelBuilder.Entity<Photo>(e => e.Property(e => e.IsApproved).HasConversion<int>());
+            modelBuilder.Entity<Photo>().HasQueryFilter(p=>p.IsApproved == true);
+
+
 
         }
 

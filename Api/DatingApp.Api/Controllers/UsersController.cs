@@ -90,7 +90,7 @@ namespace DatingApp.Api.Controllers
         {
             try
             {
-                var user = await _unitOfWork.UserRepository.GetMemberAsync(username);
+                var user = await _unitOfWork.UserRepository.GetMemberAsync(username, User.GetUsername());
                 return Ok(user);
 
             }
@@ -151,13 +151,12 @@ namespace DatingApp.Api.Controllers
 
             if(result.Error != null) return BadRequest(result.Error);
 
+
             var photo = new Photo
             {
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId = result.PublicId,
             };
-
-            if(user.Photos.Any() == false) photo.IsMain = true;
 
             user.Photos.Add(photo);
 
@@ -199,7 +198,8 @@ namespace DatingApp.Api.Controllers
         {
             var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
-            var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
+            //var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
+            var photo = await _unitOfWork.PhotoRepository.GetPhotoById(photoId);
 
             if(photo == null) return NotFound();
 
