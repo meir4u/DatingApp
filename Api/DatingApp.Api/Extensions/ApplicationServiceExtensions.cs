@@ -16,7 +16,8 @@ namespace DatingApp.Api.Extensions
 
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+                //opt.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
 
             //cors
