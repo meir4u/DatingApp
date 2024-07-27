@@ -10,7 +10,15 @@ namespace DatingApp.Application.DTOs.Account.Validators
     {
         public LoginDtoValidator()
         {
+            RuleFor(p => p.Username)
+                .NotNull()
+                .NotEmpty()
+                .Must(p=>p.Length > 3);
 
+            RuleFor(p => p.Password)
+                .NotNull()
+                .NotEmpty()
+                .Must(p => p.Length > 6);
         }
     }
 }

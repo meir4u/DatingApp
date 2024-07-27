@@ -11,7 +11,13 @@ namespace DatingApp.Application.DTOs.Account.Validators
     {
         public EditRolesDtoValidator()
         {
-            
+            RuleFor(p => p.Username)
+                .NotNull()
+                .NotEmpty();
+
+            RuleFor(p => p.Roles)
+                .NotNull()
+                .NotEmpty();
         }
     }
 }

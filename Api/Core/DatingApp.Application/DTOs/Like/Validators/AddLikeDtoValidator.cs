@@ -12,7 +12,13 @@ namespace DatingApp.Application.DTOs.Like.Validators
     {
         public AddLikeDtoValidator()
         {
-            
+            RuleFor(p => p.Username)
+                .NotNull().WithMessage("Username is required.")
+                .NotEmpty().WithMessage("Username cannot be empty.");
+
+            RuleFor(p => p.SourceUserId)
+                .NotNull().WithMessage("SourceUserId is required.")
+                .GreaterThan(0).WithMessage("SourceUserId must be greater than zero.");
         }
     }
 }

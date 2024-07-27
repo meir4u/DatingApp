@@ -12,7 +12,12 @@ namespace DatingApp.Application.DTOs.Message.Validators
     {
         public DeleteMessageDtoValidator()
         {
-            
+            RuleFor(p => p.Username)
+                .NotNull().WithMessage("Username is required.")
+                .NotEmpty().WithMessage("Username cannot be empty.");
+
+            RuleFor(p => p.MessageId)
+                .GreaterThan(0).WithMessage("MessageId must be greater than zero.");
         }
     }
 }

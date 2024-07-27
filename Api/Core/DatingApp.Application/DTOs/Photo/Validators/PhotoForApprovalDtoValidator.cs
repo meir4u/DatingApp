@@ -9,7 +9,9 @@ namespace DatingApp.Application.DTOs.Photo.Validators
     {
         public PhotoForApprovalDtoValidator()
         {
-            
+            RuleFor(p => p.UserName)
+                .NotNull().WithMessage("UserName is required.")
+                .NotEmpty().WithMessage("UserName cannot be empty.");
         }
     }
 }

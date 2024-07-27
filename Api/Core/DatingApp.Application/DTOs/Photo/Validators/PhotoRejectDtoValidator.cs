@@ -11,7 +11,8 @@ namespace DatingApp.Application.DTOs.Photo.Validators
     {
         public PhotoRejectDtoValidator()
         {
-            
+            RuleFor(p => p.PhotoId)
+                .GreaterThan(0).WithMessage("PhotoId must be greater than zero.");
         }
     }
 }
