@@ -55,22 +55,23 @@ namespace DatingApp.Api.Data.Repository
                 .FirstOrDefaultAsync(x=>x.Name == groupName);
         }
 
-        public async Task<PagedList<MessageDto>> GetMessagesForUser(MessageParams messageParams)
+        public async Task<PagedList<MessageDto>> GetMessagesForUser(IParams messageParams)
         {
+            var filterParams = (MessageParams)messageParams;
             var query = _context.Messages
                 .OrderByDescending(x => x.MessageSent)
                 .AsQueryable();
 
-            query = messageParams.Container switch
+            query = filterParams.Container switch
             {
-                "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username && u.RecipientDeleted == false),
-                "Outbox" => query.Where(u => u.SenderUsername == messageParams.Username && u.SenderDeleted == false),
-                _ => query.Where(u => u.RecipientUsername == messageParams.Username && u.RecipientDeleted == false && u.DateRead == null),
+                "Inbox" => query.Where(u => u.RecipientUsername == filterParams.Username && u.RecipientDeleted == false),
+                "Outbox" => query.Where(u => u.SenderUsername == filterParams.Username && u.SenderDeleted == false),
+                _ => query.Where(u => u.RecipientUsername == filterParams.Username && u.RecipientDeleted == false && u.DateRead == null),
             };
 
             var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
 
-            return await PagedList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
+            return await PagedList<MessageDto>.CreateAsync(messages, filterParams.PageNumber, filterParams.PageSize);
         }
 
         public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientUserName)

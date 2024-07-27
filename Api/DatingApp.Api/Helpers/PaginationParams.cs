@@ -1,6 +1,6 @@
 ﻿namespace DatingApp.Api.Helpers
 {
-    public class PaginationParams
+    public class PaginationParams : IParams
     {
         private const int MaxPageSize = 50;
         public int PageNumber { get; set; } = 1;

@@ -22,8 +22,9 @@ namespace DatingApp.Api.Data.Repository
             return userLikes;
         }
 
-        public async Task<PagedList<LikeDto>> GetUserLikes(LikesParams likesParams)
+        public async Task<PagedList<LikeDto>> GetUserLikes(IParams likesParams)
         {
+            var filterParams = (LikesParams)likesParams;
             var users = _context.Users.OrderBy(u=>u.UserName).AsQueryable();
             var likes = _context.Likes.AsQueryable();
 

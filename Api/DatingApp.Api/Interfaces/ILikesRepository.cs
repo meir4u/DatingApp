@@ -8,6 +8,6 @@ namespace DatingApp.Api.Interfaces
     {
         Task<UserLike> GetUserLike(int sourceUserId, int targetUserId);
         Task<AppUser> GetUserWithLikes(int userId);
-        Task<PagedList<LikeDto>> GetUserLikes(LikesParams likesParams);
+        Task<PagedList<LikeDto>> GetUserLikes(IParams likesParams);
     }
 }

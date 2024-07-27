@@ -44,28 +44,29 @@ namespace DatingApp.Api.Data.Repository
             _context.Entry(user).State = EntityState.Modified;
         }
 
-        public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
+        public async Task<PagedList<MemberDto>> GetMembersAsync(IParams userParams)
         {
+            var filterParams = (UserParams)userParams;
             var query = _context.Users.AsQueryable();
-            query = query.Where(u=>u.UserName != userParams.CurrentUsername);
-            query = query.Where(u=> u.Gender == userParams.Gender);
+            query = query.Where(u=>u.UserName != filterParams.CurrentUsername);
+            query = query.Where(u=> u.Gender == filterParams.Gender);
             query.IgnoreQueryFilters();
 
-            var minDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge - 1));
-            var maxDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge - 1));
+            var minDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-filterParams.MaxAge - 1));
+            var maxDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-filterParams.MinAge - 1));
 
             query = query.Where(u=>u.DateOfBirth >= minDateOfBirth && u.DateOfBirth <= maxDateOfBirth);
 
-            query = userParams.OrderBy switch
+            query = filterParams.OrderBy switch
             {
                 "created" => query.OrderByDescending(u => u.Created),
                 _ => query.OrderByDescending(u => u.LastActive),
             };
 
             return await PagedList<MemberDto>.CreateAsync(
-                query.AsNoTracking().ProjectTo<MemberDto>(_mapper.ConfigurationProvider), 
-                userParams.PageNumber, 
-                userParams.PageSize);
+                query.AsNoTracking().ProjectTo<MemberDto>(_mapper.ConfigurationProvider),
+                filterParams.PageNumber,
+                filterParams.PageSize);
 
         }
 
