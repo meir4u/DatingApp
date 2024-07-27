@@ -56,9 +56,10 @@ namespace DatingApp.Api.Data.Repository
 
         public async Task<AppUser> GetUserWithLikes(int userId)
         {
-            return await _context.Users
-                .Include(x=>x.LikedUsers)
-                .FirstOrDefaultAsync(x=>x.Id == userId); 
+            var user = await _context.Users
+                .Include(x => x.LikedUsers)
+                .FirstOrDefaultAsync(x => x.Id == userId);
+            return user;
         }
     }
 }

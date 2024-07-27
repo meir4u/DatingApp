@@ -21,22 +21,26 @@ namespace DatingApp.Api.Data.Repository
         }
         public async Task<AppUser> GetUseByIdAsync(int id)
         {
-            return await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(u=>u.Id == id);
+            var user = await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(u => u.Id == id);
+            return user;
         }
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+            var user = await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+            return user;
         }
 
         public async Task<AppUser> GetUserPhotoIdAsync(int photoId)
         {
-            return await _context.Users.Include(u => u.Photos).IgnoreQueryFilters().SingleOrDefaultAsync(x => x.Photos.FirstOrDefault(p=>p.Id == photoId) != null);
+            var user = await _context.Users.Include(u => u.Photos).IgnoreQueryFilters().SingleOrDefaultAsync(x => x.Photos.FirstOrDefault(p => p.Id == photoId) != null);
+            return user;
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            return await _context.Users.Include(u => u.Photos).ToListAsync();
+            var user = await _context.Users.Include(u => u.Photos).ToListAsync();
+            return user;
         }
 
         public void Udpate(AppUser user)
@@ -82,7 +86,8 @@ namespace DatingApp.Api.Data.Repository
 
         public async Task<string> GetUserGender(string username)
         {
-            return await _context.Users.Where(x=>x.UserName == username).Select(x=>x.Gender).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(x => x.UserName == username).Select(x => x.Gender).FirstOrDefaultAsync();
+            return user;
         }
     }
 }
