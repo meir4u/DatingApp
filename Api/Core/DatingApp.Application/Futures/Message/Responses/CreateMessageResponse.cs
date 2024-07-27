@@ -1,4 +1,5 @@
-﻿using DatingApp.Application.Responses;
+﻿using DatingApp.Application.DTOs.Message;
+using DatingApp.Application.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace DatingApp.Application.Futures.Message.Responses
 {
     public class CreateMessageResponse : BaseCommandResponse
     {
+        public MessageDto Message { get; set; }
     }
 }

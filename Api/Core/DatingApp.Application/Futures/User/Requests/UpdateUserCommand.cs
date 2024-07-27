@@ -1,4 +1,6 @@
-﻿using DatingApp.Application.Futures.User.Responses;
+﻿using DatingApp.Application.DTOs.Member;
+using DatingApp.Application.DTOs.User;
+using DatingApp.Application.Futures.User.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,5 +12,7 @@ namespace DatingApp.Application.Futures.User.Requests
 {
     public class UpdateUserCommand : IRequest<UpdateUserResponse>
     {
+        public UpdateUserDto Update { get; set; }
+        public MemberUpdateDto MemberUpdate { get; set; }
     }
 }

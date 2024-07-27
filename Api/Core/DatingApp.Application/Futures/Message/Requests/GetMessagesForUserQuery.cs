@@ -1,5 +1,6 @@
 ﻿using DatingApp.Application.DTOs.Message;
 using DatingApp.Application.Futures.Message.Responses;
+using DatingApp.Application.Params;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,6 @@ namespace DatingApp.Application.Futures.Message.Requests
 {
     public class GetMessagesForUserQuery : IRequest<GetMessagesForUserResponse>
     {
-        public GetMessagesForUserDto GetMessagesForUser { get; set; }
+        public MessageParams Params { get; set; }
     }
 }

@@ -9,5 +9,6 @@ namespace DatingApp.Application.Futures.Photo.Responses
 {
     public class GetPhotosForModerationResponse : BaseCommandResponse
     {
+        public IEnumerable<DatingApp.Domain.Entities.Photo> Photos { get; set; }
     }
 }

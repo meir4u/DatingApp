@@ -14,3 +14,4 @@ namespace DatingApp.Application.Futures.Like.Requests
         public AddLikeDto AddLike { get; set; }
     }
 }
+

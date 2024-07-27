@@ -1,4 +1,5 @@
-﻿using DatingApp.Application.Futures.User.Responses;
+﻿using DatingApp.Application.DTOs.User;
+using DatingApp.Application.Futures.User.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace DatingApp.Application.Futures.User.Requests
 {
     public class GetUserQuery : IRequest<GetUserResponse>
     {
+        public GetUserDto GetUser { get; set; }
     }
 }

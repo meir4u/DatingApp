@@ -1,4 +1,5 @@
 ﻿using DatingApp.Application.Responses;
+using DatingApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace DatingApp.Application.Futures.User.Responses
 {
     public class GetUserResponse : BaseCommandResponse
     {
+        public AppUser User { get; internal set; }
     }
 }

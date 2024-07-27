@@ -11,5 +11,6 @@ namespace DatingApp.Application.Futures.Like.Responses
     public class RemoveLikeResponse : BaseCommandResponse
     {
         public PaginationHeader PaginationHeader { get; set; }
+        public object Users { get; internal set; }
     }
 }
