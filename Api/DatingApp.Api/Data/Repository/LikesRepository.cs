@@ -28,13 +28,13 @@ namespace DatingApp.Api.Data.Repository
             var users = _context.Users.OrderBy(u=>u.UserName).AsQueryable();
             var likes = _context.Likes.AsQueryable();
 
-            if(likesParams.Predicate == "liked")
+            if(filterParams.Predicate == "liked")
             {
-                likes = likes.Where(like=>like.SourceUserId == likesParams.UserId);
+                likes = likes.Where(like=>like.SourceUserId == filterParams.UserId);
                 users = likes.Select(like=>like.TargetUser);
-            }else if (likesParams.Predicate == "likedBy")
+            }else if (filterParams.Predicate == "likedBy")
             {
-                likes = likes.Where(like => like.TargetUserId == likesParams.UserId);
+                likes = likes.Where(like => like.TargetUserId == filterParams.UserId);
                 users = likes.Select(like => like.SourceUser);
             }
 
@@ -49,7 +49,7 @@ namespace DatingApp.Api.Data.Repository
 
             });
 
-            var result = await PagedList<LikeDto>.CreateAsync(likedUsers, likesParams.PageNumber, likesParams.PageSize);
+            var result = await PagedList<LikeDto>.CreateAsync(likedUsers, filterParams.PageNumber, filterParams.PageSize);
 
             return result;
         }
