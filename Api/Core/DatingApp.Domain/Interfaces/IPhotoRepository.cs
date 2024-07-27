@@ -1,6 +1,4 @@
-﻿
-
-using DatingApp.Domain.Entities;
+﻿using DatingApp.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

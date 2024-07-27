@@ -1,8 +1,4 @@
-﻿
-
-using DatingApp.Domain.Entities;
-using DatingApp.Domain.Entities.Pagination;
-using DatingApp.Domain.Entities.Params;
+﻿using DatingApp.Domain.Entities;
 using DatingApp.Domain.Params;
 using System.Collections.Generic;
 using System.Linq;
