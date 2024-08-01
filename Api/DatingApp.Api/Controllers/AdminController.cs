@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DatingApp.Api.Controllers
 {
@@ -35,6 +36,17 @@ namespace DatingApp.Api.Controllers
         [HttpGet("users-with-roles")]
         public async Task<ActionResult> GetUsersWithRoles()
         {
+            try
+            {
+                var result = await _mediator.Send(new GetUsersWithRolesQuery());
+                return Ok(result.UserWithRoles);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            ///////////////////////////////to remove
             var users = await _userManager.Users
                 .OrderBy(u => u.UserName)
                 .Select(u => new
