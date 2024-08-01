@@ -10,6 +10,7 @@ using DatingApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
@@ -40,31 +41,55 @@ namespace DatingApp.Api.Controllers
         [HttpPost("register")] // Post: api/account/register
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if(await userExists(registerDto.Username))
+            try
             {
-                return BadRequest("Username already taken");
+                var command = new RegisterCommand()
+                {
+                    Register = registerDto,
+                };
+                var result = await _mediator.Send(command);
+                return Ok(result.User);
+            }
+            catch(BadRequestExeption ex)
+            {
+                throw new BadRequestExeption("Username already taken");
+            }
+            catch (IdentityErrorExeption ex)
+            {
+                return BadRequest(ex.Errors);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            var user = _mapper.Map<AppUser>(registerDto);
 
-            user.UserName = registerDto.Username.ToLower();
+            ////////////////to remove
+            ///
+            //if (await userExists(registerDto.Username))
+            //{
+            //    return BadRequest("Username already taken");
+            //}
+            //var user = _mapper.Map<AppUser>(registerDto);
 
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            //user.UserName = registerDto.Username.ToLower();
 
-            if (!result.Succeeded) return BadRequest(result.Errors);
+            //var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            //if (!result.Succeeded) return BadRequest(result.Errors);
 
-            if(!roleResult.Succeeded) return BadRequest(roleResult.Errors);
+            //var roleResult = await _userManager.AddToRoleAsync(user, "Member");
 
-            return new UserDto
-            {
-                Username = registerDto.Username,
-                Token = await _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(x=>x.IsMain)?.Url,
-                KnownAs = registerDto.KnownAs,
-                Gender = user.Gender,
-            };
+            //if(!roleResult.Succeeded) return BadRequest(roleResult.Errors);
+
+            //return new UserDto
+            //{
+            //    Username = registerDto.Username,
+            //    Token = await _tokenService.CreateToken(user),
+            //    PhotoUrl = user.Photos.FirstOrDefault(x=>x.IsMain)?.Url,
+            //    KnownAs = registerDto.KnownAs,
+            //    Gender = user.Gender,
+            //};
         }
 
         [HttpPost("login")]
@@ -76,8 +101,8 @@ namespace DatingApp.Api.Controllers
                 {
                     Login = loginDto
                 };
-                var result1 = await _mediator.Send(command);
-                return Ok(result1.User);
+                var result = await _mediator.Send(command);
+                return Ok(result.User);
             }
             catch(NotAuthorizedException ex)
             {
@@ -111,10 +136,10 @@ namespace DatingApp.Api.Controllers
 
         }
 
-        private async Task<bool> userExists(string username)
-        {
-            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
-            return user != null;
-        }
+        //private async Task<bool> userExists(string username)
+        //{
+        //    var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+        //    return user != null;
+        //}
     }
 }
