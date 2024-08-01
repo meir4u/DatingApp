@@ -2,6 +2,7 @@
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
+using DatingApp.Application.Futures.Like.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,12 +52,20 @@ namespace DatingApp.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery]LikesParams likesParams)
         {
+
             likesParams.UserId = User.GetUserId();
+
+            ///// to remove
             var users = await _unitOfWork.LikesRepository.GetUserLikes(likesParams);
+            /////
 
-            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
-
-            return Ok(users);
+            var query = new GetUserLikesQuery()
+            {
+                LikesParams = likesParams
+            };
+            var result = await _mediator.Send(query);
+            Response.AddPaginationHeader(new PaginationHeader(result.Users.CurrentPage, result.Users.PageSize, result.Users.TotalCount, result.Users.TotalPages));
+            return Ok(result.Users);
         }
 
     }
