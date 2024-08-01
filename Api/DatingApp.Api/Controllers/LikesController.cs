@@ -2,6 +2,7 @@
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.Api.Controllers
@@ -9,10 +10,14 @@ namespace DatingApp.Api.Controllers
     public class LikesController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
 
-        public LikesController(IUnitOfWork unitOfWork)
+        public LikesController(
+            IUnitOfWork unitOfWork,
+            IMediator mediator)
         {
             _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         [HttpPost("{username}")]

@@ -5,6 +5,7 @@ using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.Api.Controllers
@@ -13,11 +14,16 @@ namespace DatingApp.Api.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public MessagesController(IUnitOfWork unitOfWork, IMapper mapper)
+        public MessagesController(
+            IUnitOfWork unitOfWork, 
+            IMapper mapper,
+            IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpPost]

@@ -5,6 +5,7 @@ using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +19,18 @@ namespace DatingApp.Api.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
+        private readonly IMediator _mediator;
 
-        public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
+        public UsersController(
+            IUnitOfWork unitOfWork, 
+            IMapper mapper, 
+            IPhotoService photoService,
+            IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _photoService = photoService;
+            _mediator = mediator;
         }
 
 

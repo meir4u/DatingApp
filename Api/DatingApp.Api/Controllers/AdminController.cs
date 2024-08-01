@@ -3,6 +3,7 @@ using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +16,18 @@ namespace DatingApp.Api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public AdminController(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, IMapper mapper)
+        public AdminController(
+            UserManager<AppUser> userManager, 
+            IUnitOfWork unitOfWork, 
+            IMapper mapper,
+            IMediator mediator)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _mediator = mediator;
         }
         [Authorize(Policy = "RequiredAdminRole")]
         [HttpGet("users-with-roles")]

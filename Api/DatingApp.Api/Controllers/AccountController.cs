@@ -3,6 +3,7 @@ using DatingApp.Api.Data;
 using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
 using DatingApp.Api.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,17 +17,20 @@ namespace DatingApp.Api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
         public AccountController(
             UserManager<AppUser> userManager, 
             ITokenService tokenService, 
-            IMapper mapper
+            IMapper mapper,
+            IMediator mediator
 
             )
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpPost("register")] // Post: api/account/register
