@@ -2,12 +2,13 @@
 using DatingApp.Api.Data;
 using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
-using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
 using DatingApp.Application.DTOs.Message;
 using DatingApp.Application.Exceptions.Responses;
 using DatingApp.Application.Futures.Account.Requests;
 using DatingApp.Application.Futures.Message.Requests;
+using DatingApp.Application.Pagination;
+using DatingApp.Application.Params;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -78,13 +79,30 @@ namespace DatingApp.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<MessageDto>> GetMessagesForUser([FromQuery] MessageParams messageParams)
         {
-            messageParams.Username = User.GetUsername();
+            try
+            {
+                var command = new GetMessagesForUserQuery()
+                {
+                    Params = messageParams
+                };
+                var result = await _mediator.Send(command);
+                Response.AddPaginationHeader(result.PaginationHeader);
 
-            var messages = await _unitOfWork.MessageRepository.GetMessagesForUser(messageParams);
+                return Ok(result.Messages);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+            ////////////////////
+            //messageParams.Username = User.GetUsername();
 
-            Response.AddPaginationHeader(new PaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages));
+            //var messages = await _unitOfWork.MessageRepository.GetMessagesForUser(messageParams);
 
-            return Ok(messages);
+            //Response.AddPaginationHeader(new PaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages));
+
+            //return Ok(messages);
         }
 
         
