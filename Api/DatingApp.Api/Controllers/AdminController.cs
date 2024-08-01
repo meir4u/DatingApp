@@ -47,16 +47,16 @@ namespace DatingApp.Api.Controllers
             }
 
             ///////////////////////////////to remove
-            var users = await _userManager.Users
-                .OrderBy(u => u.UserName)
-                .Select(u => new
-                {
-                    u.Id,
-                    Username = u.UserName,
-                    Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
-                })
-                .ToListAsync();
-            return Ok(users);
+            //var users = await _userManager.Users
+            //    .OrderBy(u => u.UserName)
+            //    .Select(u => new
+            //    {
+            //        u.Id,
+            //        Username = u.UserName,
+            //        Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
+            //    })
+            //    .ToListAsync();
+            //return Ok(users);
         }
 
         [Authorize(Policy = "RequiredAdminRole")]
@@ -96,25 +96,25 @@ namespace DatingApp.Api.Controllers
             
 
             /////////////////////to remove
-            if (string.IsNullOrEmpty(roles)) return BadRequest("You must select at least one role");
+            //if (string.IsNullOrEmpty(roles)) return BadRequest("You must select at least one role");
 
-            selectedRoles = roles.Split(',').ToArray();
+            //selectedRoles = roles.Split(',').ToArray();
 
-            var user = await _userManager.FindByNameAsync(username);
+            //var user = await _userManager.FindByNameAsync(username);
 
-            if (user == null) return NotFound();
+            //if (user == null) return NotFound();
 
-            var userRoles = await _userManager.GetRolesAsync(user);
+            //var userRoles = await _userManager.GetRolesAsync(user);
 
-            var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
+            //var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
 
-            if (!result.Succeeded) return BadRequest("Failed to add to roles");
+            //if (!result.Succeeded) return BadRequest("Failed to add to roles");
 
-            result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
+            //result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
 
-            if (!result.Succeeded) return BadRequest("Failed to remove from roles");
+            //if (!result.Succeeded) return BadRequest("Failed to remove from roles");
 
-            return Ok(await _userManager.GetRolesAsync(user));
+            //return Ok(await _userManager.GetRolesAsync(user));
         }
 
         [Authorize(Policy = "ModeratePhotoRole")]
