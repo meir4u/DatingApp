@@ -1,6 +1,7 @@
 ﻿using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
-using DatingApp.Api.Helpers;
+using DatingApp.Application.Pagination;
+using DatingApp.Domain.Params;
 
 namespace DatingApp.Api.Interfaces
 {

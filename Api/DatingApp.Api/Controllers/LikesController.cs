@@ -1,10 +1,13 @@
-﻿using DatingApp.Api.DTOs;
-using DatingApp.Api.Extensions;
-using DatingApp.Api.Helpers;
+﻿using DatingApp.Api.Extensions;
 using DatingApp.Api.Interfaces;
+using DatingApp.Application.DTOs.Like;
+using DatingApp.Application.Exceptions.Responses;
 using DatingApp.Application.Futures.Like.Requests;
+using DatingApp.Application.Pagination;
+using DatingApp.Application.Params;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DatingApp.Api.Controllers
 {
@@ -24,6 +27,32 @@ namespace DatingApp.Api.Controllers
         [HttpPost("{username}")]
         public async Task<ActionResult> AddLike(string username)
         {
+            var command = new AddLikeCommand()
+            {
+                AddLike = new AddLikeDto()
+                {
+                    SourceUserId = User.GetUserId(),
+                    Username = username,
+                }
+            };
+
+            try
+            {
+                var result = await _mediator.Send(command);
+                return Ok();
+            }
+            catch(NotFoundException ex)
+            {
+                return NotFound();
+            }catch(BadRequestExeption ex)
+            {
+                return BadRequest(ex.Message);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            ///////////////////////////////////////should be deleted
             var sourceUserId = User.GetUserId();
             var likedUser = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
             var sourceUser = await _unitOfWork.LikesRepository.GetUserWithLikes(sourceUserId);

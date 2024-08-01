@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DatingApp.Application.Exceptions.Responses
 {
-    internal class BadRequestExeption : BaseResponseExeption
+    public class BadRequestExeption : BaseResponseExeption
     {
         public BadRequestExeption(string messages, string details = "") : base(statusCode: StatusCodes.Status400BadRequest, messages, details)
         {
