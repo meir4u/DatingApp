@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using DatingApp.Api.Data;
-using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
+using DatingApp.Application.DTOs.Message;
+using DatingApp.Application.Exceptions.Responses;
+using DatingApp.Application.Futures.Account.Requests;
+using DatingApp.Application.Futures.Message.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,31 +32,47 @@ namespace DatingApp.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<MessageDto>> CreateMessage(CreateMessageDto createMessageDto)
         {
-            var username = User.GetUsername();
-            if(username == createMessageDto.RecipientUsername)
+            try
             {
-                return BadRequest("You cannot send message to yourself");
+                var command = new CreateMessageCommand()
+                {
+                    CreateMessage = createMessageDto,
+                };
+                var result = await _mediator.Send(command);
+                return Ok(result.Message);
+            }
+            catch(NotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (BadRequestExeption ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            var sender = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
-            var recipient = await _unitOfWork.UserRepository.GetUserByUsernameAsync(createMessageDto.RecipientUsername);
+            //var sender = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+            //var recipient = await _unitOfWork.UserRepository.GetUserByUsernameAsync(createMessageDto.RecipientUsername);
 
-            if (recipient == null) return NotFound();
+            //if (recipient == null) return NotFound();
 
-            var message = new Message
-            {
-                Sender = sender,
-                Recipient = recipient,
-                SenderUsername = sender.UserName,
-                RecipientUsername = recipient.UserName,
-                Content = createMessageDto.Content,
-            };
+            //var message = new Message
+            //{
+            //    Sender = sender,
+            //    Recipient = recipient,
+            //    SenderUsername = sender.UserName,
+            //    RecipientUsername = recipient.UserName,
+            //    Content = createMessageDto.Content,
+            //};
 
-            _unitOfWork.MessageRepository.AddMessage(message);
+            //_unitOfWork.MessageRepository.AddMessage(message);
 
-            if( await _unitOfWork.Complete()) return Ok(_mapper.Map<MessageDto>(message));
+            //if( await _unitOfWork.Complete()) return Ok(_mapper.Map<MessageDto>(message));
 
-            return BadRequest("Failed to send message");
+            //return BadRequest("Failed to send message");
         }
 
         [HttpGet]
