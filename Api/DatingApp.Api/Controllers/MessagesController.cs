@@ -92,27 +92,51 @@ namespace DatingApp.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMessage(int id)
         {
-            var username = User.GetUsername();
-
-            var message = await _unitOfWork.MessageRepository.GetMessage(id);
-
-            if(message.SenderUsername != username && message.RecipientUsername != username) 
+            try
             {
-                //user not parth of the convirsation.
-                return Unauthorized();
+                var command = new DeleteMessageCommand()
+                {
+                    DeleteMessage = new DeleteMessageDto()
+                    {
+                        MessageId = id,
+                        Username = User.GetUsername()
+                    },
+                };
+                var result = await _mediator.Send(command);
+                return Ok();
+            }
+            catch(NotAuthorizedException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (BadRequestExeption ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            if(message.SenderUsername == username) message.SenderDeleted = true;
-            if(message.RecipientUsername == username) message.RecipientDeleted = true;
+            //var message = await _unitOfWork.MessageRepository.GetMessage(id);
 
-            if(message.SenderDeleted && message.RecipientDeleted)
-            {
-                _unitOfWork.MessageRepository.RemoveMessage(message);
-            }
+            //if(message.SenderUsername != username && message.RecipientUsername != username) 
+            //{
+            //    //user not parth of the convirsation.
+            //    return Unauthorized();
+            //}
 
-            if (await _unitOfWork.Complete()) return Ok();
+            //if(message.SenderUsername == username) message.SenderDeleted = true;
+            //if(message.RecipientUsername == username) message.RecipientDeleted = true;
 
-            return BadRequest("Problem deleting the message");
+            //if(message.SenderDeleted && message.RecipientDeleted)
+            //{
+            //    _unitOfWork.MessageRepository.RemoveMessage(message);
+            //}
+
+            //if (await _unitOfWork.Complete()) return Ok();
+
+            //return BadRequest("Problem deleting the message");
         }
     }
 }
