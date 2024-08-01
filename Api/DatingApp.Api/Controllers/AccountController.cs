@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using DatingApp.Api.Data;
-using DatingApp.Api.DTOs;
-using DatingApp.Api.Entities;
 using DatingApp.Api.Interfaces;
+using DatingApp.Application.DTOs.Account;
+using DatingApp.Application.DTOs.Register;
+using DatingApp.Application.DTOs.User;
+using DatingApp.Application.Exceptions.Responses;
+using DatingApp.Application.Futures.Account.Requests;
+using DatingApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -66,26 +70,44 @@ namespace DatingApp.Api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.Users
-                                .Include(p => p.Photos)
-                                .SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.Username.ToLower());
-            if(user == null)
+            try
             {
-                return Unauthorized("Invalid username");
+                var command = new LoginCommand()
+                {
+                    Login = loginDto
+                };
+                var result1 = await _mediator.Send(command);
+                return Ok(result1.User);
             }
-
-            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
-
-            if (!result) return Unauthorized("Invalid password");
-
-            return new UserDto
+            catch(NotAuthorizedException ex)
             {
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-                KnownAs = user.KnownAs,
-                Gender = user.Gender,
-            }; 
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            //////////////////////////////////////to remove
+            //var user = await _userManager.Users
+            //                    .Include(p => p.Photos)
+            //                    .SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.Username.ToLower());
+            //if(user == null)
+            //{
+            //    return Unauthorized("Invalid username");
+            //}
+
+            //var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            //if (!result) return Unauthorized("Invalid password");
+
+            //return new UserDto
+            //{
+            //    Username = user.UserName,
+            //    Token = await _tokenService.CreateToken(user),
+            //    PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+            //    KnownAs = user.KnownAs,
+            //    Gender = user.Gender,
+            //}; 
 
         }
 
