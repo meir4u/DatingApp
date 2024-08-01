@@ -9,5 +9,6 @@ namespace DatingApp.Application.Futures.Account.Responses
 {
     public class EditRolesResponse : BaseCommandResponse
     {
+        public IList<string> Roles { get; internal set; }
     }
 }

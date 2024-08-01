@@ -3,6 +3,8 @@ using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Interfaces;
+using DatingApp.Application.Exceptions.Responses;
+using DatingApp.Application.Futures.Account.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -52,6 +54,39 @@ namespace DatingApp.Api.Controllers
             if (string.IsNullOrEmpty(roles)) return BadRequest("You must select at least one role");
 
             var selectedRoles = roles.Split(',').ToArray();
+
+            var command = new EditRolesCommand()
+            {
+                EditRoles = new Application.DTOs.Account.EditRolesDto()
+                {
+                    Username = username,
+                    Roles = selectedRoles
+                }
+            };
+
+            try
+            {
+                var result1 = await _mediator.Send(command);
+                return Ok(result1.Roles);
+            }
+            catch(NotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (BadRequestExeption ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+
+            /////////////////////to remove
+            if (string.IsNullOrEmpty(roles)) return BadRequest("You must select at least one role");
+
+            selectedRoles = roles.Split(',').ToArray();
 
             var user = await _userManager.FindByNameAsync(username);
 
