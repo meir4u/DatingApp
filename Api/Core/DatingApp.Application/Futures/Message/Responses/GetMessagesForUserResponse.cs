@@ -1,4 +1,5 @@
-﻿using DatingApp.Application.Pagination;
+﻿using DatingApp.Application.DTOs.Message;
+using DatingApp.Application.Pagination;
 using DatingApp.Application.Responses;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace DatingApp.Application.Futures.Message.Responses
     public class GetMessagesForUserResponse : BaseCommandResponse
     {
         public PaginationHeader PaginationHeader { get; set; }
+        public PagedList<MessageDto> Messages { get; set; }
     }
 }
