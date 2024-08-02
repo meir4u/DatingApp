@@ -9,6 +9,7 @@ using DatingApp.Application.DTOs.Register;
 using DatingApp.Application.Exceptions.Responses;
 using DatingApp.Application.Futures.Account.Requests;
 using DatingApp.Application.Futures.Photo.Requests;
+using DatingApp.Application.Futures.User.Requests;
 using DatingApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -103,23 +104,50 @@ namespace DatingApp.Api.Controllers
         {
             try
             {
-                var user = await _unitOfWork.UserRepository.GetMemberAsync(username, User.GetUsername());
-                return Ok(user);
-
+                var command = new GetUserQuery()
+                {
+                    GetUser = new Application.DTOs.User.GetUserDto()
+                    {
+                        Username = username,
+                        CurrentUser = User.GetUsername()
+                    }
+                };
+                var result = await _mediator.Send(command);
+                return Ok(result.User);
+            }
+            catch (BadRequestExeption ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound();
             }
             catch (Exception ex)
             {
-#if DEBUG
-
                 return BadRequest(ex.Message);
-
-#else
-                
-                // In release mode, return a generic BadRequest response
-                return BadRequest("An error occurred while processing your request.");
-                
-#endif
             }
+
+
+//            try
+//            {
+//                var user = await _unitOfWork.UserRepository.GetMemberAsync(username, User.GetUsername());
+//                return Ok(user);
+
+//            }
+//            catch (Exception ex)
+//            {
+//#if DEBUG
+
+//                return BadRequest(ex.Message);
+
+//#else
+                
+//                // In release mode, return a generic BadRequest response
+//                return BadRequest("An error occurred while processing your request.");
+                
+//#endif
+//            }
         }
 
         [HttpPut]
