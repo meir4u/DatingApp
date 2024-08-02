@@ -14,6 +14,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace DatingApp.Api.Controllers
@@ -210,25 +211,52 @@ namespace DatingApp.Api.Controllers
         [HttpPut("set-main-photo/{photoId}")]
         public async Task<ActionResult> SetMainPhoto(int photoId)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
+            try
+            {
+                var command = new SetMainPhotoCommand()
+                {
+                    SetMainPhoto = new Application.DTOs.Photo.SetMainPhotoDto()
+                    {
+                        PhotoId = photoId,
+                        Username = User.GetUsername()
+                    }
+                };
+                var result = await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (BadRequestExeption ex)
+            {
+                throw new BadRequestExeption(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-            if (user == null) return NotFound();
+            ////////////////////////////////////
+            //var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
-            var photo = user.Photos.FirstOrDefault(x=>x.Id == photoId);
+            //if (user == null) return NotFound();
 
-            if (photo == null) return NotFound();
+            //var photo = user.Photos.FirstOrDefault(x=>x.Id == photoId);
 
-            if (photo.IsMain) return BadRequest("this is already your main photo");
+            //if (photo == null) return NotFound();
 
-            var currentMain = user.Photos.FirstOrDefault(x=>x.IsMain);
+            //if (photo.IsMain) return BadRequest("this is already your main photo");
 
-            if(currentMain != null) currentMain.IsMain = false;
+            //var currentMain = user.Photos.FirstOrDefault(x=>x.IsMain);
 
-            photo.IsMain = true;
+            //if(currentMain != null) currentMain.IsMain = false;
 
-            if(await _unitOfWork.Complete()) return NoContent();
+            //photo.IsMain = true;
 
-            return BadRequest("Problem Setting main photo");
+            //if(await _unitOfWork.Complete()) return NoContent();
+
+            //return BadRequest("Problem Setting main photo");
         }
 
         [HttpDelete("delete-photo/{photoId}")]
