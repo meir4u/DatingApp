@@ -5,6 +5,8 @@ using DatingApp.Api.Extensions;
 using DatingApp.Api.Interfaces;
 using DatingApp.Application.Exceptions.Responses;
 using DatingApp.Application.Futures.Account.Requests;
+using DatingApp.Application.Futures.Photo.Requests;
+using DatingApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -121,8 +123,18 @@ namespace DatingApp.Api.Controllers
         [HttpGet("photos-to-moderate")]
         public async Task<ActionResult<IEnumerable<PhotoForApprovalDto>>> GetPhotosForModeration()
         {
-            var photos = await _unitOfWork.PhotoRepository.GetUnapprovedPhotos();
-            return Ok(photos);
+            try
+            {
+                var command = new GetPhotosForModerationCommand();
+                var result = await _mediator.Send(command);
+                return Ok(result.Photos);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            //var photos = await _unitOfWork.PhotoRepository.GetUnapprovedPhotos();
+            //return Ok(photos);
         }
 
         [Authorize(Policy = "ModeratePhotoRole")]
