@@ -172,9 +172,9 @@ namespace DatingApp.Api.Controllers
             {
                 throw new BadRequestExeption("Username already taken");
             }
-            catch (IdentityErrorExeption ex)
+            catch (NotFoundException ex)
             {
-                return BadRequest(ex.Errors);
+                return NotFound();
             }
             catch (Exception ex)
             {
@@ -234,26 +234,53 @@ namespace DatingApp.Api.Controllers
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
-
-            //var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
-            var photo = await _unitOfWork.PhotoRepository.GetPhotoById(photoId);
-
-            if(photo == null) return NotFound();
-
-            if (photo.IsMain) return BadRequest("You cannot delete your main photo");
-
-            if(photo.PublicId != null)
+            try
             {
-                var result = await _photoService.DeletePhotoAsync(photo.PublicId);
-                if (result.Error != null) return BadRequest(result.Error.Message);
+                var command = new DeletePhotoCommand()
+                {
+                    Delete = new Application.DTOs.Photo.DeletePhotoDto()
+                    {
+                        Username = User.GetUsername(),
+                        PhotoId = photoId
+                    }
+                };
+                var result = await _mediator.Send(command);
+                return Ok();
+            }
+            catch (BadRequestExeption ex)
+            {
+                throw new BadRequestExeption("Username already taken");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            user.Photos.Remove(photo);
-            
-            if(await _unitOfWork.Complete()) return Ok();
+            ////////////////////////////
+            //var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
-            return BadRequest("Problem deleting photo");
+            ////var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
+            //var photo = await _unitOfWork.PhotoRepository.GetPhotoById(photoId);
+
+            //if(photo == null) return NotFound();
+
+            //if (photo.IsMain) return BadRequest("You cannot delete your main photo");
+
+            //if(photo.PublicId != null)
+            //{
+            //    var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+            //    if (result.Error != null) return BadRequest(result.Error.Message);
+            //}
+
+            //user.Photos.Remove(photo);
+            
+            //if(await _unitOfWork.Complete()) return Ok();
+
+            //return BadRequest("Problem deleting photo");
         }
     }
 }
