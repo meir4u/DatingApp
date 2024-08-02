@@ -191,15 +191,41 @@ namespace DatingApp.Api.Controllers
         [HttpPost("reject-photo/{photoId}")]
         public async Task<ActionResult<bool>> PhotoReject(int photoId)
         {
-            var photo = await _unitOfWork.PhotoRepository.GetPhotoById(photoId);
+            try
+            {
+                var command = new PhotoRejectCommand()
+                {
+                    Reject = new Application.DTOs.Photo.PhotoRejectDto()
+                    {
+                        PhotoId = photoId
+                    }
+                };
+                var result = await _mediator.Send(command);
+                return Ok(true);
+            }
+            catch (BadRequestExeption ex)
+            {
+                throw new BadRequestExeption(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-            if (photo == null) return NotFound();
+            ////////////////////
+            //var photo = await _unitOfWork.PhotoRepository.GetPhotoById(photoId);
 
-            _unitOfWork.PhotoRepository.RemovePhoto(photo);
+            //if (photo == null) return NotFound();
 
-            if (_unitOfWork.HasChanges()) await _unitOfWork.Complete();
+            //_unitOfWork.PhotoRepository.RemovePhoto(photo);
 
-            return Ok(true);
+            //if (_unitOfWork.HasChanges()) await _unitOfWork.Complete();
+
+            //return Ok(true);
         }
     }
 }
