@@ -5,6 +5,11 @@ using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
+using DatingApp.Application.DTOs.Register;
+using DatingApp.Application.Exceptions.Responses;
+using DatingApp.Application.Futures.Account.Requests;
+using DatingApp.Application.Futures.Photo.Requests;
+using DatingApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -150,29 +155,55 @@ namespace DatingApp.Api.Controllers
         [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
-
-            if(user == null) return NotFound();
-
-            var result = await _photoService.AddPhotoAsync(file);
-
-            if(result.Error != null) return BadRequest(result.Error);
-
-
-            var photo = new Photo
+            try
             {
-                Url = result.SecureUrl.AbsoluteUri,
-                PublicId = result.PublicId,
-            };
-
-            user.Photos.Add(photo);
-
-            if(await _unitOfWork.Complete() )
-            {
-                return CreatedAtAction(nameof(GetUser), new {username = user.UserName}, _mapper.Map<PhotoDto>(photo));
+                var command = new AddPhotoCommand()
+                {
+                    Add = new Application.DTOs.Photo.AddPhotoDto()
+                    {
+                        File = file,
+                        Username = User.GetUsername()
+                    },
+                };
+                var result = await _mediator.Send(command);
+                return CreatedAtAction(nameof(GetUser), new { username = result.Username }, result.Photo);
             }
+            catch (BadRequestExeption ex)
+            {
+                throw new BadRequestExeption("Username already taken");
+            }
+            catch (IdentityErrorExeption ex)
+            {
+                return BadRequest(ex.Errors);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            /////////////////
+            //var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
-            return BadRequest("Problem adding photo");
+            //if(user == null) return NotFound();
+
+            //var result = await _photoService.AddPhotoAsync(file);
+
+            //if(result.Error != null) return BadRequest(result.Error);
+
+
+            //var photo = new Photo
+            //{
+            //    Url = result.SecureUrl.AbsoluteUri,
+            //    PublicId = result.PublicId,
+            //};
+
+            //user.Photos.Add(photo);
+
+            //if(await _unitOfWork.Complete() )
+            //{
+            //    return CreatedAtAction(nameof(GetUser), new {username = user.UserName}, _mapper.Map<PhotoDto>(photo));
+            //}
+
+            //return BadRequest("Problem adding photo");
 
         }
 
