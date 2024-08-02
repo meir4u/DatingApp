@@ -52,7 +52,7 @@ namespace DatingApp.Api.Controllers
             }
             catch(BadRequestExeption ex)
             {
-                throw new BadRequestExeption("Username already taken");
+                return BadRequest(ex.Message);
             }
             catch (IdentityErrorExeption ex)
             {

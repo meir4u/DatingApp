@@ -155,7 +155,7 @@ namespace DatingApp.Api.Controllers
             }
             catch (BadRequestExeption ex)
             {
-                throw new BadRequestExeption(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (NotFoundException ex)
             {
@@ -205,7 +205,7 @@ namespace DatingApp.Api.Controllers
             }
             catch (BadRequestExeption ex)
             {
-                throw new BadRequestExeption(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (NotFoundException ex)
             {
