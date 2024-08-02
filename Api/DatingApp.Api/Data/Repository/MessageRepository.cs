@@ -74,7 +74,7 @@ namespace DatingApp.Api.Data.Repository
             return await PagedList<MessageDto>.CreateAsync(messages, filterParams.PageNumber, filterParams.PageSize);
         }
 
-        public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientUserName)
+        public async Task<IQueryable<Message>> GetMessageThread(string currentUserName, string recipientUserName)
         {
             var query = _context.Messages
                 .Where(
@@ -97,8 +97,7 @@ namespace DatingApp.Api.Data.Repository
 
                 }
             }
-
-            return await query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return query;
         }
 
         public void RemoveConnection(Connection connection)

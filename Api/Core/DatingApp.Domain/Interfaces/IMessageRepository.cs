@@ -14,7 +14,7 @@ namespace DatingApp.Domain.Interfaces
         void RemoveMessage(Message message);
         Task<Message> GetMessage(int id);
         Task<IQueryable<Message>> GetMessagesForUser(IParams messageParams);
-        Task<IEnumerable<Message>> GetMessageThread(string currentUserName, string recipientUserName);
+        Task<IQueryable<Message>> GetMessageThread(string currentUserName, string recipientUserName);
         void AddGroup(Group group);
         void RemoveConnection(Connection connection);
         Task<Connection> GetConnection(string connectionId);

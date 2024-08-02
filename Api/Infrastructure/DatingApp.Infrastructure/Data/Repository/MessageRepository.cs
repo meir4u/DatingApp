@@ -78,7 +78,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             return query;
         }
 
-        public async Task<IEnumerable<Message>> GetMessageThread(string currentUserName, string recipientUserName)
+        public async Task<IQueryable<Message>> GetMessageThread(string currentUserName, string recipientUserName)
         {
             var query = _context.Messages
                 .Where(
@@ -103,8 +103,6 @@ namespace DatingApp.Infrastructure.Data.Repository
             }
 
             return query;
-
-            return await query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         public void RemoveConnection(Connection connection)

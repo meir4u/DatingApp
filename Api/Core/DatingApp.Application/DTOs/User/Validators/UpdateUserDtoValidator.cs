@@ -11,7 +11,7 @@ namespace DatingApp.Application.DTOs.User.Validators
     {
         public UpdateUserDtoValidator()
         {
-            RuleFor(p => p.CurrentUser)
+            RuleFor(p => p.CurrentUsername)
                 .NotNull().WithMessage("Current user is required.")
                 .NotEmpty().WithMessage("Current user cannot be empty.");
         }

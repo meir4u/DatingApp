@@ -34,8 +34,6 @@ namespace DatingApp.Infrastructure.Data.Repository
             var query = _getPhotosQuery().Include(x=>x.AppUser).Where(p => p.IsApproved == false);
 
             return query;
-            var data = await query.ProjectTo<PhotoForApprovalDto>(_mapper.ConfigurationProvider).ToListAsync();
-            return data;
         }
 
         public void Update(Photo photo)

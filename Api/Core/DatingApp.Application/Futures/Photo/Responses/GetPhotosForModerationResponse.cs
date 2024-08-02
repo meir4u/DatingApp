@@ -1,4 +1,5 @@
-﻿using DatingApp.Application.Responses;
+﻿using DatingApp.Application.DTOs.Photo;
+using DatingApp.Application.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace DatingApp.Application.Futures.Photo.Responses
 {
     public class GetPhotosForModerationResponse : BaseCommandResponse
     {
-        public IEnumerable<DatingApp.Domain.Entities.Photo> Photos { get; set; }
+        public IEnumerable<PhotoForApprovalDto> Photos { get; set; }
     }
 }

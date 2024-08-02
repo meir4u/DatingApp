@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using DatingApp.Api.Data.Repository;
 using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
@@ -6,7 +7,9 @@ using DatingApp.Api.Extensions;
 using DatingApp.Api.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DatingApp.Api.SignalR
 {
@@ -40,10 +43,11 @@ namespace DatingApp.Api.SignalR
             await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
 
             var messages = await _unitOfWork.MessageRepository.GetMessageThread(Context.User.GetUsername(), otherUser);
+            var mappedMessages = await messages.ProjectTo<MessageDto>(_mapper.ConfigurationProvider).ToListAsync();
 
             if (_unitOfWork.HasChanges()) await _unitOfWork.Complete();
 
-            await Clients.Caller.SendAsync("ReceiveMessageThread", messages);
+            await Clients.Caller.SendAsync("ReceiveMessageThread", mappedMessages);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using DatingApp.Api.DTOs;
-using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Interfaces;
+using DatingApp.Application.DTOs.Photo;
 using DatingApp.Application.Exceptions.Responses;
 using DatingApp.Application.Futures.Account.Requests;
 using DatingApp.Application.Futures.Photo.Requests;

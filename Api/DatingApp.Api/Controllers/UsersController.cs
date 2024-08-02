@@ -52,6 +52,7 @@ namespace DatingApp.Api.Controllers
                 {
                     Params = userParams
                 };
+                command.Params.CurrentUsername = User.GetUsername();
                 var result = await _mediator.Send(command);
                 Response.AddPaginationHeader(result.PaginationHeader);
                 return Ok(result.Users);
@@ -180,30 +181,57 @@ namespace DatingApp.Api.Controllers
         {
             try
             {
-                var username = User.GetUsername();
-                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
-                if(user == null) return NotFound();
-
-                _mapper.Map(memberUpdateDto, user);
-
-                if (await _unitOfWork.Complete()) return NoContent();
-
-                return BadRequest("Failed to update user");
-
+                var command = new UpdateUserCommand()
+                {
+                    MemberUpdate = memberUpdateDto,
+                    Update = new Application.DTOs.User.UpdateUserDto()
+                    {
+                        CurrentUsername = User.GetUsername()
+                    }
+                };
+                var result = await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (BadRequestExeption ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound();
             }
             catch (Exception ex)
             {
-#if DEBUG
-
                 return BadRequest(ex.Message);
-
-#else
-                
-                // In release mode, return a generic BadRequest response
-                return BadRequest("An error occurred while processing your request.");
-                
-#endif
             }
+
+            //////////////////////////////////////////////////////
+//            try
+//            {
+//                var username = User.GetUsername();
+//                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+//                if(user == null) return NotFound();
+
+//                _mapper.Map(memberUpdateDto, user);
+
+//                if (await _unitOfWork.Complete()) return NoContent();
+
+//                return BadRequest("Failed to update user");
+
+//            }
+//            catch (Exception ex)
+//            {
+//#if DEBUG
+
+//                return BadRequest(ex.Message);
+
+//#else
+                
+//                // In release mode, return a generic BadRequest response
+//                return BadRequest("An error occurred while processing your request.");
+                
+//#endif
+//            }
         }
 
         [HttpPost("add-photo")]
