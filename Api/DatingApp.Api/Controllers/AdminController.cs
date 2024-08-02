@@ -141,24 +141,50 @@ namespace DatingApp.Api.Controllers
         [HttpPost("approve-photo/{photoId}")]
         public async Task<ActionResult<PhotoForApprovalDto>> PhotoApproval(int photoId)
         {
-            var photo = await _unitOfWork.PhotoRepository.GetPhotoById(photoId);
+            try
+            {
+                var command = new PhotoApprovalCommand()
+                {
+                    ForApproval = new Application.DTOs.Photo.PhotoForApprovalDto()
+                    {
+                        Id = photoId
+                    }
+                };
+                var result = await _mediator.Send(command);
+                return Ok(result.Photo);
+            }
+            catch (BadRequestExeption ex)
+            {
+                throw new BadRequestExeption(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-            if(photo == null) return NotFound();
+            /////////////////////////
+            //var photo = await _unitOfWork.PhotoRepository.GetPhotoById(photoId);
 
-            photo.IsApproved = true;
+            //if(photo == null) return NotFound();
 
-            var user = await _unitOfWork.UserRepository.GetUserPhotoIdAsync(photoId);
+            //photo.IsApproved = true;
 
-            if (user == null) return NotFound();
+            //var user = await _unitOfWork.UserRepository.GetUserPhotoIdAsync(photoId);
 
-            if (user.Photos.Any() == false) photo.IsMain = true;
+            //if (user == null) return NotFound();
 
-            _unitOfWork.PhotoRepository.Update(photo);
+            //if (user.Photos.Any() == false) photo.IsMain = true;
 
-            if (_unitOfWork.HasChanges()) await _unitOfWork.Complete();
-            var photoDto = _mapper.Map<PhotoForApprovalDto>(photo);
-            photoDto.UserName = user.UserName;
-            return Ok(photoDto);
+            //_unitOfWork.PhotoRepository.Update(photo);
+
+            //if (_unitOfWork.HasChanges()) await _unitOfWork.Complete();
+            //var photoDto = _mapper.Map<PhotoForApprovalDto>(photo);
+            //photoDto.UserName = user.UserName;
+            //return Ok(photoDto);
         }
 
         [Authorize(Policy = "ModeratePhotoRole")]
