@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using DatingApp.Api.Data;
-using DatingApp.Api.DTOs;
 using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
-using DatingApp.Api.Helpers;
 using DatingApp.Api.Interfaces;
+using DatingApp.Application.DTOs.Member;
+using DatingApp.Application.DTOs.Photo;
 using DatingApp.Application.DTOs.Register;
 using DatingApp.Application.Exceptions.Responses;
 using DatingApp.Application.Futures.Account.Requests;
 using DatingApp.Application.Futures.Photo.Requests;
 using DatingApp.Application.Futures.User.Requests;
+using DatingApp.Application.Pagination;
+using DatingApp.Application.Params;
 using DatingApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -46,32 +48,55 @@ namespace DatingApp.Api.Controllers
         {
             try
             {
-                var gender = await _unitOfWork.UserRepository.GetUserGender(User.GetUsername());
-                userParams.CurrentUsername = User.GetUsername();
-
-                if(string.IsNullOrEmpty(userParams.Gender))
+                var command = new GetUsersQuery()
                 {
-                    userParams.Gender = gender == "male" ? "female" : "male";
-                }
-                var users = await _unitOfWork.UserRepository.GetMembersAsync(userParams);
-
-                Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
-
-                return Ok(users);
-
-            }catch(Exception ex)
-            {
-                #if DEBUG
-
-                return BadRequest(ex.Message);
-                
-                #else
-                
-                // In release mode, return a generic BadRequest response
-                return BadRequest("An error occurred while processing your request.");
-                
-                #endif
+                    Params = userParams
+                };
+                var result = await _mediator.Send(command);
+                Response.AddPaginationHeader(result.PaginationHeader);
+                return Ok(result.Users);
             }
+            catch (BadRequestExeption ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            ////////////////////////////////////////////////////////////
+            //try
+            //{
+            //    var gender = await _unitOfWork.UserRepository.GetUserGender(User.GetUsername());
+            //    userParams.CurrentUsername = User.GetUsername();
+
+            //    if(string.IsNullOrEmpty(userParams.Gender))
+            //    {
+            //        userParams.Gender = gender == "male" ? "female" : "male";
+            //    }
+            //    var users = await _unitOfWork.UserRepository.GetMembersAsync(userParams);
+
+            //    Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
+
+            //    return Ok(users);
+
+            //}catch(Exception ex)
+            //{
+            //    #if DEBUG
+
+            //    return BadRequest(ex.Message);
+                
+            //    #else
+                
+            //    // In release mode, return a generic BadRequest response
+            //    return BadRequest("An error occurred while processing your request.");
+                
+            //    #endif
+            //}
         }
 
         //        [HttpGet("{id}")]

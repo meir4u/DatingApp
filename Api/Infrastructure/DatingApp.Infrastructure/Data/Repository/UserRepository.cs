@@ -73,13 +73,7 @@ namespace DatingApp.Infrastructure.Data.Repository
                 _ => query.OrderByDescending(u => u.LastActive),
             };
 
-            return query;
-
-            return await PagedList<MemberDto>.CreateAsync(
-                query.AsNoTracking().ProjectTo<MemberDto>(_mapper.ConfigurationProvider),
-                filterParams.PageNumber,
-                filterParams.PageSize);
-
+            return query.AsNoTracking();
         }
 
         public async Task<AppUser> GetMemberAsync(string username, string currentUser)

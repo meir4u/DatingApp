@@ -1,4 +1,6 @@
-﻿using DatingApp.Application.Exceptions.Responses;
+﻿using AutoMapper;
+using DatingApp.Application.DTOs.Member;
+using DatingApp.Application.Exceptions.Responses;
 using DatingApp.Application.Futures.User.Requests;
 using DatingApp.Application.Futures.User.Responses;
 using DatingApp.Application.Pagination;
@@ -11,15 +13,21 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using AutoMapper.QueryableExtensions;
 
 namespace DatingApp.Application.Futures.User.Handlers
 {
     public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, GetUsersResponse>
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetUsersQueryHandler(IUnitOfWork unitOfWork)
+        public GetUsersQueryHandler(
+            IMapper mapper, 
+            IUnitOfWork unitOfWork)
         {
+            _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
         public async Task<GetUsersResponse> Handle(GetUsersQuery request, CancellationToken cancellationToken)
@@ -36,7 +44,12 @@ namespace DatingApp.Application.Futures.User.Handlers
                 }
                 var users = await _unitOfWork.UserRepository.GetMembersAsync(request.Params);
 
-                response.PaginationHeader = new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+                var pagedUsers =  await PagedList<MemberDto>.CreateAsync(
+                                                            users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider),
+                                                            request.Params.PageNumber,
+                                                            request.Params.PageSize);
+
+                response.PaginationHeader = new PaginationHeader(pagedUsers.CurrentPage, pagedUsers.PageSize, pagedUsers.TotalCount, pagedUsers.TotalPages);
                 response.Users = users;
 
                 return response;
