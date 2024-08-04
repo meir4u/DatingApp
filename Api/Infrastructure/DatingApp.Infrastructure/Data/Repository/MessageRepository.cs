@@ -18,13 +18,11 @@ namespace DatingApp.Infrastructure.Data.Repository
     public class MessageRepository : IMessageRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public MessageRepository(DataContext context, IMapper mapper, ILogger logger)
+        public MessageRepository(DataContext context, ILogger logger)
         {
             _context = context;
-            _mapper = mapper;
             _logger = logger;
         }
 

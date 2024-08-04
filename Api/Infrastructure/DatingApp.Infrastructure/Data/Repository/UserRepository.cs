@@ -21,13 +21,11 @@ namespace DatingApp.Infrastructure.Data.Repository
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public UserRepository(DataContext context, IMapper mapper, ILogger logger)
+        public UserRepository(DataContext context, ILogger logger)
         {
             _context = context;
-            _mapper = mapper;
             _logger = logger;
         }
         public async Task<AppUser> GetUseByIdAsync(int id)

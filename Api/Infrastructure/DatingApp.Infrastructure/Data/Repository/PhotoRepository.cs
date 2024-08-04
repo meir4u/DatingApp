@@ -16,13 +16,11 @@ namespace DatingApp.Infrastructure.Data.Repository
     public class PhotoRepository : IPhotoRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public PhotoRepository(DataContext context, IMapper mapper, ILogger logger)
+        public PhotoRepository(DataContext context, ILogger logger)
         {
             _context = context;
-            _mapper = mapper;
             _logger = logger;
         }
         public async Task<Photo> GetPhotoById(int id)

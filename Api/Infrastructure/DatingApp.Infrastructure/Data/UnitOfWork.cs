@@ -20,12 +20,12 @@ namespace DatingApp.Infrastructure.Data
             _mapper = mapper;
             _logger = logger;
         }
-        public IUserRepository UserRepository => new UserRepository(_context, _mapper, _logger);
+        public IUserRepository UserRepository => new UserRepository(_context, _logger);
 
-        public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper, _logger);
+        public IMessageRepository MessageRepository => new MessageRepository(_context, _logger);
 
         public ILikesRepository LikesRepository => new LikesRepository(_context, _logger);
-        public IPhotoRepository PhotoRepository => new PhotoRepository(_context, _mapper, _logger);
+        public IPhotoRepository PhotoRepository => new PhotoRepository(_context, _logger);
 
         public async Task<bool> Complete()
         {
