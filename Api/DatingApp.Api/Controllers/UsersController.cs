@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using DatingApp.Api.Data;
-using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
-using DatingApp.Api.Interfaces;
 using DatingApp.Application.DTOs.Member;
 using DatingApp.Application.DTOs.Photo;
 using DatingApp.Application.DTOs.Register;
@@ -13,6 +11,7 @@ using DatingApp.Application.Futures.User.Requests;
 using DatingApp.Application.Pagination;
 using DatingApp.Application.Params;
 using DatingApp.Domain.Entities;
+using DatingApp.Domain.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,19 +24,13 @@ namespace DatingApp.Api.Controllers
     [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
         private readonly IMediator _mediator;
 
         public UsersController(
-            IUnitOfWork unitOfWork, 
-            IMapper mapper, 
             IPhotoService photoService,
             IMediator mediator)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _photoService = photoService;
             _mediator = mediator;
         }

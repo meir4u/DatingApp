@@ -1,4 +1,4 @@
-﻿using DatingApp.Api.Entities;
+﻿using DatingApp.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -6,23 +6,23 @@ using Microsoft.EntityFrameworkCore;
 namespace DatingApp.Api.Data
 {
     public class DataContext : IdentityDbContext<
-                                                    AppUser, 
-                                                    AppRole, 
-                                                    int, 
-                                                    IdentityUserClaim<int>, 
-                                                    AppUserRole, 
-                                                    IdentityUserLogin<int>, 
-                                                    IdentityRoleClaim<int>, 
+                                                    AppUser,
+                                                    AppRole,
+                                                    int,
+                                                    IdentityUserClaim<int>,
+                                                    AppUserRole,
+                                                    IdentityUserLogin<int>,
+                                                    IdentityRoleClaim<int>,
                                                     IdentityUserToken<int>
                                                 >
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<UserLike> Likes { get; set; }
-        public DbSet<Photo> Photos{ get; set; }
+        public DbSet<Photo> Photos { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Connection> Connections { get; set; }
@@ -48,7 +48,7 @@ namespace DatingApp.Api.Data
             modelBuilder.Entity<UserLike>()
                 .HasOne(k => k.SourceUser)
                 .WithMany(l => l.LikedUsers)
-                .HasForeignKey(s=>s.SourceUserId)
+                .HasForeignKey(s => s.SourceUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserLike>()
@@ -58,17 +58,17 @@ namespace DatingApp.Api.Data
                 .OnDelete(DeleteBehavior.Cascade); //in sql server one must be DeleteBehavior.Noaction
 
             modelBuilder.Entity<Message>()
-                .HasOne(u=>u.Recipient)
-                .WithMany(m=> m.MessagesReceived)
+                .HasOne(u => u.Recipient)
+                .WithMany(m => m.MessagesReceived)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Message>()
-                .HasOne(u=>u.Sender)
-                .WithMany(m=>m.MessagesSent)
+                .HasOne(u => u.Sender)
+                .WithMany(m => m.MessagesSent)
                 .OnDelete(DeleteBehavior.Restrict); //in sql server one must be DeleteBehavior.Noaction
 
             modelBuilder.Entity<Photo>(e => e.Property(e => e.IsApproved).HasConversion<int>());
-            modelBuilder.Entity<Photo>().HasQueryFilter(p=>p.IsApproved == true);
+            modelBuilder.Entity<Photo>().HasQueryFilter(p => p.IsApproved == true);
 
 
 

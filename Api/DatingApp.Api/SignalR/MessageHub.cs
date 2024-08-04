@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using DatingApp.Api.Data.Repository;
-using DatingApp.Api.DTOs;
-using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
-using DatingApp.Api.Interfaces;
+using DatingApp.Application.DTOs.Message;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;

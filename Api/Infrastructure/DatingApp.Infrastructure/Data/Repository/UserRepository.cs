@@ -81,8 +81,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             var query = _context.Users.Where(x => x.UserName == username);
             if (username.Equals(currentUser)) query = query.IgnoreQueryFilters();
 
-            var user = await query
-                .ProjectTo<AppUser>(_mapper.ConfigurationProvider).SingleOrDefaultAsync();
+            var user = await query.SingleOrDefaultAsync();
             return user;
 
 

@@ -1,5 +1,5 @@
 ﻿using DatingApp.Api.Extensions;
-using DatingApp.Api.Interfaces;
+using DatingApp.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace DatingApp.Api.Helpers

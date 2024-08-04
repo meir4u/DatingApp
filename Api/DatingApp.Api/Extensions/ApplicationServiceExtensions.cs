@@ -1,11 +1,12 @@
-﻿using DatingApp.Api.Data;
-using DatingApp.Api.Data.Repository;
-using DatingApp.Api.Helpers;
-using DatingApp.Api.Interfaces;
+﻿using DatingApp.Api.Helpers;
 using DatingApp.Api.Services;
 using DatingApp.Api.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using DatingApp.Application;
+using DatingApp.Infrastructure;
+using DatingApp.Domain.Services;
+using DatingApp.Infrastructure.Data;
 
 namespace DatingApp.Api.Extensions
 {
@@ -13,16 +14,15 @@ namespace DatingApp.Api.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-
-            services.AddDbContext<DataContext>(opt =>
-            {
-                //opt.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
-                opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-            });
-
             //cors
             services.AddCors();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+            //application layers
+            services.ConfigureInfrastructureServices(configuration);
+            services.ConfigureApplicationServices();
+            
 
             //token service added
             services.AddScoped<ITokenService, TokenService>();
@@ -35,7 +35,7 @@ namespace DatingApp.Api.Extensions
 
             services.AddSignalR();
             services.AddSingleton<PresenceTracker>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

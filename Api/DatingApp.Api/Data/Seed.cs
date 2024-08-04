@@ -1,4 +1,5 @@
-﻿using DatingApp.Api.Entities;
+﻿using DatingApp.Domain.Entities;
+using DatingApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;

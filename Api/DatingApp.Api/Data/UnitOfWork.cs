@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using DatingApp.Api.Data.Repository;
-using DatingApp.Api.Interfaces;
+using DatingApp.Domain.Interfaces;
+using DatingApp.Infrastructure.Data.Repository;
 using System.Diagnostics;
 
 namespace DatingApp.Api.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DataContext _context;
+        private readonly DatingApp.Infrastructure.Data.DataContext _context;
         private readonly IMapper _mapper;
 
-        public UnitOfWork(DataContext context, IMapper mapper)
+        public UnitOfWork(DatingApp.Infrastructure.Data.DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DatingApp.Api.Data;
-using DatingApp.Api.Interfaces;
 using DatingApp.Application.DTOs.Account;
 using DatingApp.Application.DTOs.Register;
 using DatingApp.Application.DTOs.User;
@@ -19,22 +18,13 @@ namespace DatingApp.Api.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly ITokenService _tokenService;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public AccountController(
-            UserManager<AppUser> userManager, 
-            ITokenService tokenService, 
-            IMapper mapper,
             IMediator mediator
 
             )
         {
-            _userManager = userManager;
-            _tokenService = tokenService;
-            _mapper = mapper;
             _mediator = mediator;
         }
 

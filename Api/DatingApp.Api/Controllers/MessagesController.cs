@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using DatingApp.Api.Data;
-using DatingApp.Api.Entities;
 using DatingApp.Api.Extensions;
-using DatingApp.Api.Interfaces;
 using DatingApp.Application.DTOs.Message;
 using DatingApp.Application.Exceptions.Responses;
 using DatingApp.Application.Futures.Account.Requests;
@@ -16,17 +14,11 @@ namespace DatingApp.Api.Controllers
 {
     public class MessagesController : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public MessagesController(
-            IUnitOfWork unitOfWork, 
-            IMapper mapper,
             IMediator mediator)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _mediator = mediator;
         }
 

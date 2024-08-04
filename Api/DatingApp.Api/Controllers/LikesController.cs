@@ -1,5 +1,4 @@
 ﻿using DatingApp.Api.Extensions;
-using DatingApp.Api.Interfaces;
 using DatingApp.Application.DTOs.Like;
 using DatingApp.Application.Exceptions.Responses;
 using DatingApp.Application.Futures.Like.Requests;
@@ -13,14 +12,11 @@ namespace DatingApp.Api.Controllers
 {
     public class LikesController : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
 
         public LikesController(
-            IUnitOfWork unitOfWork,
             IMediator mediator)
         {
-            _unitOfWork = unitOfWork;
             _mediator = mediator;
         }
 
@@ -53,29 +49,29 @@ namespace DatingApp.Api.Controllers
             }
 
             ///////////////////////////////////////should be deleted
-            var sourceUserId = User.GetUserId();
-            var likedUser = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
-            var sourceUser = await _unitOfWork.LikesRepository.GetUserWithLikes(sourceUserId);
+            //var sourceUserId = User.GetUserId();
+            //var likedUser = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+            //var sourceUser = await _unitOfWork.LikesRepository.GetUserWithLikes(sourceUserId);
 
-            if (likedUser == null) return NotFound();
+            //if (likedUser == null) return NotFound();
 
-            if (sourceUser.UserName == username) return BadRequest("You cannot like yourself");
+            //if (sourceUser.UserName == username) return BadRequest("You cannot like yourself");
 
-            var userLike = await _unitOfWork.LikesRepository.GetUserLike(sourceUserId, likedUser.Id);
+            //var userLike = await _unitOfWork.LikesRepository.GetUserLike(sourceUserId, likedUser.Id);
 
-            if (userLike != null) return BadRequest("You already liked this user");
+            //if (userLike != null) return BadRequest("You already liked this user");
 
-            userLike = new Entities.UserLike
-            {
-                SourceUserId = sourceUserId,
-                TargetUserId = likedUser.Id,
-            };
+            //userLike = new Entities.UserLike
+            //{
+            //    SourceUserId = sourceUserId,
+            //    TargetUserId = likedUser.Id,
+            //};
 
-            sourceUser.LikedUsers.Add(userLike);
+            //sourceUser.LikedUsers.Add(userLike);
 
-            if (await _unitOfWork.Complete()) return Ok();
+            //if (await _unitOfWork.Complete()) return Ok();
 
-            return BadRequest("Failed to like user");
+            //return BadRequest("Failed to like user");
         }
 
         [HttpGet]
@@ -84,10 +80,6 @@ namespace DatingApp.Api.Controllers
 
             likesParams.UserId = User.GetUserId();
 
-            ///// to remove
-            var users = await _unitOfWork.LikesRepository.GetUserLikes(likesParams);
-            /////
-
             var query = new GetUserLikesQuery()
             {
                 LikesParams = likesParams
@@ -95,6 +87,10 @@ namespace DatingApp.Api.Controllers
             var result = await _mediator.Send(query);
             Response.AddPaginationHeader(new PaginationHeader(result.Users.CurrentPage, result.Users.PageSize, result.Users.TotalCount, result.Users.TotalPages));
             return Ok(result.Users);
+
+            ///// to remove
+            //var users = await _unitOfWork.LikesRepository.GetUserLikes(likesParams);
+            /////
         }
 
     }
