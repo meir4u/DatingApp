@@ -11,6 +11,7 @@ namespace DatingApp.Domain.Interfaces
         void Udpate(AppUser user);
         Task<IEnumerable<AppUser>> GetUsersAsync();
         Task<AppUser> GetUseByIdAsync(int id);
+        Task<AppUser> UpdateUserLastActive(int userId);
         Task<AppUser> GetUserByUsernameAsync(string username);
         Task<AppUser> GetUserPhotoIdAsync(int photoId);
         Task<IQueryable<AppUser>> GetMembersAsync(IParams userParams);

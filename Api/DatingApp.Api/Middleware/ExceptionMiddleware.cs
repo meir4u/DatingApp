@@ -1,4 +1,4 @@
-﻿using DatingApp.Api.Errors;
+﻿using DatingApp.Application.Exceptions;
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.Application.Pagination;
+using MediatR;
 
 namespace DatingApp.Infrastructure.Data.Repository
 {
@@ -90,6 +91,15 @@ namespace DatingApp.Infrastructure.Data.Repository
         public async Task<string> GetUserGender(string username)
         {
             var user = await _context.Users.Where(x => x.UserName == username).Select(x => x.Gender).FirstOrDefaultAsync();
+            return user;
+        }
+
+        public async Task<AppUser> UpdateUserLastActive(int userId)
+        {
+            var user = await GetUseByIdAsync(userId);
+
+            user.LastActive = DateTime.UtcNow;
+
             return user;
         }
     }
