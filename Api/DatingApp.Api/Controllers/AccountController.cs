@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DatingApp.Api.Data;
 using DatingApp.Application.DTOs.Account;
 using DatingApp.Application.DTOs.Register;
 using DatingApp.Application.DTOs.User;

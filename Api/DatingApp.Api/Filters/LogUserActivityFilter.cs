@@ -5,13 +5,13 @@ using DatingApp.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace DatingApp.Api.Helpers
+namespace DatingApp.Api.Filters
 {
-    public class LogUserActivity : IAsyncActionFilter
+    public class LogUserActivityFilter : IAsyncActionFilter
     {
         private readonly IMediator _mediator;
 
-        public LogUserActivity(IMediator mediator)
+        public LogUserActivityFilter(IMediator mediator)
         {
             _mediator = mediator;
         }

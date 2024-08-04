@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DatingApp.Api.Data;
 using DatingApp.Api.Extensions;
 using DatingApp.Application.DTOs.Message;
 using DatingApp.Application.Exceptions.Responses;

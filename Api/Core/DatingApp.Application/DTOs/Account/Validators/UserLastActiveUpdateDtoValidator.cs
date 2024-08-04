@@ -15,6 +15,7 @@ namespace DatingApp.Application.DTOs.Account.Validators
             RuleFor(p => p.UserId)
                 .NotNull()
                 .Must(p => p > 0);
+
             RuleFor(p => p.IsAuthenticated)
                 .NotNull()
                 .Must(p => p == true);
