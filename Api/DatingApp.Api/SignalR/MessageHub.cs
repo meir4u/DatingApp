@@ -34,10 +34,10 @@ namespace DatingApp.Api.SignalR
         {
             var httpContext = Context.GetHttpContext();
             var otherUser = httpContext.Request.Query["user"];
-            var groupName = GetGroupName(Context.User.GetUsername(), otherUser);
+            var groupName = _getGroupName(Context.User.GetUsername(), otherUser);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            var group = await AddToGroup(groupName);
+            var group = await _addToGroup(groupName);
 
             await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
 
@@ -51,7 +51,7 @@ namespace DatingApp.Api.SignalR
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var group = await RemoveFromMessageGroup();
+            var group = await _removeFromMessageGroup();
             await Clients.Group(group.Name).SendAsync("UpdatedGroup");
             await base.OnDisconnectedAsync(exception);
         }
@@ -78,7 +78,7 @@ namespace DatingApp.Api.SignalR
                 Content = createMessageDto.Content,
             };
 
-            var groupName = GetGroupName(sender.UserName, recipient.UserName);
+            var groupName = _getGroupName(sender.UserName, recipient.UserName);
 
             var group = await _unitOfWork.MessageRepository.GetMessageGroup(groupName);
 
@@ -105,13 +105,13 @@ namespace DatingApp.Api.SignalR
             //throw new HubException("Failed to send message");
         }
 
-        private string GetGroupName(string caller, string other)
+        private string _getGroupName(string caller, string other)
         {
             var stringCompare = string.CompareOrdinal(caller, other) < 0;
             return stringCompare ? $"{caller}-{other}" : $"{other}-{caller}";
         }
 
-        private async Task<Group> AddToGroup(string groupName)
+        private async Task<Group> _addToGroup(string groupName)
         {
             var group = await _unitOfWork.MessageRepository.GetMessageGroup(groupName);
             var connection = new Connection(Context.ConnectionId, Context.User.GetUsername());
@@ -128,7 +128,7 @@ namespace DatingApp.Api.SignalR
             throw new HubException("Failed to add to the group");
         }
 
-        private async Task<Group> RemoveFromMessageGroup()
+        private async Task<Group> _removeFromMessageGroup()
         {
             var group = await _unitOfWork.MessageRepository.GetGroupForConnection(Context.ConnectionId);
             var connection = group.Connections.FirstOrDefault(x=>x.ConnectionId == Context.ConnectionId);
