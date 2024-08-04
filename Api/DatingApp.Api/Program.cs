@@ -4,10 +4,12 @@ using DatingApp.Api.Middleware;
 using DatingApp.Api.SignalR;
 using DatingApp.Domain.Entities;
 using DatingApp.Infrastructure.Data;
+using DatingApp.Infrastructure.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
 namespace DatingApp.Api
@@ -16,7 +18,12 @@ namespace DatingApp.Api
     {
         public static async Task Main(string[] args)
         {
+            SerilogSetup.ConfigureLogger();
+
             var builder = WebApplication.CreateBuilder(args);
+
+            // Add Serilog to the logging pipeline
+            builder.Host.UseSerilog();
 
             // Add services to the container.
 
@@ -83,8 +90,7 @@ namespace DatingApp.Api
             }
             catch(Exception ex)
             {
-                var logger = services.GetService<ILogger<Program>>();
-                logger.LogError(ex, "An Error occurred during migration");
+                Log.Fatal(ex, "An Error occurred during migration");
             }
             app.Run();
         }
