@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 using DatingApp.Application.Pagination;
 using DatingApp.Domain.Params;
 using DatingApp.Application.Helpers;
+using Serilog;
 
 namespace DatingApp.Infrastructure.Data.Repository
 {
     public class LikesRepository : ILikesRepository
     {
         private readonly DataContext _context;
+        private readonly ILogger _logger;
 
-        public LikesRepository(DataContext context)
+        public LikesRepository(DataContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<UserLike> GetUserLike(int sourceUserId, int targetUserId)

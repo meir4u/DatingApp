@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using ILogger = Serilog.ILogger;
 
 namespace DatingApp.Api.SignalR
 {
@@ -22,7 +23,8 @@ namespace DatingApp.Api.SignalR
         public MessageHub(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IHubContext<PresenceHub> presenceHub
+            IHubContext<PresenceHub> presenceHub,
+            ILogger logger
             )
         {
             _unitOfWork = unitOfWork;

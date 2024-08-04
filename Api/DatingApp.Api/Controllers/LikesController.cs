@@ -7,17 +7,21 @@ using DatingApp.Application.Params;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using ILogger = Serilog.ILogger;
 
 namespace DatingApp.Api.Controllers
 {
     public class LikesController : BaseApiController
     {
         private readonly IMediator _mediator;
+        private readonly ILogger _logger;
 
         public LikesController(
-            IMediator mediator)
+            IMediator mediator,
+            ILogger logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpPost("{username}")]

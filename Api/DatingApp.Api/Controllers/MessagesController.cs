@@ -8,17 +8,21 @@ using DatingApp.Application.Pagination;
 using DatingApp.Application.Params;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ILogger = Serilog.ILogger;
 
 namespace DatingApp.Api.Controllers
 {
     public class MessagesController : BaseApiController
     {
         private readonly IMediator _mediator;
+        private readonly ILogger _logger;
 
         public MessagesController(
-            IMediator mediator)
+            IMediator mediator,
+            ILogger logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpPost]

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.Application.Pagination;
+using Serilog;
 
 namespace DatingApp.Infrastructure.Data.Repository
 {
@@ -18,11 +19,13 @@ namespace DatingApp.Infrastructure.Data.Repository
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public MessageRepository(DataContext context, IMapper mapper)
+        public MessageRepository(DataContext context, IMapper mapper, ILogger logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public void AddGroup(Group group)

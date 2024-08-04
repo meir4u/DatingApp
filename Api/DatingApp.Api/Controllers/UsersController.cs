@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
+using ILogger = Serilog.ILogger;
 
 namespace DatingApp.Api.Controllers
 {
@@ -25,13 +26,16 @@ namespace DatingApp.Api.Controllers
     {
         private readonly IPhotoService _photoService;
         private readonly IMediator _mediator;
+        private readonly ILogger _logger;
 
         public UsersController(
             IPhotoService photoService,
-            IMediator mediator)
+            IMediator mediator,
+            ILogger logger)
         {
             _photoService = photoService;
             _mediator = mediator;
+            _logger = logger;
         }
 
 

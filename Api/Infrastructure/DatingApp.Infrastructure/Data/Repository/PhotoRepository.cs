@@ -5,6 +5,7 @@ using DatingApp.Application.DTOs.Photo;
 using DatingApp.Domain.Entities;
 using DatingApp.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,11 +17,13 @@ namespace DatingApp.Infrastructure.Data.Repository
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public PhotoRepository(DataContext context, IMapper mapper)
+        public PhotoRepository(DataContext context, IMapper mapper, ILogger logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
         public async Task<Photo> GetPhotoById(int id)
         {

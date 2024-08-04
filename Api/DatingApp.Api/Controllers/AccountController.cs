@@ -12,19 +12,23 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace DatingApp.Api.Controllers
 {
     public class AccountController : BaseApiController
     {
         private readonly IMediator _mediator;
+        private readonly ILogger _logger;
 
         public AccountController(
-            IMediator mediator
-
+            IMediator mediator,
+            ILogger logger
             )
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpPost("register")] // Post: api/account/register

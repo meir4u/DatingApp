@@ -1,6 +1,7 @@
 ﻿using DatingApp.Api.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using ILogger = Serilog.ILogger;
 
 namespace DatingApp.Api.SignalR
 {
@@ -9,7 +10,7 @@ namespace DatingApp.Api.SignalR
     {
         private readonly PresenceTracker _presenceTracker;
 
-        public PresenceHub(PresenceTracker presenceTracker)
+        public PresenceHub(PresenceTracker presenceTracker, ILogger logger)
         {
             _presenceTracker = presenceTracker;
         }

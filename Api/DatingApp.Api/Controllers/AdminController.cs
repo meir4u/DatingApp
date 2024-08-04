@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using ILogger = Serilog.ILogger;
 
 namespace DatingApp.Api.Controllers
 {
@@ -18,13 +19,16 @@ namespace DatingApp.Api.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IMediator _mediator;
+        private readonly ILogger _logger;
 
         public AdminController(
             UserManager<AppUser> userManager,
-            IMediator mediator)
+            IMediator mediator,
+            ILogger logger)
         {
             _userManager = userManager;
             _mediator = mediator;
+            _logger = logger;
         }
         [Authorize(Policy = "RequiredAdminRole")]
         [HttpGet("users-with-roles")]
