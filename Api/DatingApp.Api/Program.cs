@@ -1,7 +1,6 @@
 
 using DatingApp.Api.Extensions;
 using DatingApp.Api.Middleware;
-using DatingApp.Api.Services;
 using DatingApp.Api.SignalR;
 using DatingApp.Domain.Entities;
 using DatingApp.Infrastructure.Data;

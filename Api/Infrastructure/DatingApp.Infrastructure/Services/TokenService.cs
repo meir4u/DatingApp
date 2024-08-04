@@ -1,13 +1,18 @@
 ﻿using DatingApp.Domain.Entities;
 using DatingApp.Domain.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace DatingApp.Api.Services
+namespace DatingApp.Infrastructure.Services
 {
     // Defines a service responsible for token generation operations.
     public class TokenService : ITokenService

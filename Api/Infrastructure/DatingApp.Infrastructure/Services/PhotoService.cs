@@ -1,11 +1,13 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using DatingApp.Domain.Services;
-using DatingApp.Infrastructure.Services;
+using DatingApp.Infrastructure.Params;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
-namespace DatingApp.Api.Services
+namespace DatingApp.Infrastructure.Services
 {
     public class PhotoService : IPhotoService
     {

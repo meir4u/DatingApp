@@ -1,5 +1,4 @@
 ﻿using DatingApp.Api.Filters;
-using DatingApp.Api.Services;
 using DatingApp.Api.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +6,7 @@ using DatingApp.Application;
 using DatingApp.Infrastructure;
 using DatingApp.Domain.Services;
 using DatingApp.Infrastructure.Data;
-using DatingApp.Infrastructure.Services;
+using DatingApp.Infrastructure.Params;    
 
 namespace DatingApp.Api.Extensions
 {
@@ -23,12 +22,6 @@ namespace DatingApp.Api.Extensions
             //application layers
             services.ConfigureInfrastructureServices(configuration);
             services.ConfigureApplicationServices();
-            
-
-            //token service added
-            services.AddScoped<ITokenService, TokenService>();
-
-            services.AddScoped<IPhotoService, PhotoService>();
 
             services.AddScoped<LogUserActivityFilter>();
 

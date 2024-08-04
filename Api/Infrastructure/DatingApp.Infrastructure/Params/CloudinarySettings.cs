@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatingApp.Infrastructure.Services
+namespace DatingApp.Infrastructure.Params
 {
     public class CloudinarySettings
     {

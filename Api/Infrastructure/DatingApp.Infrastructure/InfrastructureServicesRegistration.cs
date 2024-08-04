@@ -1,6 +1,8 @@
 ﻿using DatingApp.Domain.Interfaces;
+using DatingApp.Domain.Services;
 using DatingApp.Infrastructure.Data;
 using DatingApp.Infrastructure.Data.Repository;
+using DatingApp.Infrastructure.Params;
 using DatingApp.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,8 +29,11 @@ namespace DatingApp.Infrastructure
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-            
 
+            //token service added
+            services.AddScoped<ITokenService, TokenService>();
+
+            services.AddScoped<IPhotoService, PhotoService>();
 
 
             return services;
