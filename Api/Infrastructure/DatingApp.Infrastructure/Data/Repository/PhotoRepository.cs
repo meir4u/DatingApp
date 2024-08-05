@@ -6,6 +6,7 @@ using DatingApp.Domain.Entities;
 using DatingApp.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,32 +26,77 @@ namespace DatingApp.Infrastructure.Data.Repository
         }
         public async Task<Photo> GetPhotoById(int id)
         {
-            var query = _getPhotosQuery().Where(p => p.Id == id);
-            var data = await query.SingleOrDefaultAsync();
-            return data;
+            try
+            {
+                var query = _getPhotosQuery().Where(p => p.Id == id);
+                var data = await query.SingleOrDefaultAsync();
+                return data;
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex, "{id}", id);
+                throw;
+            }
+            
         }
 
         public async Task<IQueryable<Photo>> GetUnapprovedPhotos()
         {
-            var query = _getPhotosQuery().Include(x=>x.AppUser).Where(p => p.IsApproved == false);
+            try
+            {
+                var query = _getPhotosQuery().Include(x => x.AppUser).Where(p => p.IsApproved == false);
 
-            return query;
+                return query;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{message}", ex.Message);
+                throw;
+            }
+            
         }
 
         public void Update(Photo photo)
         {
-            _context.Entry(photo).State = EntityState.Modified;
+            try
+            {
+                _context.Entry(photo).State = EntityState.Modified;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{@photo}", photo);
+                throw;
+            }
+            
         }
 
         public void RemovePhoto(Photo photo)
         {
-            var query = _context.Photos.Remove(photo);
+            try
+            {
+                var query = _context.Photos.Remove(photo);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{@photo}", photo);
+                throw;
+            }
+            
         }
 
         private IQueryable<Photo> _getPhotosQuery()
         {
-            var query = _context.Photos.AsQueryable().OrderBy(x=>x.Id).IgnoreQueryFilters();
-            return query;
+            try
+            {
+                var query = _context.Photos.AsQueryable().OrderBy(x => x.Id).IgnoreQueryFilters();
+                return query;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{message}", ex.Message);
+                throw;
+            }
+            
         }
     }
 }

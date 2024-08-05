@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using AutoMapper.QueryableExtensions;
 using DatingApp.Application.DTOs.Member;
 using DatingApp.Domain.Entities;
 using DatingApp.Application.Params;
@@ -30,78 +29,159 @@ namespace DatingApp.Infrastructure.Data.Repository
         }
         public async Task<AppUser> GetUseByIdAsync(int id)
         {
-            var user = await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(u => u.Id == id);
-            return user;
+            try
+            {
+                var user = await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(u => u.Id == id);
+                return user;
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex, "{id}", id);
+                throw;
+            }
+            
         }
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            var user = await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
-            return user;
+            try
+            {
+                var user = await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{username}", username);
+                throw;
+            }
+            
         }
 
         public async Task<AppUser> GetUserPhotoIdAsync(int photoId)
         {
-            var user = await _context.Users.Include(u => u.Photos).IgnoreQueryFilters().SingleOrDefaultAsync(x => x.Photos.FirstOrDefault(p => p.Id == photoId) != null);
-            return user;
+            try
+            {
+                var user = await _context.Users.Include(u => u.Photos).IgnoreQueryFilters().SingleOrDefaultAsync(x => x.Photos.FirstOrDefault(p => p.Id == photoId) != null);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{photoId}", photoId);
+                throw;
+            }
+            
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            return await _context.Users.Include(u => u.Photos).ToListAsync();
+            try
+            {
+                return await _context.Users.Include(u => u.Photos).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{Message}", ex.Message);
+                throw;
+            }
+            
         }
 
         public void Udpate(AppUser user)
         {
-            _context.Entry(user).State = EntityState.Modified;
+            try
+            {
+                _context.Entry(user).State = EntityState.Modified;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{@user}", user);
+                throw;
+            }
+            
         }
 
         public async Task<IQueryable<AppUser>> GetMembersAsync(IParams userParams)
         {
-            var filterParams = (UserParams) userParams;
-            var query = _context.Users.AsQueryable();
-            query = query.Where(u=>u.UserName != filterParams.CurrentUsername);
-            query = query.Where(u=> u.Gender == filterParams.Gender);
-            query.IgnoreQueryFilters();
-
-            var minDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-filterParams.MaxAge - 1));
-            var maxDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-filterParams.MinAge - 1));
-
-            query = query.Where(u=>u.DateOfBirth >= minDateOfBirth && u.DateOfBirth <= maxDateOfBirth);
-
-            query = filterParams.OrderBy switch
+            try
             {
-                "created" => query.OrderByDescending(u => u.Created),
-                _ => query.OrderByDescending(u => u.LastActive),
-            };
+                var filterParams = (UserParams)userParams;
+                var query = _context.Users.AsQueryable();
+                query = query.Where(u => u.UserName != filterParams.CurrentUsername);
+                query = query.Where(u => u.Gender == filterParams.Gender);
+                query.IgnoreQueryFilters();
 
-            return query.AsNoTracking();
+                var minDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-filterParams.MaxAge - 1));
+                var maxDateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-filterParams.MinAge - 1));
+
+                query = query.Where(u => u.DateOfBirth >= minDateOfBirth && u.DateOfBirth <= maxDateOfBirth);
+
+                query = filterParams.OrderBy switch
+                {
+                    "created" => query.OrderByDescending(u => u.Created),
+                    _ => query.OrderByDescending(u => u.LastActive),
+                };
+
+                return query.AsNoTracking();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{@userParams}", userParams);
+                throw;
+            }
+            
         }
 
         public async Task<AppUser> GetMemberAsync(string username, string currentUser)
         {
-            var query = _context.Users.Where(x => x.UserName == username);
-            if (username.Equals(currentUser)) query = query.IgnoreQueryFilters();
+            try
+            {
+                var query = _context.Users.Where(x => x.UserName == username);
+                if (username.Equals(currentUser)) query = query.IgnoreQueryFilters();
 
-            var user = await query.SingleOrDefaultAsync();
-            return user;
+                var user = await query.SingleOrDefaultAsync();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{username}, {currentUser}", username, currentUser);
+                throw;
+            }
+            
 
 
         }
 
         public async Task<string> GetUserGender(string username)
         {
-            var user = await _context.Users.Where(x => x.UserName == username).Select(x => x.Gender).FirstOrDefaultAsync();
-            return user;
+            try
+            {
+                var user = await _context.Users.Where(x => x.UserName == username).Select(x => x.Gender).FirstOrDefaultAsync();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{username}", username);
+                throw;
+            }
+            
         }
 
         public async Task<AppUser> UpdateUserLastActive(int userId)
         {
-            var user = await GetUseByIdAsync(userId);
+            try
+            {
+                var user = await GetUseByIdAsync(userId);
 
-            user.LastActive = DateTime.UtcNow;
+                user.LastActive = DateTime.UtcNow;
 
-            return user;
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{userId}", userId);
+                throw;
+            }
+            
         }
     }
 }

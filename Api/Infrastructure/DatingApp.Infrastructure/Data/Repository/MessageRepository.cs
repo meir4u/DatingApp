@@ -28,92 +28,182 @@ namespace DatingApp.Infrastructure.Data.Repository
 
         public void AddGroup(Group group)
         {
-            _context.Groups.Add(group);
+            try
+            {
+                _context.Groups.Add(group);
+            }
+            catch(Exception  ex)
+            {
+                _logger.Error(ex, "{@group}", group);
+                throw;
+            }
+            
         }
 
         public void AddMessage(Message message)
         {
-            _context.Messages.Add(message);
+            try
+            {
+                _context.Messages.Add(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{@message}", message);
+                throw;
+            }
+            
         }
 
         public async Task<Connection> GetConnection(string connectionId)
         {
-            return await _context.Connections.FindAsync(connectionId);
+            try
+            {
+                return await _context.Connections.FindAsync(connectionId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{connectionId}", connectionId);
+                throw;
+            }
+            
         }
 
         public async Task<Group> GetGroupForConnection(string connectionId)
         {
-            return await _context.Groups
-                .Include(x=>x.Connections)
-                .Where(x=>x.Connections.Any(c=>c.ConnectionId == connectionId))
+            try
+            {
+                return await _context.Groups
+                .Include(x => x.Connections)
+                .Where(x => x.Connections.Any(c => c.ConnectionId == connectionId))
                 .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{connectionId}", connectionId);
+                throw;
+            }
+            
         }
 
         public async Task<Message> GetMessage(int id)
         {
-            var message = await _context.Messages.FindAsync(id);
-            return message;
+            try
+            {
+                var message = await _context.Messages.FindAsync(id);
+                return message;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{id}", id);
+                throw;
+            }
+            
         }
 
         public async Task<Group> GetMessageGroup(string groupName)
         {
-            return await _context.Groups
-                .Include(x=>x.Connections)
-                .FirstOrDefaultAsync(x=>x.Name == groupName);
+            try
+            {
+                return await _context.Groups
+                .Include(x => x.Connections)
+                .FirstOrDefaultAsync(x => x.Name == groupName);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{groupName}", groupName);
+                throw;
+            }
+            
         }
 
         public async Task<IQueryable<Message>> GetMessagesForUser(IParams messageParams)
         {
-            var filterParmas = (MessageParams)messageParams;
-            var query = _context.Messages
-                .OrderByDescending(x => x.MessageSent)
-                .AsQueryable();
-
-            query = filterParmas.Container switch
+            try
             {
-                "Inbox" => query.Where(u => u.RecipientUsername == filterParmas.Username && u.RecipientDeleted == false),
-                "Outbox" => query.Where(u => u.SenderUsername == filterParmas.Username && u.SenderDeleted == false),
-                _ => query.Where(u => u.RecipientUsername == filterParmas.Username && u.RecipientDeleted == false && u.DateRead == null),
-            };
+                var filterParmas = (MessageParams)messageParams;
+                var query = _context.Messages
+                    .OrderByDescending(x => x.MessageSent)
+                    .AsQueryable();
 
-            return query;
+                query = filterParmas.Container switch
+                {
+                    "Inbox" => query.Where(u => u.RecipientUsername == filterParmas.Username && u.RecipientDeleted == false),
+                    "Outbox" => query.Where(u => u.SenderUsername == filterParmas.Username && u.SenderDeleted == false),
+                    _ => query.Where(u => u.RecipientUsername == filterParmas.Username && u.RecipientDeleted == false && u.DateRead == null),
+                };
+
+                return query;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{@messageParams}", messageParams);
+                throw;
+            }
+            
         }
 
         public async Task<IQueryable<Message>> GetMessageThread(string currentUserName, string recipientUserName)
         {
-            var query = _context.Messages
+            try
+            {
+                var query = _context.Messages
                 .Where(
-                    m=>m.RecipientUsername.ToLower() == currentUserName.ToLower() &&  m.RecipientDeleted == false &&
-                    m.SenderUsername.ToLower() == recipientUserName.ToLower() 
+                    m => m.RecipientUsername.ToLower() == currentUserName.ToLower() && m.RecipientDeleted == false &&
+                    m.SenderUsername.ToLower() == recipientUserName.ToLower()
                     ||
                     m.RecipientUsername.ToLower() == recipientUserName.ToLower() && m.SenderDeleted == false &&
                     m.SenderUsername.ToLower() == currentUserName.ToLower()
                 )
-                .OrderBy(m=>m.MessageSent)
+                .OrderBy(m => m.MessageSent)
                 .AsQueryable();
 
-            var unreadMessages = query.Where(m=>m.DateRead == null && m.RecipientUsername == currentUserName).ToList();
+                var unreadMessages = query.Where(m => m.DateRead == null && m.RecipientUsername == currentUserName).ToList();
 
-            if (unreadMessages.Any())
-            {
-                foreach(var message in unreadMessages)
+                if (unreadMessages.Any())
                 {
-                    message.DateRead = DateTime.UtcNow;
+                    foreach (var message in unreadMessages)
+                    {
+                        message.DateRead = DateTime.UtcNow;
 
+                    }
                 }
-            }
 
-            return query;
+                return query;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{currentUserName} {recipientUserName}", currentUserName, recipientUserName);
+                throw;
+            }
+            
         }
 
         public void RemoveConnection(Connection connection)
         {
-            _context.Connections.Remove(connection);
+            try
+            {
+                _context.Connections.Remove(connection);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{@connection}", connection);
+                throw;
+            }
+            
         }
 
         public void RemoveMessage(Message message)
         {
-            _context.Messages.Remove(message);
+            try
+            {
+                _context.Messages.Remove(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{@message}", message);
+                throw;
+            }
+           
         }
 
     }
