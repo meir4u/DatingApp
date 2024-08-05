@@ -31,6 +31,7 @@ namespace DatingApp.Api
             builder.Services.AddControllers(options =>
             {
                 options.Filters.Add<ActionMethodExceptionFilter>();
+                options.Filters.Add<ActionMethodLoggingFilter>();
             });
 
             builder.Services.AddApplicationServices(builder.Configuration);
