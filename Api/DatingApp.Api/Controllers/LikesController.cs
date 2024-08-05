@@ -36,21 +36,8 @@ namespace DatingApp.Api.Controllers
                 }
             };
 
-            try
-            {
-                var result = await _mediator.Send(command);
-                return Ok();
-            }
-            catch(NotFoundException ex)
-            {
-                return NotFound();
-            }catch(BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _mediator.Send(command);
+            return Ok();
         }
 
         [HttpGet]

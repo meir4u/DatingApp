@@ -95,152 +95,77 @@ namespace DatingApp.Api.Controllers
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            try
+            var command = new GetUserQuery()
             {
-                var command = new GetUserQuery()
+                GetUser = new Application.DTOs.User.GetUserDto()
                 {
-                    GetUser = new Application.DTOs.User.GetUserDto()
-                    {
-                        Username = username,
-                        CurrentUser = User.GetUsername()
-                    }
-                };
-                var result = await _mediator.Send(command);
-                return Ok(result.User);
-            }
-            catch (BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                    Username = username,
+                    CurrentUser = User.GetUsername()
+                }
+            };
+            var result = await _mediator.Send(command);
+            return Ok(result.User);
         }
 
         [HttpPut]
         public async Task<ActionResult<MemberDto>> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
-            try
+            var command = new UpdateUserCommand()
             {
-                var command = new UpdateUserCommand()
+                MemberUpdate = memberUpdateDto,
+                Update = new Application.DTOs.User.UpdateUserDto()
                 {
-                    MemberUpdate = memberUpdateDto,
-                    Update = new Application.DTOs.User.UpdateUserDto()
-                    {
-                        CurrentUsername = User.GetUsername()
-                    }
-                };
-                var result = await _mediator.Send(command);
-                return NoContent();
-            }
-            catch (BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                    CurrentUsername = User.GetUsername()
+                }
+            };
+            var result = await _mediator.Send(command);
+            return NoContent();
         }
 
         [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
-            try
+            var command = new AddPhotoCommand()
             {
-                var command = new AddPhotoCommand()
+                Add = new Application.DTOs.Photo.AddPhotoDto()
                 {
-                    Add = new Application.DTOs.Photo.AddPhotoDto()
-                    {
-                        File = file,
-                        Username = User.GetUsername()
-                    },
-                };
-                var result = await _mediator.Send(command);
-                return CreatedAtAction(nameof(GetUser), new { username = result.Username }, result.Photo);
-            }
-            catch (BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                    File = file,
+                    Username = User.GetUsername()
+                },
+            };
+            var result = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetUser), new { username = result.Username }, result.Photo);
 
         }
 
         [HttpPut("set-main-photo/{photoId}")]
         public async Task<ActionResult> SetMainPhoto(int photoId)
         {
-            try
+            var command = new SetMainPhotoCommand()
             {
-                var command = new SetMainPhotoCommand()
+                SetMainPhoto = new Application.DTOs.Photo.SetMainPhotoDto()
                 {
-                    SetMainPhoto = new Application.DTOs.Photo.SetMainPhotoDto()
-                    {
-                        PhotoId = photoId,
-                        Username = User.GetUsername()
-                    }
-                };
-                var result = await _mediator.Send(command);
-                return NoContent();
-            }
-            catch (BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                    PhotoId = photoId,
+                    Username = User.GetUsername()
+                }
+            };
+            var result = await _mediator.Send(command);
+            return NoContent();
         }
 
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
-            try
+            var command = new DeletePhotoCommand()
             {
-                var command = new DeletePhotoCommand()
+                Delete = new Application.DTOs.Photo.DeletePhotoDto()
                 {
-                    Delete = new Application.DTOs.Photo.DeletePhotoDto()
-                    {
-                        Username = User.GetUsername(),
-                        PhotoId = photoId
-                    }
-                };
-                var result = await _mediator.Send(command);
-                return Ok();
-            }
-            catch (BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                    Username = User.GetUsername(),
+                    PhotoId = photoId
+                }
+            };
+            var result = await _mediator.Send(command);
+            return Ok();
         }
     }
 }

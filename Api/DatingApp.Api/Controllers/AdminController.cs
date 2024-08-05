@@ -85,78 +85,39 @@ namespace DatingApp.Api.Controllers
         [HttpGet("photos-to-moderate")]
         public async Task<ActionResult<IEnumerable<PhotoForApprovalDto>>> GetPhotosForModeration()
         {
-            try
-            {
-                var command = new GetPhotosForModerationCommand();
-                var result = await _mediator.Send(command);
-                return Ok(result.Photos);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            //var photos = await _unitOfWork.PhotoRepository.GetUnapprovedPhotos();
-            //return Ok(photos);
+            var command = new GetPhotosForModerationCommand();
+            var result = await _mediator.Send(command);
+            return Ok(result.Photos);
         }
 
         [Authorize(Policy = "ModeratePhotoRole")]
         [HttpPost("approve-photo/{photoId}")]
         public async Task<ActionResult<PhotoForApprovalDto>> PhotoApproval(int photoId)
         {
-            try
+            var command = new PhotoApprovalCommand()
             {
-                var command = new PhotoApprovalCommand()
+                ForApproval = new Application.DTOs.Photo.PhotoForApprovalDto()
                 {
-                    ForApproval = new Application.DTOs.Photo.PhotoForApprovalDto()
-                    {
-                        Id = photoId
-                    }
-                };
-                var result = await _mediator.Send(command);
-                return Ok(result.Photo);
-            }
-            catch (BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                    Id = photoId
+                }
+            };
+            var result = await _mediator.Send(command);
+            return Ok(result.Photo);
         }
 
         [Authorize(Policy = "ModeratePhotoRole")]
         [HttpPost("reject-photo/{photoId}")]
         public async Task<ActionResult<bool>> PhotoReject(int photoId)
         {
-            try
+            var command = new PhotoRejectCommand()
             {
-                var command = new PhotoRejectCommand()
+                Reject = new Application.DTOs.Photo.PhotoRejectDto()
                 {
-                    Reject = new Application.DTOs.Photo.PhotoRejectDto()
-                    {
-                        PhotoId = photoId
-                    }
-                };
-                var result = await _mediator.Send(command);
-                return Ok(true);
-            }
-            catch (BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                    PhotoId = photoId
+                }
+            };
+            var result = await _mediator.Send(command);
+            return Ok(true);
         }
     }
 }

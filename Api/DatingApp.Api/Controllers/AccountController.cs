@@ -34,49 +34,23 @@ namespace DatingApp.Api.Controllers
         [HttpPost("register")] // Post: api/account/register
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            try
+            var command = new RegisterCommand()
             {
-                var command = new RegisterCommand()
-                {
-                    Register = registerDto,
-                };
-                var result = await _mediator.Send(command);
-                return Ok(result.User);
-            }
-            catch(BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (IdentityErrorExeption ex)
-            {
-                return BadRequest(ex.Errors);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                Register = registerDto,
+            };
+            var result = await _mediator.Send(command);
+            return Ok(result.User);
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            try
+            var command = new LoginCommand()
             {
-                var command = new LoginCommand()
-                {
-                    Login = loginDto
-                };
-                var result = await _mediator.Send(command);
-                return Ok(result.User);
-            }
-            catch(NotAuthorizedException ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                Login = loginDto
+            };
+            var result = await _mediator.Send(command);
+            return Ok(result.User);
 
         }
     }

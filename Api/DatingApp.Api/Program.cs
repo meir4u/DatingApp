@@ -1,5 +1,6 @@
 
 using DatingApp.Api.Extensions;
+using DatingApp.Api.Filters;
 using DatingApp.Api.Middleware;
 using DatingApp.Api.SignalR;
 using DatingApp.Domain.Entities;
@@ -27,7 +28,10 @@ namespace DatingApp.Api
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add<ActionMethodExceptionFilter>();
+            });
 
             builder.Services.AddApplicationServices(builder.Configuration);
 

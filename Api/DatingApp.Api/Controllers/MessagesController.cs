@@ -28,47 +28,25 @@ namespace DatingApp.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<MessageDto>> CreateMessage(CreateMessageDto createMessageDto)
         {
-            try
+            var command = new CreateMessageCommand()
             {
-                var command = new CreateMessageCommand()
-                {
-                    CreateMessage = createMessageDto,
-                };
-                var result = await _mediator.Send(command);
-                return Ok(result.Message);
-            }
-            catch(NotFoundException ex)
-            {
-                return NotFound();
-            }
-            catch (BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                CreateMessage = createMessageDto,
+            };
+            var result = await _mediator.Send(command);
+            return Ok(result.Message);
         }
 
         [HttpGet]
         public async Task<ActionResult<MessageDto>> GetMessagesForUser([FromQuery] MessageParams messageParams)
         {
-            try
+            var command = new GetMessagesForUserQuery()
             {
-                var command = new GetMessagesForUserQuery()
-                {
-                    Params = messageParams
-                };
-                var result = await _mediator.Send(command);
-                Response.AddPaginationHeader(result.PaginationHeader);
+                Params = messageParams
+            };
+            var result = await _mediator.Send(command);
+            Response.AddPaginationHeader(result.PaginationHeader);
 
-                return Ok(result.Messages);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(result.Messages);
         }
 
         
@@ -76,31 +54,16 @@ namespace DatingApp.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMessage(int id)
         {
-            try
+            var command = new DeleteMessageCommand()
             {
-                var command = new DeleteMessageCommand()
+                DeleteMessage = new DeleteMessageDto()
                 {
-                    DeleteMessage = new DeleteMessageDto()
-                    {
-                        MessageId = id,
-                        Username = User.GetUsername()
-                    },
-                };
-                var result = await _mediator.Send(command);
-                return Ok();
-            }
-            catch(NotAuthorizedException ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-            catch (BadRequestExeption ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                    MessageId = id,
+                    Username = User.GetUsername()
+                },
+            };
+            var result = await _mediator.Send(command);
+            return Ok();
         }
     }
 }
