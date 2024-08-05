@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using DatingApp.Application.Pagination;
 using MediatR;
 using Serilog;
+using DatingApp.Common.Exceptions;
 
 namespace DatingApp.Infrastructure.Data.Repository
 {
@@ -37,7 +38,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch(Exception ex)
             {
                 _logger.Error(ex, "{id}", id);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetUseByIdAsync)}", ex);
             }
             
         }
@@ -52,7 +53,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{username}", username);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetUserByUsernameAsync)}", ex);
             }
             
         }
@@ -67,7 +68,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{photoId}", photoId);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetUserPhotoIdAsync)}", ex);
             }
             
         }
@@ -81,7 +82,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{Message}", ex.Message);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetUsersAsync)}", ex);
             }
             
         }
@@ -95,7 +96,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{@user}", user);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.Udpate)}", ex);
             }
             
         }
@@ -126,7 +127,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{@userParams}", userParams);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetMembersAsync)}", ex);
             }
             
         }
@@ -144,7 +145,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{username}, {currentUser}", username, currentUser);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetMemberAsync)}", ex);
             }
             
 
@@ -161,7 +162,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{username}", username);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetUserGender)}", ex);
             }
             
         }
@@ -179,7 +180,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{userId}", userId);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.UpdateUserLastActive)}", ex);
             }
             
         }

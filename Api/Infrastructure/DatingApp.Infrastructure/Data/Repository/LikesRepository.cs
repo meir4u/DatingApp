@@ -10,6 +10,7 @@ using DatingApp.Domain.Params;
 using DatingApp.Application.Helpers;
 using Serilog;
 using System;
+using DatingApp.Common.Exceptions;
 
 namespace DatingApp.Infrastructure.Data.Repository
 {
@@ -34,7 +35,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch(Exception ex)
             {
                 _logger.Error(ex, "{sourceUserId}, {targetUserId}", sourceUserId, targetUserId);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetUserLike)}", ex);
             }
             
         }
@@ -63,7 +64,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch(Exception ex)
             {
                 _logger.Error(ex, "{@likesParams}", likesParams);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetUserLikes)}" , ex);
             }
             
         }
@@ -80,7 +81,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch(Exception ex)
             {
                 _logger.Error(ex, "{userId}", userId);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetUserWithLikes)}", ex);
             }
             
         }

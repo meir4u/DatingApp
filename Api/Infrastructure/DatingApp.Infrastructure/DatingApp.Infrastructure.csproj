@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\DatingApp.Common\DatingApp.Common.csproj" />
     <ProjectReference Include="..\..\Core\DatingApp.Application\DatingApp.Application.csproj" />
     <ProjectReference Include="..\..\Core\DatingApp.Domain\DatingApp.Domain.csproj" />
   </ItemGroup>

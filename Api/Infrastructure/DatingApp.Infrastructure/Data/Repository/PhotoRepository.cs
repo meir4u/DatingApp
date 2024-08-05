@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using AutoMapper.QueryableExtensions;
 using DatingApp.Application.DTOs.Photo;
+using DatingApp.Common.Exceptions;
 using DatingApp.Domain.Entities;
 using DatingApp.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +36,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch(Exception ex)
             {
                 _logger.Error(ex, "{id}", id);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetPhotoById)}", ex);
             }
             
         }
@@ -51,7 +52,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{message}", ex.Message);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetUnapprovedPhotos)}", ex);
             }
             
         }
@@ -65,7 +66,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{@photo}", photo);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.Update)}", ex);
             }
             
         }
@@ -79,7 +80,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{@photo}", photo);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.RemovePhoto)}", ex);
             }
             
         }
@@ -94,7 +95,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{message}", ex.Message);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this._getPhotosQuery)}", ex);
             }
             
         }

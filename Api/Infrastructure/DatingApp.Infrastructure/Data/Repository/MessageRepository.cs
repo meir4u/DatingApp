@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.Application.Pagination;
 using Serilog;
+using DatingApp.Common.Exceptions;
 
 namespace DatingApp.Infrastructure.Data.Repository
 {
@@ -35,7 +36,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch(Exception  ex)
             {
                 _logger.Error(ex, "{@group}", group);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.AddGroup)}", ex);
             }
             
         }
@@ -49,7 +50,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{@message}", message);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.AddMessage)}", ex);
             }
             
         }
@@ -63,7 +64,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{connectionId}", connectionId);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetConnection)}", ex);
             }
             
         }
@@ -80,7 +81,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{connectionId}", connectionId);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetGroupForConnection)}", ex);
             }
             
         }
@@ -95,7 +96,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{id}", id);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetMessage)}", ex);
             }
             
         }
@@ -111,7 +112,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{groupName}", groupName);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetMessageGroup)}", ex);
             }
             
         }
@@ -137,7 +138,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{@messageParams}", messageParams);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetMessagesForUser)}", ex);
             }
             
         }
@@ -173,7 +174,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{currentUserName} {recipientUserName}", currentUserName, recipientUserName);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.GetMessageThread)}", ex);
             }
             
         }
@@ -187,7 +188,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{@connection}", connection);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.RemoveConnection)}", ex);
             }
             
         }
@@ -201,7 +202,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             catch (Exception ex)
             {
                 _logger.Error(ex, "{@message}", message);
-                throw;
+                throw new RepositoryException($"Exception in: {nameof(this.RemoveMessage)}", ex);
             }
            
         }
