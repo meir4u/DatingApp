@@ -13,6 +13,7 @@ namespace DatingApp.Domain.Interfaces
         Task<AppUser> GetUseByIdAsync(int id);
         Task<AppUser> UpdateUserLastActive(int userId);
         Task<AppUser> GetUserByUsernameAsync(string username);
+        Task<AppUser> GetUserByEmailAsync(string email);
         Task<AppUser> GetUserPhotoIdAsync(int photoId);
         Task<IQueryable<AppUser>> GetMembersAsync(IParams userParams);
         Task<AppUser> GetMemberAsync(string username, string currentUser);

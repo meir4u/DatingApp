@@ -58,6 +58,21 @@ namespace DatingApp.Infrastructure.Data.Repository
             
         }
 
+        public async Task<AppUser> GetUserByEmailAsync(string email)
+        {
+            try
+            {
+                var user = await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "{email}", email);
+                throw new RepositoryException($"Exception in: {nameof(this.GetUserByUsernameAsync)}", ex);
+            }
+
+        }
+
         public async Task<AppUser> GetUserPhotoIdAsync(int photoId)
         {
             try

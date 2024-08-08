@@ -7,7 +7,6 @@ using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,35 +16,36 @@ using System.Threading.Tasks;
 
 namespace DatingApp.Application.Futures.Account.Handlers
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
+    public class LoginGoogleCommandHandler : IRequestHandler<LoginGoogleCommand, LoginGoogleResponse>
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuthenticationUserService _authenticationService;
 
-        public LoginCommandHandler(
+        public LoginGoogleCommandHandler(
             UserManager<AppUser> userManager,
             ITokenService tokenService,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IAuthenticationUserService authenticationService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
+            _authenticationService = authenticationService;
         }
-
-        public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginGoogleResponse> Handle(LoginGoogleCommand request, CancellationToken cancellationToken)
         {
-            var response = new LoginResponse();
+            var response = new LoginGoogleResponse();
 
-            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Login.Username);
-            
+            var googleData = await _authenticationService.AuthenticateWithGoogleAsync(request.Login.Code);
+
+            var user = await _unitOfWork.UserRepository.GetUserByEmailAsync(googleData.Email);
+
             if (user == null)
             {
                 throw new NotAuthorizedException("Invalid username");
             }
-
-            var result = await _userManager.CheckPasswordAsync(user, request.Login.Password);
-            if (!result) throw new NotAuthorizedException("Invalid password");
 
             response.User = new UserDto
             {

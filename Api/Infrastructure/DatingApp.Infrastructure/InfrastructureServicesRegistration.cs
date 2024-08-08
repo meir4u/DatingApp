@@ -1,5 +1,7 @@
-﻿using DatingApp.Domain.Interfaces;
+﻿using DatingApp.Domain.Adapter.Google;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
+using DatingApp.Infrastructure.Adapters.Google;
 using DatingApp.Infrastructure.Data;
 using DatingApp.Infrastructure.Data.Repository;
 using DatingApp.Infrastructure.Params;
@@ -24,6 +26,8 @@ namespace DatingApp.Infrastructure
 
             services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
+            services.Configure<GoogleSettings>(configuration.GetSection("Google"));
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ILikesRepository, LikesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
@@ -34,6 +38,10 @@ namespace DatingApp.Infrastructure
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<IAuthenticationUserService, AuthenticationUserService>();
+
+            //adapters added
+            services.AddHttpClient<IGoogleAuthAdapter, GoogleAuthAdapter>();
 
 
             return services;

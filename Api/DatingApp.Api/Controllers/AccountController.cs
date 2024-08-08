@@ -53,5 +53,17 @@ namespace DatingApp.Api.Controllers
             return Ok(result.User);
 
         }
+
+        [HttpPost("login/google")]
+        public async Task<ActionResult<UserDto>> LoginGoogle(LoginGoogleDto loginDto)
+        {
+            var command = new LoginGoogleCommand()
+            {
+                Login = loginDto
+            };
+            var result = await _mediator.Send(command);
+            return Ok(result.User);
+
+        }
     }
 }
