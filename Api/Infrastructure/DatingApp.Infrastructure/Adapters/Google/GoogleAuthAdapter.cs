@@ -11,16 +11,17 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using DatingApp.Common.Exceptions;
+using Microsoft.Extensions.Options;
 
 namespace DatingApp.Infrastructure.Adapters.Google
 {
     public class GoogleAuthAdapter : IGoogleAuthAdapter
     {
         private readonly HttpClient _httpClient;
-        private readonly GoogleSettings _configuration;
+        private readonly IOptions<GoogleSettings> _configuration;
         private readonly ILogger _logger;
 
-        public GoogleAuthAdapter(HttpClient httpClient, GoogleSettings configuration, ILogger logger)
+        public GoogleAuthAdapter(HttpClient httpClient, IOptions<GoogleSettings> configuration, ILogger logger)
         {
             _httpClient = httpClient;
             _configuration = configuration;
@@ -31,26 +32,31 @@ namespace DatingApp.Infrastructure.Adapters.Google
         {
             try
             {
-                if (string.IsNullOrEmpty(_configuration.ClientId))
+                if (string.IsNullOrEmpty(_configuration.Value.ClientId))
                     throw new ArgumentException("Google client ID is missing in the configuration.");
-                if (string.IsNullOrEmpty(_configuration.ClientSecret))
+                if (string.IsNullOrEmpty(_configuration.Value.ClientSecret))
                     throw new ArgumentException("Google client secret is missing in the configuration.");
-                if (string.IsNullOrEmpty(_configuration.RedirectUri))
+                if (_configuration.Value.RedirectUris == null || _configuration.Value.RedirectUris.Any() == false)
                     throw new ArgumentException("Google redirect URI is missing in the configuration.");
 
                 var values = new Dictionary<string, string>
                 {
                     { "code", code },
-                    { "client_id", _configuration.ClientId },
-                    { "client_secret", _configuration.ClientSecret },
-                    { "redirect_uri", _configuration.RedirectUri },
+                    { "client_id", _configuration.Value.ClientId },
+                    { "client_secret", _configuration.Value.ClientSecret },
+                    { "redirect_uri", _configuration.Value.RedirectUris.First() },
                     { "grant_type", "authorization_code" }
                 };
 
                 var content = new FormUrlEncodedContent(values);
 
                 var response = await _httpClient.PostAsync("https://oauth2.googleapis.com/token", content);
-                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorResponse = await response.Content.ReadAsStringAsync();
+                    _logger.Error("Google Token Request Error: {ErrorResponse}", errorResponse);
+                    throw new HttpRequestException($"Google Token Request failed with status code {response.StatusCode}: {errorResponse}");
+                }
 
                 var responseString = await response.Content.ReadAsStringAsync();
                 var tokenResponse = JsonConvert.DeserializeObject<GoogleTokenResponse>(responseString);

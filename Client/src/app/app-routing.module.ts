@@ -14,9 +14,11 @@ import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
 import { memberDetailedResolver } from './_resolvers/member-detailed.resolver';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { adminGuard } from './_guards/admin.guard';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'register', component: RegisterComponent, canDeactivate: [authGuard] },
   {
     path: '',
     runGuardsAndResolvers: 'always',

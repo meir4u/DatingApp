@@ -25,6 +25,9 @@ namespace DatingApp.Api
 
             // Add Serilog to the logging pipeline
             builder.Host.UseSerilog();
+            builder.Services.AddSingleton(Log.Logger);
+            builder.Services.AddLogging(loggingBuilder =>
+                loggingBuilder.AddSerilog(dispose: true));
 
             // Add services to the container.
 
@@ -63,8 +66,28 @@ namespace DatingApp.Api
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
-                .WithOrigins("http://localhost:4200", "https://localhost:4200"));
+                .WithOrigins("http://localhost:4200", "https://localhost:4200", "https://localhost:44387", "http://localhost:44387", "http://localhost:50578", "https://localhost:50578"));
+
+            if (builder.Environment.IsDevelopment())
+            {
+                // Add COOP middleware
+                app.Use(async (context, next) =>
+                {
+                    context.Response.Headers.Append("Cross-Origin-Opener-Policy", "unsafe-none");
+                    await next();
+                });
+            }
+            else
+            {
+                // Add COOP middleware
+                app.Use(async (context, next) =>
+                {
+                    context.Response.Headers.Append("Cross-Origin-Opener-Policy", "same-origin");
+                    await next();
+                });
+            }
             
+
             app.UseAuthentication();
             //tell what you allowed to do.
             app.UseAuthorization();

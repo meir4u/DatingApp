@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}} </h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off" *ngIf="!(accountService.currentUser$ | async)">
+        <div class="form-group row mr-auto">
+            <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-5">
+                <input name="username"
+                       [(ngModel)]="model.username"
+                       class="form-control me-2 mr-auto"
+                       required
+                       type="text"
+                       placeholder="Username"
+                       aria-label="Username">
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-5">
+                <input name="password"
+                       [(ngModel)]="model.password"
+                       class="form-control me-2"
+                       required
+                       type="password"
+                       placeholder="Password"
+                       aria-label="Password">
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-5 offset-sm-2">
+                <button class="btn btn-success ms-2" type="submit">Login</button>
+            </div>
+        </div>
+
+    </form>
+    <div class="form-group row">
+        <div class="col-sm-10 offset-sm-2">
+            <button class="btn btn-primary ms-2" (click)="loginWithGoogle()">Login with Google</button>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-5 offset-sm-2">
+            <p>If you are not registered yet, <a routerLink="/register">register</a></p>
+        </div>
+    </div>
+</div>

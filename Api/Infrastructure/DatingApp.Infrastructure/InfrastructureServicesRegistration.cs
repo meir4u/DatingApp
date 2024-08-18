@@ -28,6 +28,10 @@ namespace DatingApp.Infrastructure
 
             services.Configure<GoogleSettings>(configuration.GetSection("Google"));
 
+            //adapters added
+            services.AddHttpClient<IGoogleAuthAdapter, GoogleAuthAdapter>();
+
+            //Repository
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ILikesRepository, LikesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
@@ -37,11 +41,13 @@ namespace DatingApp.Infrastructure
             //token service added
             services.AddScoped<ITokenService, TokenService>();
 
+            services.AddScoped<IGoogleTokenValidatorService, GoogleTokenValidatorService>();
+
             services.AddScoped<IPhotoService, PhotoService>();
+
             services.AddScoped<IAuthenticationUserService, AuthenticationUserService>();
 
-            //adapters added
-            services.AddHttpClient<IGoogleAuthAdapter, GoogleAuthAdapter>();
+            
 
 
             return services;

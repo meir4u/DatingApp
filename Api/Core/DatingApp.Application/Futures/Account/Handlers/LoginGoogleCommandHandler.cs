@@ -22,25 +22,31 @@ namespace DatingApp.Application.Futures.Account.Handlers
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthenticationUserService _authenticationService;
+        private readonly IGoogleTokenValidatorService _googleTokenValidatorService;
 
         public LoginGoogleCommandHandler(
             UserManager<AppUser> userManager,
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
-            IAuthenticationUserService authenticationService)
+            IAuthenticationUserService authenticationService,
+            IGoogleTokenValidatorService googleTokenValidatorService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
             _authenticationService = authenticationService;
+            _googleTokenValidatorService = googleTokenValidatorService;
         }
         public async Task<LoginGoogleResponse> Handle(LoginGoogleCommand request, CancellationToken cancellationToken)
         {
             var response = new LoginGoogleResponse();
 
-            var googleData = await _authenticationService.AuthenticateWithGoogleAsync(request.Login.Code);
-
-            var user = await _unitOfWork.UserRepository.GetUserByEmailAsync(googleData.Email);
+            var payload = await _googleTokenValidatorService.ValidateAsync(request.Login.Code);
+            if (payload == null)
+            {
+                throw new NotAuthorizedException("Invalid Google ID token.");
+            }
+            var user = await _unitOfWork.UserRepository.GetUserByEmailAsync(payload.Email);
 
             if (user == null)
             {

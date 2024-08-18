@@ -16,6 +16,6 @@ namespace DatingApp.Infrastructure.Params
         public string ClientSecret { get; set; }
 
         [JsonProperty("redirect_uris")]
-        public string RedirectUri { get; set; }
+        public IEnumerable<string> RedirectUris { get; set; }
     }
 }

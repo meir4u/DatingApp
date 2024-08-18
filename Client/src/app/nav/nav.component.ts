@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../_services/account.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { User } from '../_models/user';
 import { Route, Router } from '@angular/router';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { LoginComponent } from '../modals/login/login.component';
 
 @Component({
   selector: 'app-nav',
@@ -11,17 +13,32 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
+  bsModalRef: BsModalRef<LoginComponent> = new BsModalRef<LoginComponent>();
   model: any = {};
 
   constructor(
               public accountService: AccountService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: BsModalService
   ) { }
 
   ngOnInit(): void {
     }
     
+
+  openLoginModal() {
+
+    this.bsModalRef = this.modalService.show(LoginComponent);
+    this.bsModalRef.onHidden?.pipe(
+      tap(() => {
+        this.modalService.hide();
+      }),
+      tap(() => {
+        this.router.navigateByUrl('/');
+      }),
+    ).subscribe();
+  }
 
   login() {
     this.accountService.login(this.model).subscribe({
@@ -30,6 +47,20 @@ export class NavComponent implements OnInit {
         this.model = {};
       },
     })
+    console.log(this.model);
+  }
+
+  loginWithGoogle() {
+    this.accountService.loginGoogle().subscribe(
+      response => {
+        console.log('Google sign-in successful', response);
+        this.router.navigateByUrl('/');
+        this.model = {};
+      },
+      error => {
+        console.error('Google sign-in failed', error);
+      }
+    );
     console.log(this.model);
   }
 
