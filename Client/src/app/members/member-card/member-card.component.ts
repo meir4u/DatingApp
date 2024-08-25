@@ -20,4 +20,11 @@ export class MemberCardComponent {
       error: (error) => console.log(error),
     });
   }
+
+  removeLike(member: Member) {
+    this.memberService.removeLike(member.userName).subscribe({
+      next: () => this.toastr.success('You have remove like for ' + member.knownAs),
+      error: (error) => console.log(error),
+    });
+  }
 }

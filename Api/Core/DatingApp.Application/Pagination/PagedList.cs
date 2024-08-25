@@ -26,9 +26,19 @@ namespace DatingApp.Application.Pagination
 
         public static async Task<PagedList<T>> CreateAsync(IQueryable<T> sourse, int pageNumber, int pageSize)
         {
-            var count = await sourse.CountAsync();
-            var items = await sourse.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-            return new PagedList<T>(items, count, pageNumber, pageSize);
+            //var count = await sourse.CountAsync();
+            //var items = await sourse.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var query = sourse
+                            .Select(x => new { TotalCount = sourse.Count(), Item = x })
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize);
+
+            var result = await query.ToListAsync();
+            var totalCount = result.FirstOrDefault()?.TotalCount ?? 0;
+            var items = result.Select(x => x.Item).ToList();
+
+            return new PagedList<T>(items, totalCount, pageNumber, pageSize);
         }
     }
 }

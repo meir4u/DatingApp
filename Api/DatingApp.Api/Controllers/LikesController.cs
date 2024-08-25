@@ -40,6 +40,22 @@ namespace DatingApp.Api.Controllers
             return Ok();
         }
 
+        [HttpPost("remove-like/{username}")]
+        public async Task<ActionResult> RemoveLike(string username)
+        {
+            var command = new RemoveLikeCommand()
+            {
+                RemoveLike = new RemoveLikeDto()
+                {
+                    SourceUserId = User.GetUserId(),
+                    Username = username,
+                }
+            };
+
+            var result = await _mediator.Send(command);
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery]LikesParams likesParams)
         {

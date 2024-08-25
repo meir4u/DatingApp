@@ -59,13 +59,11 @@ export class AccountService {
     return from(this.auth2.signIn()).pipe(
       take(1),
       switchMap((googleUser: any) => {
-        debugger;
         const idToken = googleUser.getAuthResponse().id_token;
         //const idToken = googleUser.getAuthResponse().access_token;
         return this.http.post<User>(this.baseUrl + 'account/login/google', { Code: idToken });
       }),
       tap((user: User) => {
-        debugger;
         if (user) {
           this.setCurrentUser(user);
         }

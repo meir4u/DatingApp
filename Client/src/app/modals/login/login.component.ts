@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { AccountService } from '../../_services/account.service';
 import { Router } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -16,15 +16,19 @@ export class LoginComponent {
 
   constructor(public accountService: AccountService,
     private router: Router,
-    public bsModalRef: BsModalRef) {
+    public bsModalRef: BsModalRef,
+    private ngZone: NgZone) {
 
   }
   login() {
     this.accountService.login(this.model).subscribe({
       next: _ => {
-        this.router.navigateByUrl('/');
-        this.model = {};
-        this.bsModalRef.hide(); // Close the modal
+        this.ngZone.run(() => {
+          this.router.navigateByUrl('/');
+          this.model = {};
+          this.bsModalRef.hide(); // Close the modal
+        });
+        
       },
       error: error => {
         console.error('Login failed', error);
@@ -36,9 +40,11 @@ export class LoginComponent {
   loginWithGoogle() {
     this.accountService.loginGoogle().subscribe(
       response => {
-        console.log('Google sign-in successful', response);
-        this.router.navigateByUrl('/');
-        this.model = {};
+        this.ngZone.run(() => {
+          this.router.navigateByUrl('/');
+          this.model = {};
+          this.bsModalRef.hide(); // Close the modal
+        });
       },
       error => {
         console.error('Google sign-in failed', error);

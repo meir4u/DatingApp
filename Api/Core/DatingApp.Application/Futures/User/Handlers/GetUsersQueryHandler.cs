@@ -50,7 +50,7 @@ namespace DatingApp.Application.Futures.User.Handlers
                                                             request.Params.PageSize);
 
                 response.PaginationHeader = new PaginationHeader(pagedUsers.CurrentPage, pagedUsers.PageSize, pagedUsers.TotalCount, pagedUsers.TotalPages);
-                response.Users = users;
+                response.Users = pagedUsers;
 
                 return response;
 

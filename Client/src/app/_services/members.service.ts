@@ -8,6 +8,7 @@ import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
 import { User } from '../_models/user';
 import { getPaginatedResults, getPaginationHeaders } from './paginationHelper';
+import { ELikePredicate } from '../_models/enums/enum-like-predicate';
 
 @Injectable({
   providedIn: 'root'
@@ -104,9 +105,12 @@ export class MembersService {
     return this.http.post(this.baseUrl + 'likes/' + username, {});
   }
 
-  getLikes(predicate: string, pageNumber: number, pageSize: number) {
-    let params = getPaginationHeaders(pageNumber, pageSize);
+  removeLike(username: string) {
+    return this.http.post(this.baseUrl + 'likes/remove-like/' + username, {});
+  }
 
+  getLikes(predicate: ELikePredicate, pageNumber: number, pageSize: number) {
+    let params = getPaginationHeaders(pageNumber, pageSize);
     params = params.append('predicate', predicate);
 
     return getPaginatedResults<Member[]>(this.baseUrl + 'likes', params, this.http);

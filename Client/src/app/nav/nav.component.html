@@ -34,23 +34,7 @@
                 </div>
             </div>
 
-            <form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" autocomplete="off" *ngIf="!(accountService.currentUser$ | async)">
-                <input name="username"
-                       [(ngModel)]="model.username"
-                       class="form-control me-2"
-                       type="text"
-                       placeholder="Username"
-                       aria-label="Username">
-                <input name="password"
-                       [(ngModel)]="model.password"
-                       class="form-control me-2"
-                       type="password"
-                       placeholder="Password"
-                       aria-label="Password">
-                <button class="btn btn-success" type="submit">Login</button>
-            </form>
-            <button class="btn btn-primary ms-2" (click)="loginWithGoogle()">Sign in with Google</button>
-            <button class="btn btn-primary ms-2" (click)="openLoginModal()">Sign in Modal</button>
+            <button class="btn btn-success ms-2" (click)="openLoginModal()" *ngIf="!(accountService.currentUser$ | async)">Login</button>
         </div>
     </div>
 </nav>

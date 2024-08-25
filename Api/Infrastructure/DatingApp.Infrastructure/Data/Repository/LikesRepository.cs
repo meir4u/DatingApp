@@ -11,6 +11,7 @@ using DatingApp.Application.Helpers;
 using Serilog;
 using System;
 using DatingApp.Common.Exceptions;
+using DatingApp.Application.Enums;
 
 namespace DatingApp.Infrastructure.Data.Repository
 {
@@ -48,12 +49,12 @@ namespace DatingApp.Infrastructure.Data.Repository
                 var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
                 var likes = _context.Likes.AsQueryable();
 
-                if (filterParams.Predicate == "liked")
+                if (filterParams.Predicate == EPredicate.Like.LikedByUser)
                 {
                     likes = likes.Where(like => like.SourceUserId == filterParams.UserId);
                     users = likes.Select(like => like.TargetUser);
                 }
-                else if (filterParams.Predicate == "likedBy")
+                else if (filterParams.Predicate == EPredicate.Like.LikedByOthers)
                 {
                     likes = likes.Where(like => like.TargetUserId == filterParams.UserId);
                     users = likes.Select(like => like.SourceUser);

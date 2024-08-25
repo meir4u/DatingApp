@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace DatingApp.Api.Filters
 {
@@ -25,16 +27,35 @@ namespace DatingApp.Api.Filters
             // Proceed to the next action
             var executedContext = await next();
 
-            // Log response details
-            if (executedContext.Result is ObjectResult objectResult)
+            try
             {
-                var responseBody = objectResult.Value != null ? Newtonsoft.Json.JsonConvert.SerializeObject(objectResult.Value) : "No Content";
-                _logger.Information("Outgoing Response: {StatusCode} {Body}", objectResult.StatusCode, responseBody);
+                // Log response details
+                if (executedContext.Result is ObjectResult objectResult)
+                {
+                    // Ensure the data is fully fetched and materialized
+                    if (objectResult.Value is IQueryable queryable)
+                    {
+                        objectResult.Value = queryable.Cast<object>().ToList();
+                    }
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    };
+
+                    var responseBody = objectResult.Value != null ? Newtonsoft.Json.JsonConvert.SerializeObject(objectResult.Value, jsonSettings) : "No Content";
+                    _logger.Information("Outgoing Response: {StatusCode} {Body}", objectResult.StatusCode, responseBody);
+                }
+                else
+                {
+                    _logger.Information("Outgoing Response: {StatusCode}", executedContext.HttpContext.Response.StatusCode);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                _logger.Information("Outgoing Response: {StatusCode}", executedContext.HttpContext.Response.StatusCode);
+                _logger.Error(ex, ex.Message);
             }
+            
         }
 
         private async Task<string> ReadRequestBodyAsync(Microsoft.AspNetCore.Http.HttpRequest request)

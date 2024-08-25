@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Member } from '../_models/member';
 import { MembersService } from '../_services/members.service';
 import { Pagination } from '../_models/pagination';
+import { ELikePredicate } from '../_models/enums/enum-like-predicate';
 
 @Component({
   selector: 'app-lists',
@@ -10,7 +11,8 @@ import { Pagination } from '../_models/pagination';
 })
 export class ListsComponent implements OnInit {
   members: Member[] | undefined;
-  predicate = 'liked';
+  ELikePredicate = ELikePredicate;
+  predicate = ELikePredicate.LikedByUser;
   pageNumber = 1;
   pageSize = 5;
   pagination: Pagination | undefined;

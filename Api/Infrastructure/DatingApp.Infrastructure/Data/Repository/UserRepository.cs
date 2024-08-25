@@ -121,7 +121,7 @@ namespace DatingApp.Infrastructure.Data.Repository
             try
             {
                 var filterParams = (UserParams)userParams;
-                var query = _context.Users.AsQueryable();
+                var query = _context.Users.Include(u => u.Photos).AsQueryable();
                 query = query.Where(u => u.UserName != filterParams.CurrentUsername);
                 query = query.Where(u => u.Gender == filterParams.Gender);
                 query.IgnoreQueryFilters();

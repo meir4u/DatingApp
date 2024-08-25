@@ -1,10 +1,11 @@
-﻿using DatingApp.Application.Pagination;
+﻿using DatingApp.Application.Enums;
+using DatingApp.Application.Pagination;
 
 namespace DatingApp.Application.Params
 {
     public class LikesParams : PaginationParams
     {
         public int UserId { get; set; }
-        public string Predicate { get; set; }
+        public EPredicate.Like Predicate { get; set; }
     }
 }

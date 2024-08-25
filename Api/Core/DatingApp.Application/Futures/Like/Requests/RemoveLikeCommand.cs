@@ -11,5 +11,6 @@ namespace DatingApp.Application.Futures.Like.Requests
 {
     public class RemoveLikeCommand : IRequest<RemoveLikeResponse>
     {
+        public RemoveLikeDto RemoveLike { get; set; }
     }
 }
