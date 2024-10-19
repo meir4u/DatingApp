@@ -5,7 +5,7 @@ import { AccountService } from '../../_services/account.service';
 import { MembersService } from '../../_services/members.service';
 import { take } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-member-edit',
