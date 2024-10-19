@@ -13,10 +13,10 @@ WORKDIR /src
 ARG BUILD_CONFIGURATION=Release
 
 COPY ["./Api/DatingApp.Api/DatingApp.Api.csproj", "Api/DatingApp.Api/"]
-COPY ["./Core/DatingApp.Domain/DatingApp.Domain.csproj", "Core/DatingApp.Domain/"]
-COPY ["./Core/DatingApp.Application/DatingApp.Application.csproj", "Core/DatingApp.Application/"]
-COPY ["./Infrastructure/DatingApp.Infrastructure/DatingApp.Infrastructure.csproj", "Infrastructure/DatingApp.Infrastructure/"]
-COPY ["./Infrastructure/DatingApp.Persistence/DatingApp.Persistence.csproj", "Infrastructure/DatingApp.Persistence/"]
+COPY ["./Api/Core/DatingApp.Domain/DatingApp.Domain.csproj", "Api/Core/DatingApp.Domain/"]
+COPY ["./Api/Core/DatingApp.Application/DatingApp.Application.csproj", "Api/Core/DatingApp.Application/"]
+COPY ["./Api/Infrastructure/DatingApp.Infrastructure/DatingApp.Infrastructure.csproj", "Api/Infrastructure/DatingApp.Infrastructure/"]
+COPY ["./Api/Infrastructure/DatingApp.Persistence/DatingApp.Persistence.csproj", "Api/Infrastructure/DatingApp.Persistence/"]
 
 #COPY ["Api/DatingApp.Api/DatingApp.Api.csproj", "Api/DatingApp.Api/"]
 RUN dotnet restore "./Api/DatingApp.Api/DatingApp.Api.csproj"
