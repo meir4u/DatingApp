@@ -17,7 +17,7 @@ COPY ["./Api/Core/DatingApp.Domain/DatingApp.Domain.csproj", "Api/Core/DatingApp
 COPY ["./Api/Core/DatingApp.Application/DatingApp.Application.csproj", "Api/Core/DatingApp.Application/"]
 COPY ["./Api/Infrastructure/DatingApp.Infrastructure/DatingApp.Infrastructure.csproj", "Api/Infrastructure/DatingApp.Infrastructure/"]
 COPY ["./Api/Infrastructure/DatingApp.Persistence/DatingApp.Persistence.csproj", "Api/Infrastructure/DatingApp.Persistence/"]
-
+COPY ["./Shared/DatingApp.Common/DatingApp.Common.csproj", "Shared/DatingApp.Common/"]
 #COPY ["Api/DatingApp.Api/DatingApp.Api.csproj", "Api/DatingApp.Api/"]
 RUN dotnet restore "./Api/DatingApp.Api/DatingApp.Api.csproj"
 COPY . .
