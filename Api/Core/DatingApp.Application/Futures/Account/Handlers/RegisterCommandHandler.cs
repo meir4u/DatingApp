@@ -65,6 +65,7 @@ namespace DatingApp.Application.Futures.Account.Handlers
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 KnownAs = request.Register.KnownAs,
                 Gender = user.Gender,
+                Email = user.Email,
             };
 
             return response;

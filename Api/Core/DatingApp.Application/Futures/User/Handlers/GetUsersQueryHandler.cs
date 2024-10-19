@@ -60,12 +60,9 @@ namespace DatingApp.Application.Futures.User.Handlers
 #if DEBUG
 
                 throw new BadRequestExeption(ex.Message);
-
 #else
-                
                 // In release mode, return a generic BadRequest response
-                return BadRequest("An error occurred while processing your request.");
-                
+                throw new BadRequestExeption("An error occurred while processing your request.");
 #endif
             }
         }

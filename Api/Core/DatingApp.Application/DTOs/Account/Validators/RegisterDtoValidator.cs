@@ -37,7 +37,7 @@ namespace DatingApp.Application.DTOs.Register.Validators
             RuleFor(p => p.Password)
                 .NotNull().WithMessage("Password is required.")
                 .NotEmpty().WithMessage("Password cannot be empty.")
-                .Length(4, 8).WithMessage("Password must be between 4 and 8 characters.");
+                .Length(8, 50).WithMessage("Password must be between 8 and 50 characters.");
 
         }
     }
