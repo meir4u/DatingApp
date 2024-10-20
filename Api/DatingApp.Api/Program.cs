@@ -35,6 +35,12 @@ namespace DatingApp.Api
                 throw new FileNotFoundException("appsettings.json not found.");
             }
 
+            // Check if appsettings.json exists
+            if (!File.Exists(".env"))
+            {
+                throw new FileNotFoundException("appsettings.json not found.");
+            }
+
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
             builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
