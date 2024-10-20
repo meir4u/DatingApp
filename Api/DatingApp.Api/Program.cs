@@ -6,6 +6,7 @@ using DatingApp.Api.SignalR;
 using DatingApp.Domain.Entities;
 using DatingApp.Infrastructure.Data;
 using DatingApp.Infrastructure.Logging;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,12 @@ namespace DatingApp.Api
             SerilogSetup.ConfigureLogger();
 
             var builder = WebApplication.CreateBuilder(args);
+            // Load environment variables from the .env file
+            Env.Load();
+
+            builder.Configuration.AddEnvironmentVariables();
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
             // Add Serilog to the logging pipeline
             builder.Host.UseSerilog();

@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /Client/ssl/localhost.pem
 /Api/DatingApp.Api/appsettings.json
 /Client/src/environments/environment.development.ts
+/Api/DatingApp.Api/.env
