@@ -28,27 +28,6 @@ namespace DatingApp.Api
             var currentDirectory = Directory.GetCurrentDirectory();
             Console.WriteLine($"Current Directory: {currentDirectory}");
 
-            // Load environment variables from the .env file
-            Env.Load();
-
-            builder.Configuration.AddEnvironmentVariables();
-
-            // Check if appsettings.json exists
-            if (!File.Exists("appsettings.json"))
-            {
-                throw new FileNotFoundException("appsettings.json not found.");
-            }
-
-            // Check if appsettings.json exists
-            if (!File.Exists(".env"))
-            {
-                throw new FileNotFoundException(".env not found.");
-            }
-
-            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
-
             // Add Serilog to the logging pipeline
             builder.Host.UseSerilog();
             builder.Services.AddSingleton(Log.Logger);
@@ -135,6 +114,7 @@ namespace DatingApp.Api
                 var dataContext = services.GetRequiredService<DataContext>();
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+
                 await dataContext.Database.MigrateAsync();
 
                 await Seed.ClearConnections(dataContext);
