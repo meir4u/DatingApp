@@ -24,6 +24,10 @@ namespace DatingApp.Api
 
             var builder = WebApplication.CreateBuilder(args);
             
+            // Log the current directory
+            var currentDirectory = Directory.GetCurrentDirectory();
+            Console.WriteLine($"Current Directory: {currentDirectory}");
+
             // Load environment variables from the .env file
             Env.Load();
 
@@ -38,7 +42,7 @@ namespace DatingApp.Api
             // Check if appsettings.json exists
             if (!File.Exists(".env"))
             {
-                throw new FileNotFoundException("appsettings.json not found.");
+                throw new FileNotFoundException(".env not found.");
             }
 
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
