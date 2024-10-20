@@ -23,10 +23,19 @@ namespace DatingApp.Api
             SerilogSetup.ConfigureLogger();
 
             var builder = WebApplication.CreateBuilder(args);
+            
             // Load environment variables from the .env file
             Env.Load();
 
             builder.Configuration.AddEnvironmentVariables();
+
+            // Check if appsettings.json exists
+            if (!File.Exists("appsettings.json"))
+            {
+                throw new FileNotFoundException("appsettings.json not found.");
+            }
+
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
             builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
