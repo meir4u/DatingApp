@@ -23,7 +23,14 @@ namespace DatingApp.Api
             SerilogSetup.ConfigureLogger();
 
             var builder = WebApplication.CreateBuilder(args);
-            
+
+            // Configure Kestrel to listen on specific ports
+            //builder.WebHost.ConfigureKestrel(options =>
+            //{
+            //    options.ListenAnyIP(8080); // HTTP
+            //    options.ListenAnyIP(443, listenOptions => listenOptions.UseHttps()); // HTTPS
+            //});
+
             // Log the current directory
             var currentDirectory = Directory.GetCurrentDirectory();
             Console.WriteLine($"Current Directory: {currentDirectory}");
@@ -71,7 +78,10 @@ namespace DatingApp.Api
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
-                .WithOrigins("dattingapp-datingapp.piemei.easypanel.host", "http://localhost:4200", "https://localhost:4200", "https://localhost:44387", "http://localhost:44387", "http://localhost:50578", "https://localhost:50578"));
+                .WithOrigins("https://dattingapp-datingapp.piemei.easypanel.host", "http://dattingapp-datingapp.piemei.easypanel.host", "http://localhost:4200", "https://localhost:4200", "https://localhost:44387", "http://localhost:44387", "http://localhost:50578", "https://localhost:50578"));
+
+            app.Urls.Add("https://dattingapp-datingapp.piemei.easypanel.host");
+            app.Urls.Add("http://dattingapp-datingapp.piemei.easypanel.host");
 
             if (builder.Environment.IsDevelopment())
             {
