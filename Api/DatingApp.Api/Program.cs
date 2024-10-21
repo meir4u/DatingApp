@@ -80,9 +80,6 @@ namespace DatingApp.Api
                 .AllowCredentials()
                 .WithOrigins("https://dattingapp-datingapp.piemei.easypanel.host", "http://dattingapp-datingapp.piemei.easypanel.host", "http://localhost:4200", "https://localhost:4200", "https://localhost:44387", "http://localhost:44387", "http://localhost:50578", "https://localhost:50578"));
 
-            app.Urls.Add("https://dattingapp-datingapp.piemei.easypanel.host");
-            app.Urls.Add("http://dattingapp-datingapp.piemei.easypanel.host");
-
             if (builder.Environment.IsDevelopment())
             {
                 // Add COOP middleware
