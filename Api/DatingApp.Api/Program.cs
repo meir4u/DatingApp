@@ -71,7 +71,7 @@ namespace DatingApp.Api
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
-                .WithOrigins("https://dattingapp-datingapp.piemei.easypanel.host", "http://dattingapp-datingapp.piemei.easypanel.host", "http://localhost:4200", "https://localhost:4200", "https://localhost:44387", "http://localhost:44387", "http://localhost:50578", "https://localhost:50578"));
+                .WithOrigins("https://dattingapp-datingapp.piemei.easypanel.host:443", "http://dattingapp-datingapp.piemei.easypanel.host:8080", "http://localhost:4200", "https://localhost:4200", "https://localhost:44387", "http://localhost:44387", "http://localhost:50578", "https://localhost:50578"));
 
             if (builder.Environment.IsDevelopment())
             {
