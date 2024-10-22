@@ -34,7 +34,7 @@
             </div>
 
             <div class="card-footer">
-                <button [disabled]="!editForm.dirty" type="submit" form="editForm" class="btn btn-success col-12">Save Changes</button>
+                <button [disabled]="editForm.invalid" type="submit" form="editForm" class="btn btn-success col-12">Save Changes</button>
             </div>
         </div>
 
@@ -48,30 +48,119 @@
                     <textarea class="form-control"
                               [(ngModel)]="member.introduction"
                               name="introduction"
-                              rows="6"></textarea>
-
-                    <h4 class="mt-2">Lookng for</h4>
+                              rows="6"
+                              pattern=".*\S.*"
+                              #introduction="ngModel"
+                              required></textarea>
+                    <div *ngIf="introduction.invalid && introduction.touched" class="text-danger">
+                        <div *ngIf="introduction.errors?.['required']">This field is required.</div>
+                        <div *ngIf="introduction.errors?.['pattern']">This field cannot be empty or contain only whitespace.</div>
+                    </div>
+                    <h4 class="mt-2">Looking for</h4>
                     <textarea class="form-control"
                               [(ngModel)]="member.lookingFor"
                               name="lookingFor"
-                              rows="6"></textarea>
+                              rows="6"
+                              pattern=".*\S.*"
+                              #lookingFor="ngModel"
+                              required></textarea>
+                    <div *ngIf="lookingFor.invalid && lookingFor.touched" class="text-danger">
+                        <div *ngIf="lookingFor.errors?.['required']">This field is required.</div>
+                        <div *ngIf="lookingFor.errors?.['pattern']">This field cannot be empty or contain only whitespace.</div>
+                    </div>
 
                     <h4 class="mt-2">Interests</h4>
                     <textarea class="form-control"
                               [(ngModel)]="member.interests"
                               name="interests"
-                              rows="6"></textarea>
+                              rows="6" required></textarea>
+
+                    <h4 class="mt-2">Email</h4>
+                    <input type="email" required [(ngModel)]="member.email" name="email" class="form-control mx-2" pattern=".*\S.*" #email="ngModel" />
+                    <div *ngIf="email.invalid && email.touched" class="text-danger">
+                        <div *ngIf="email.errors?.['required']">This field is required.</div>
+                        <div *ngIf="email.errors?.['pattern']">This field cannot be empty or contain only whitespace.</div>
+                    </div>
 
                     <h4 class="mt-2">Location Details</h4>
                     <div class="d-flex flex-row align-items-center">
 
                         <label for="city">City: </label>
-                        <input type="text" [(ngModel)]="member.city" name="city" class="form-control mx-2" />
+                        <input type="text" [(ngModel)]="member.city" name="city" class="form-control mx-2" required pattern=".*\S.*" #city="ngModel" />
+                        <div *ngIf="city.invalid && city.touched" class="text-danger">
+                            <div *ngIf="city.errors?.['required']">This field is required.</div>
+                            <div *ngIf="city.errors?.['pattern']">This field cannot be empty or contain only whitespace.</div>
+                        </div>
 
                         <label for="country">Country: </label>
-                        <input type="text" [(ngModel)]="member.country" name="country" class="form-control mx-2" />
+                        <input type="text" [(ngModel)]="member.country" name="country" class="form-control mx-2" required pattern=".*\S.*" #country="ngModel" />
+                        <div *ngIf="country.invalid && country.touched" class="text-danger">
+                            <div *ngIf="country.errors?.['required']">This field is required.</div>
+                            <div *ngIf="country.errors?.['pattern']">This field cannot be empty or contain only whitespace.</div>
+                        </div>
+
                     </div>
                 </form>
+
+
+            </tab>
+
+            <tab heading="About test {{member.knownAs}}">
+
+                <form [formGroup]="editMemberForm" id="editMemberForm" (ngSubmit)="updateMember()">
+                    <h4 class="mt-2">Description</h4>
+                    <textarea class="form-control"
+                              formControlName="introduction"
+                              rows="6"></textarea>
+                    <div *ngIf="editMemberForm?.get('introduction')?.invalid && editMemberForm?.get('introduction')?.touched" class="text-danger">
+                        <div *ngIf="editMemberForm?.get('introduction')?.errors?.['required']">This field is required.</div>
+                        <div *ngIf="editMemberForm?.get('introduction')?.errors?.['whitespace']">This field cannot be empty or contain only whitespace.</div>
+                    </div>
+
+                    <h4 class="mt-2">Looking for</h4>
+                    <textarea class="form-control"
+                              formControlName="lookingFor"
+                              rows="6"></textarea>
+                    <div *ngIf="editMemberForm?.get('lookingFor')?.invalid && editMemberForm?.get('lookingFor')?.touched" class="text-danger">
+                        <div *ngIf="editMemberForm?.get('lookingFor')?.errors?.['required']">This field is required.</div>
+                        <div *ngIf="editMemberForm?.get('lookingFor')?.errors?.['whitespace']">This field cannot be empty or contain only whitespace.</div>
+                    </div>
+
+                    <h4 class="mt-2">Interests</h4>
+                    <textarea class="form-control"
+                              formControlName="interests"
+                              rows="6"></textarea>
+                    <div *ngIf="editMemberForm?.get('interests')?.invalid && editMemberForm?.get('interests')?.touched" class="text-danger">
+                        <div *ngIf="editMemberForm?.get('interests')?.errors?.['required']">This field is required.</div>
+                    </div>
+
+                    <h4 class="mt-2">Email</h4>
+                    <input type="email" formControlName="email" class="form-control mx-2" />
+                    <div *ngIf="editMemberForm?.get('email')?.invalid && editMemberForm?.get('email')?.touched" class="text-danger">
+                        <div *ngIf="editMemberForm?.get('email')?.errors?.['required']">This field is required.</div>
+                        <div *ngIf="editMemberForm?.get('email')?.errors?.['email']">This field must be a valid email address.</div>
+                    </div>
+
+                    <h4 class="mt-2">Location Details</h4>
+                    <div class="d-flex flex-row align-items-center">
+                        <label for="city">City: </label>
+                        <input type="text" formControlName="city" class="form-control mx-2" />
+                        <div *ngIf="editMemberForm?.get('city')?.invalid && editMemberForm?.get('city')?.touched" class="text-danger">
+                            <div *ngIf="editMemberForm?.get('city')?.errors?.['required']">This field is required.</div>
+                            <div *ngIf="editMemberForm?.get('city')?.errors?.['whitespace']">This field cannot be empty or contain only whitespace.</div>
+                        </div>
+
+                        <label for="country">Country: </label>
+                        <input type="text" formControlName="country" class="form-control mx-2" />
+                        <div *ngIf="editMemberForm?.get('country')?.invalid && editMemberForm?.get('country')?.touched" class="text-danger">
+                            <div *ngIf="editMemberForm?.get('country')?.errors?.['required']">This field is required.</div>
+                            <div *ngIf="editMemberForm?.get('country')?.errors?.['whitespace']">This field cannot be empty or contain only whitespace.</div>
+                        </div>
+                    </div>
+
+                    <button [disabled]="editForm.invalid || !editForm.dirty" type="submit" class="btn btn-success col-12">Save Changes</button>
+                </form>
+
             </tab>
 
             <tab heading="Edit Photos">

@@ -24,13 +24,6 @@ namespace DatingApp.Api
 
             var builder = WebApplication.CreateBuilder(args);
 
-            // Configure Kestrel to listen on specific ports
-            //builder.WebHost.ConfigureKestrel(options =>
-            //{
-            //    options.ListenAnyIP(8080); // HTTP
-            //    options.ListenAnyIP(443, listenOptions => listenOptions.UseHttps()); // HTTPS
-            //});
-
             // Log the current directory
             var currentDirectory = Directory.GetCurrentDirectory();
             Console.WriteLine($"Current Directory: {currentDirectory}");
@@ -131,6 +124,7 @@ namespace DatingApp.Api
             {
                 Log.Fatal(ex, "An Error occurred during migration");
             }
+            Log.Information("Starting the application");
             app.Run();
         }
     }
