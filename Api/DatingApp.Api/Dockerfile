@@ -42,4 +42,4 @@ COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "DatingApp.Api.dll"]
 
 # Healthcheck to ensure the app is running correctly
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD curl --fail http://localhost:8080/health || exit 1
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD curl --fail http://localhost:8080/health || exit 1
