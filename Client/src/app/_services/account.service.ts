@@ -31,7 +31,7 @@ export class AccountService {
         gapi.auth2.init({
           client_id: environment.google.client_id,
           //scope: 'profile email',
-          redirect_uri: 'http://localhost:44387/google/auth/callback/' 
+          redirect_uri: environment.google.redirect_uri
         }).then(() => {
           this.auth2 = gapi.auth2.getAuthInstance();
         });

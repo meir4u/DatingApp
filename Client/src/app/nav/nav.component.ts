@@ -6,6 +6,7 @@ import { Route, Router } from '@angular/router';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { LoginComponent } from '../modals/login/login.component';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-nav',
@@ -15,7 +16,7 @@ import { LoginComponent } from '../modals/login/login.component';
 export class NavComponent implements OnInit {
   bsModalRef: BsModalRef<LoginComponent> = new BsModalRef<LoginComponent>();
   model: any = {};
-
+  isDevelopment = environment.production == false;
   constructor(
               public accountService: AccountService,
     private router: Router,
