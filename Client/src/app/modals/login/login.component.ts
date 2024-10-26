@@ -13,7 +13,8 @@ export class LoginComponent {
 
   title: string = 'Login';
   closeBtnName: string = 'Submit';
-
+  isLoginFailed = false;
+  isGoogleLoginFailed = false;
   constructor(public accountService: AccountService,
     private router: Router,
     public bsModalRef: BsModalRef,
@@ -24,13 +25,15 @@ export class LoginComponent {
     this.accountService.login(this.model).subscribe({
       next: _ => {
         this.ngZone.run(() => {
-          this.router.navigateByUrl('/');
           this.model = {};
-          this.bsModalRef.hide(); // Close the modal
+          this.bsModalRef.hide();
+          this.router.navigateByUrl('/members');
         });
         
       },
       error: error => {
+        this.isLoginFailed = true;
+        this.isGoogleLoginFailed = false;
         console.error('Login failed', error);
       }
     })
@@ -41,12 +44,14 @@ export class LoginComponent {
     this.accountService.loginGoogle().subscribe(
       response => {
         this.ngZone.run(() => {
-          this.router.navigateByUrl('/');
           this.model = {};
-          this.bsModalRef.hide(); // Close the modal
+          this.bsModalRef.hide();
+          this.router.navigateByUrl('/members');
         });
       },
       error => {
+        this.isLoginFailed = false;
+        this.isGoogleLoginFailed = true;
         console.error('Google sign-in failed', error);
       }
     );

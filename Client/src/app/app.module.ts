@@ -35,6 +35,8 @@ import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './_services/customRouteReuseStrategy';
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 import { LoginComponent } from './modals/login/login.component';
+import { FooterComponent } from './footer/footer.component';
+import { AboutUsComponent } from './pages/about-us/about-us.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +61,8 @@ import { LoginComponent } from './modals/login/login.component';
     RolesModalComponent,
     ConfirmDialogComponent,
     LoginComponent,
+    FooterComponent,
+    AboutUsComponent,
   ],
   imports: [
     BrowserModule,

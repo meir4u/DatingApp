@@ -73,18 +73,16 @@
     </div>
 </div>
 
-<div class="d-flex justify-content-center" *ngIf="pagination">
-    <pagination
-        [boundaryLinks]="true"
-        [totalItems]="pagination.totalItems"
-        [itemsPerPage] = "pagination.itemsPerPage"
-        [maxSize]="10"
-        (pageChanged) = "pageChanged($event)"
-        previousText="&lsaquo;"
-        nextText="&rsaquo;"
-        firstText="&laquo;"
-        lastText="&raquo;"
-    >
+<div class="pagination d-flex justify-content-center" *ngIf="pagination">
+    <pagination [boundaryLinks]="true"
+                [totalItems]="pagination.totalItems"
+                [itemsPerPage]="pagination.itemsPerPage"
+                [maxSize]="10"
+                (pageChanged)="pageChanged($event)"
+                previousText="&lsaquo;"
+                nextText="&rsaquo;"
+                firstText="&laquo;"
+                lastText="&raquo;">
 
     </pagination>
 

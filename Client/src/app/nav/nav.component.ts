@@ -17,6 +17,8 @@ export class NavComponent implements OnInit {
   bsModalRef: BsModalRef<LoginComponent> = new BsModalRef<LoginComponent>();
   model: any = {};
   isDevelopment = environment.production == false;
+  appName = environment.applicationName;
+
   constructor(
               public accountService: AccountService,
     private router: Router,
