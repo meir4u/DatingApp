@@ -1,11 +1,11 @@
 # Set the base image for the runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 8080 5000 5001 
+EXPOSE 80 8080 5000 5001 
 
 # Set the ASP.NET Core environment to Production
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://+:80;http://+:8080;https://+:443
+ENV ASPNETCORE_URLS=http://+:80;http://+:8080;http://+:5000;http://+:5001
 
 # Set the base image for the build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
