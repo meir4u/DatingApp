@@ -1,7 +1,7 @@
 # Set the base image for the runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 8080 443 5000 5001 
+EXPOSE 8080 5000 5001 
 
 # Set the ASP.NET Core environment to Production
 ENV ASPNETCORE_ENVIRONMENT=Production
