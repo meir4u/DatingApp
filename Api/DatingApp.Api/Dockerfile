@@ -5,6 +5,7 @@ EXPOSE 8080 443 5000 5001
 
 # Set the ASP.NET Core environment to Production
 ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:80;http://+:8080;https://+:443
 
 # Set the base image for the build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
