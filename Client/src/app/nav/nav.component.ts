@@ -7,7 +7,6 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { LoginComponent } from '../modals/login/login.component';
 import { environment } from '../../environments/environment';
-import { ArialCurrentDirective } from '../_directives/arial-current.directive';
 
 @Component({
   selector: 'app-nav',
