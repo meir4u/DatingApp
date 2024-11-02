@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="d-flex">
-                <button class="btn btn-outline-success ms-2" (click)="openLoginModal()" *ngIf="!(accountService.currentUser$ | async)">Login</button>
+                <button class="btn btn-success ms-2" (click)="openLoginModal()" *ngIf="!(accountService.currentUser$ | async)">Login</button>
             </div>
         </div>
     </div>
