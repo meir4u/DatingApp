@@ -1,6 +1,14 @@
 export const environment = {
   production: true,
-  applicationName: "Dating App",
+  applicationName: "DattingApp",
+  applicationHeader: {
+    title: "Dating App",
+    tags: {
+      description: 'This is a description of DatingApp',
+      author: "Meir Achildiev",
+      keywords: 'dating, social, app'
+    },
+  },
   apiUrl: 'api/',
   hubUrl: 'hubs/',
   google: {
@@ -10,6 +18,10 @@ export const environment = {
   email: {
     support: "support",
     domain: "dattingapp-app.piemei.easypanel.host"
+  },
+  plausible: {
+    domain: "dattingapp-app.piemei.easypanel.host",
+    src: "https://dattingapp-plausible.piemei.easypanel.host/js/script.js"
   }
 
 };

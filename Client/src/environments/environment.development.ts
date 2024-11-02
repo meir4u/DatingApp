@@ -1,6 +1,14 @@
 export const environment = {
   production: false,
-  applicationName: "Dating App",
+  applicationName: "DattingApp",
+  applicationHeader: {
+    title: "Dating App",
+    tags: {
+      description: 'This is a description of DatingApp',
+      author: "Meir Achildiev",
+      keywords: 'dating, social, app'
+    },
+  },
   //apiUrl: 'https://localhost:7269/api/',
   //hubUrl: 'https://localhost:7269/hubs/',
   apiUrl: 'https://localhost:44387/api/',
@@ -12,5 +20,9 @@ export const environment = {
   email: {
     support: "support",
     domain: "localhost:44387"
+  },
+  plausible: {
+    domain: "dattingapp-app.piemei.easypanel.host",
+    src: "https://dattingapp-plausible.piemei.easypanel.host/js/script.js"
   }
 };
