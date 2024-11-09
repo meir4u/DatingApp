@@ -4,12 +4,16 @@ using DatingApp.Domain.Services;
 using DatingApp.Infrastructure.Adapters.Google;
 using DatingApp.Infrastructure.Data;
 using DatingApp.Infrastructure.Data.Repository;
+using DatingApp.Infrastructure.Email;
 using DatingApp.Infrastructure.Params;
+using DatingApp.Infrastructure.Scheduling.Email;
 using DatingApp.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz.Spi;
 using System;
+using System.Net.Mail;
 using System.Reflection;
 
 namespace DatingApp.Infrastructure
@@ -25,8 +29,21 @@ namespace DatingApp.Infrastructure
             });
 
             services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
+            services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
             services.Configure<GoogleSettings>(configuration.GetSection("Google"));
+
+            // Setup FluentEmail with Razor as the templating engine
+            services
+                .AddFluentEmail("your-email@example.com", "Your Name")
+                .AddRazorRenderer() // Add Razor as the template renderer
+                .AddSmtpSender(new SmtpClient("smtp.example.com") // Configure SMTP client
+                {
+                    Port = 587,
+                    Credentials = new System.Net.NetworkCredential("your-email@example.com", "your-email-password"),
+                    EnableSsl = true
+                });
+
 
             //adapters added
             services.AddHttpClient<IGoogleAuthAdapter, GoogleAuthAdapter>();
@@ -47,7 +64,11 @@ namespace DatingApp.Infrastructure
 
             services.AddScoped<IAuthenticationUserService, AuthenticationUserService>();
 
-            
+            //email with it jobs
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddSingleton<IEnhancedEmailService, EnhancedEmailService>();
+            services.AddSingleton<IJobFactory, EmailJobFactory>();
+
 
 
             return services;
