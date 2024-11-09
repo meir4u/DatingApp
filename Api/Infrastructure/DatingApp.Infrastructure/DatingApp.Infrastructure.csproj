@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Email\Templates\En\NotificationTemplate.cshtml" />
-    <Compile Include="Email\Templates\En\PasswordResetTemplate.cshtml" />
-    <Compile Include="Email\Templates\En\WelcomeTemplate.cshtml" />
+    <Content Include="Email\Templates\En\NotificationTemplate.cshtml" />
+    <Content Include="Email\Templates\En\PasswordResetTemplate.cshtml" />
+    <Content Include="Email\Templates\En\WelcomeTemplate.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

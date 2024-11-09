@@ -1,5 +1,4 @@
-﻿using DatingApp.Application.DTOs.Email;
-using DatingApp.Application.Futures.Email.Account.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Requests;
 using DatingApp.Application.Futures.Email.Account.Responses;
 using DatingApp.Domain.Entities;
 using DatingApp.Domain.Services;

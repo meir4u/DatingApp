@@ -20,19 +20,13 @@ namespace DatingApp.Infrastructure.Email
     {
         private readonly EmailSettings _emailSettings;
         private readonly IFluentEmail _email;
-        private readonly IEnhancedEmailService _enhancedEmailService;
-        private readonly IScheduler _scheduler;
 
         public EmailService(
             IOptions<EmailSettings> emailSettings,
-            IFluentEmail email,
-            IEnhancedEmailService enhancedEmailService,
-            IScheduler scheduler)
+            IFluentEmail email)
         {
             _emailSettings = emailSettings.Value;
             _email = email;
-            _enhancedEmailService = enhancedEmailService;
-            _scheduler = scheduler;
         }
 
         public async Task SendEmailAsync(string recipientEmail, string subject, string body)
@@ -60,16 +54,17 @@ namespace DatingApp.Infrastructure.Email
                 .To(recipientEmail)
                 .Subject(subject)
                 .AttachFromFilename(attachmentPath)
-                .UsingTemplateFromFile($"Templates/Emails/{templateName}.cshtml", model) // Specify template path
+                .UsingTemplateFromFile($"Email\\Templates\\En\\{templateName}.cshtml", model) // Specify template path
                 .SendAsync();
         }
 
         public async Task SendTemplatedEmailAsync<TModel>(string recipientEmail, string subject, string templateName, TModel model)
         {
+            //Email\Templates\En\WelcomeTemplate
             await _email
                 .To(recipientEmail)
                 .Subject(subject)
-                .UsingTemplateFromFile($"Templates/Emails/{templateName}.cshtml", model) // Specify template path
+                .UsingTemplateFromFile($"Email\\Templates\\En\\{templateName}.cshtml", model) // Specify template path
                 .SendAsync();
         }
 
