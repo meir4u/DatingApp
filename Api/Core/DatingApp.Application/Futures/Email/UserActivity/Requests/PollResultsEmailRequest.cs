@@ -1,4 +1,5 @@
-﻿using DatingApp.Application.Futures.Email.UserActivity.Responses;
+﻿using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.UserActivity.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using static Google.Apis.Requests.BatchRequest;
 
 namespace DatingApp.Application.Futures.Email.UserActivity.Requests
 {
-    public class PollResultsEmailRequest : IRequest<PollResultsEmailResponse>
+    public class PollResultsEmailRequest : BaseEmailRequest, IRequest<PollResultsEmailResponse>
     {
     }
 }

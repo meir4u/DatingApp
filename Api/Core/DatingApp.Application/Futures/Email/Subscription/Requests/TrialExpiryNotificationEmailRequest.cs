@@ -1,4 +1,5 @@
-﻿using DatingApp.Application.Futures.Email.Subscription.Responses;
+﻿using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Subscription.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using static Google.Apis.Requests.BatchRequest;
 
 namespace DatingApp.Application.Futures.Email.Subscription.Requests
 {
-    public class TrialExpiryNotificationEmailRequest : IRequest<TrialExpiryNotificationEmailResponse>
+    public class TrialExpiryNotificationEmailRequest : BaseEmailRequest, IRequest<TrialExpiryNotificationEmailResponse>
     {
     }
 }

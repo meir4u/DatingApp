@@ -1,4 +1,5 @@
-﻿using DatingApp.Application.Futures.Email.Payment.Responses;
+﻿using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Payment.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using static Google.Apis.Requests.BatchRequest;
 
 namespace DatingApp.Application.Futures.Email.Payment.Requests
 {
-    public class FailedPaymentNotificationEmailRequest : IRequest<FailedPaymentNotificationEmailResponse>
+    public class FailedPaymentNotificationEmailRequest : BaseEmailRequest, IRequest<FailedPaymentNotificationEmailResponse>
     {
     }
 }

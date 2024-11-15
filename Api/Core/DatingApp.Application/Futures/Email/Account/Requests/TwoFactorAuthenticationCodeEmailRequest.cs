@@ -1,4 +1,5 @@
 ﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using static Google.Apis.Requests.BatchRequest;
 
 namespace DatingApp.Application.Futures.Email.Account.Requests
 {
-    public class TwoFactorAuthenticationCodeEmailRequest : IRequest<TwoFactorAuthenticationCodeEmailResponse>
+    public class TwoFactorAuthenticationCodeEmailRequest : BaseEmailRequest, IRequest<TwoFactorAuthenticationCodeEmailResponse>
     {
     }
 }

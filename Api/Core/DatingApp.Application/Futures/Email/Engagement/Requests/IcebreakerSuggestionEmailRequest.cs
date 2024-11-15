@@ -1,4 +1,5 @@
-﻿using DatingApp.Application.Futures.Email.Engagement.Responses;
+﻿using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Engagement.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using static Google.Apis.Requests.BatchRequest;
 
 namespace DatingApp.Application.Futures.Email.Engagement.Requests
 {
-    public class IcebreakerSuggestionEmailRequest : IRequest<IcebreakerSuggestionEmailResponse>
+    public class IcebreakerSuggestionEmailRequest : BaseEmailRequest, IRequest<IcebreakerSuggestionEmailResponse>
     {
     }
 }

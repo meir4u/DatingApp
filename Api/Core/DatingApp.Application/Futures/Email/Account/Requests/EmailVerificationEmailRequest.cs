@@ -1,4 +1,5 @@
 ﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DatingApp.Application.Futures.Email.Account.Requests
 {
-    public class EmailVerificationEmailRequest : IRequest<EmailVerificationEmailResponse>
+    public class EmailVerificationEmailRequest : BaseEmailRequest, IRequest<EmailVerificationEmailResponse>
     {
     }
 }
