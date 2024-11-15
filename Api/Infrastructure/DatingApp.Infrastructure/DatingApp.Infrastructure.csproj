@@ -8,14 +8,17 @@
   <ItemGroup>
     <None Remove="Data\UserSeedData.json" />
     <None Remove="Email\Templates\En\NotificationTemplate.cshtml" />
-    <None Remove="Email\Templates\En\PasswordResetTemplate.cshtml" />
-    <None Remove="Email\Templates\En\WelcomeTemplate.cshtml" />
+    <None Remove="Email\Templates\En\PasswordReset.cshtml" />
+    <None Remove="Email\Templates\En\WelcomeEmail.cshtml" />
+    <None Remove="Email\Templates\He\Account\PasswordReset.cshtml" />
+    <None Remove="Email\Templates\He\Account\WelcomeEmail.cshtml" />
+    <None Remove="Email\Templates\Ru\Account\PasswordReset.cshtml" />
+    <None Remove="Email\Templates\Ru\Account\WelcomeEmail.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Email\Templates\En\NotificationTemplate.cshtml" />
-    <Content Include="Email\Templates\En\PasswordResetTemplate.cshtml" />
-    <Content Include="Email\Templates\En\WelcomeTemplate.cshtml" />
+    <Content Include="Email\Templates\En\Account\PasswordReset.cshtml" />
+    <Content Include="Email\Templates\En\Account\WelcomeEmail.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +27,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="Email\Templates\He\Account\PasswordReset.cshtml" />
+    <Content Include="Email\Templates\He\Account\WelcomeEmail.cshtml" />
+    <Content Include="Email\Templates\Ru\Account\PasswordReset.cshtml" />
+    <Content Include="Email\Templates\Ru\Account\WelcomeEmail.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,8 +58,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Email\Templates\He\" />
-    <Folder Include="Email\Templates\Ru\" />
+    <Folder Include="Email\Templates\En\Engagement\" />
+    <Folder Include="Email\Templates\En\Marketing\" />
+    <Folder Include="Email\Templates\En\UserActivity\" />
+    <Folder Include="Email\Templates\En\Safety\" />
+    <Folder Include="Email\Templates\En\Payment\" />
+    <Folder Include="Email\Templates\En\Subscription\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
 
