@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "План подписки обновлен";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>План подписки обновлен</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Ваш план подписки был успешно @Model.ChangeType (обновлен/понижен) до плана @Model.NewPlan. Наслаждайтесь новыми функциями!</p>
+    <p><a href="@Model.AccountLink">Просмотреть детали плана</a></p>
+</body>
+</html>

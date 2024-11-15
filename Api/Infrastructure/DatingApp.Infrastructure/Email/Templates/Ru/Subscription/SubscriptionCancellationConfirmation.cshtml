@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Подписка отменена";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Подписка отменена</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Ваша подписка была отменена. Вы сохраните доступ до @Model.EndDate. Если вы передумаете, вы сможете легко восстановить подписку.</p>
+    <p><a href="@Model.ReactivationLink">Восстановить подписку</a></p>
+</body>
+</html>

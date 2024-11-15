@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Новый комментарий к вашему профилю";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Кто-то оставил комментарий к вашему профилю!</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>@Model.CommenterName оставил комментарий к вашему профилю:</p>
+    <blockquote>@Model.CommentText</blockquote>
+    <p>Посмотрите и продолжайте общение!</p>
+    <p><a href="@Model.ProfileLink">Просмотреть комментарий</a></p>
+</body>
+</html>

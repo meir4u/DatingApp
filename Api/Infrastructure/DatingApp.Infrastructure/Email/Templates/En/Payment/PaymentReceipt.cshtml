@@ -1,0 +1,20 @@
+@{
+    ViewData["Title"] = "Payment Receipt";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Payment Receipt</h1>
+    <p>Hi @Model.UserName,</p>
+    <p>Thank you for your payment. Here are the details:</p>
+    <ul>
+        <li><strong>Date:</strong> @Model.PaymentDate</li>
+        <li><strong>Amount:</strong> @Model.Amount</li>
+        <li><strong>Transaction ID:</strong> @Model.TransactionId</li>
+    </ul>
+    <p>For more details, visit your <a href="@Model.AccountLink">account page</a>.</p>
+</body>
+</html>

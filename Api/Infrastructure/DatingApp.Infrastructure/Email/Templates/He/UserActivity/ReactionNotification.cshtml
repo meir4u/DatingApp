@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "מישהו הגיב על הפוסט שלך";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>התוכן שלך קיבל תגובה!</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>@Model.ReactorName הגיב על הפוסט שלך: <em>@Model.PostTitle</em>.</p>
+    <p>לחץ למטה כדי לראות את התגובה ולהצטרף לדיון:</p>
+    <p><a href="@Model.ActivityLink">צפה בתגובה</a></p>
+</body>
+</html>

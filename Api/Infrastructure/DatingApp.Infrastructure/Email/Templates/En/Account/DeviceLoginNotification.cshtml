@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "New Device Login Detected";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>New Device Login</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your account was accessed from a new device on @Model.LoginDate. If this wasn’t you, please <a href="@Model.SecurityLink">secure your account</a>.</p>
+</body>
+</html>

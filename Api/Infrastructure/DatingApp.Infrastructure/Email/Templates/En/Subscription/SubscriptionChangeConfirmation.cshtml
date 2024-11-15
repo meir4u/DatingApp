@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Subscription Plan Updated";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Subscription Plan Updated</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your subscription has been successfully @Model.ChangeType (upgraded/downgraded) to the @Model.NewPlan plan. Enjoy the new features!</p>
+    <p><a href="@Model.AccountLink">View Plan Details</a></p>
+</body>
+</html>

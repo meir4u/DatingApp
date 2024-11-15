@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Получено новое сообщение";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>У вас новое сообщение!</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>@Model.SenderName отправил вам новое сообщение. Откройте приложение, чтобы прочитать и ответить!</p>
+    <p><a href="@Model.MessagesLink">Прочитать сообщение</a></p>
+</body>
+</html>

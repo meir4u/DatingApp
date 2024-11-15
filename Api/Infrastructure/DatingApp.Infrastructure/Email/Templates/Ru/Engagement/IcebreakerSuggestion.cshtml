@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Начните разговор с новым совпадением";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Нужна идея для начала разговора?</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Вот идея, чтобы начать разговор с @Model.MatchName: "@Model.IcebreakerTip"</p>
+    <p><a href="@Model.ChatLink">Начать общение</a></p>
+</body>
+</html>

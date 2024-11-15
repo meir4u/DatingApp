@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Квитанция об оплате";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Квитанция об оплате</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Спасибо за ваш платеж. Вот детали:</p>
+    <ul>
+        <li><strong>Дата:</strong> @Model.PaymentDate</li>
+        <li><strong>Сумма:</strong> @Model.Amount</li>
+        <li><strong>ID транзакции:</strong> @Model.TransactionId</li>
+    </ul>
+    <p>Для получения дополнительной информации посетите <a href="@Model.AccountLink">страницу вашего аккаунта</a>.</p>
+</body>
+</html>

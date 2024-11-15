@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "ההתאמות השבועיות שלך";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>בדוק את ההתאמות החדשות שלך!</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>מצאנו עבורך התאמות חדשות בהתבסס על ההעדפות שלך. הנה כמה פרופילים שעשויים לעניין אותך:</p>
+    <ul>
+        @foreach (var match in Model.Matches)
+        {
+            <li><a href="@match.ProfileLink">@match.Name</a> - @match.Age, @match.Location</li>
+        }
+    </ul>
+    <p>ראה עוד על ידי התחברות לאפליקציה!</p>
+</body>
+</html>

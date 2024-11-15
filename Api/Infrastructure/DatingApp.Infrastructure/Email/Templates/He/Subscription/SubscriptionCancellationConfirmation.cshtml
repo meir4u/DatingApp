@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "המנוי בוטל";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>המנוי בוטל</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>המנוי שלך בוטל. תהיה לך גישה עד @Model.EndDate. אם תשנה את דעתך, תוכל להפעיל מחדש את המנוי בקלות.</p>
+    <p><a href="@Model.ReactivationLink">הפעל מחדש את המנוי</a></p>
+</body>
+</html>

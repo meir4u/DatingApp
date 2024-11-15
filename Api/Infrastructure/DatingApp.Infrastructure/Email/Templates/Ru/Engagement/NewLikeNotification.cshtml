@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Кто-то поставил лайк вашему профилю!";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>У вас новый лайк!</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>@Model.LikerName поставил лайк вашему профилю! Проверьте, может быть, это совпадение.</p>
+    <p><a href="@Model.LikesLink">Посмотреть лайки</a></p>
+</body>
+</html>

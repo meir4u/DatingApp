@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Complete Your Profile";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Complete Your Profile</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your profile is only @Model.CompletionPercentage% complete. Add these details to enhance your experience:</p>
+    <ul>
+        <li>@Model.SuggestedFields</li>
+    </ul>
+    <p><a href="@Model.ProfileLink">Complete your profile now</a>.</p>
+</body>
+</html>

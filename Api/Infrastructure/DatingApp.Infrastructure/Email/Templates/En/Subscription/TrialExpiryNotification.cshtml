@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Your Free Trial is Ending Soon";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Your Trial Period is Ending</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your free trial will end on @Model.ExpiryDate. Upgrade to a Premium plan to continue enjoying all the benefits.</p>
+    <p><a href="@Model.SubscriptionLink">Choose a Plan</a></p>
+</body>
+</html>

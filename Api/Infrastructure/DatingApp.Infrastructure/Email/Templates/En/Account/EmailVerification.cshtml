@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "Verify Your Email Address";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Email Verification</h1>
+    <p>Hi @Model.UserName,</p>
+    <p>To verify your email address, please click the link below:</p>
+    <a href="@Model.VerificationLink">Verify Email</a>
+    <p>If you didn't request this, please ignore this email.</p>
+</body>
+</html>

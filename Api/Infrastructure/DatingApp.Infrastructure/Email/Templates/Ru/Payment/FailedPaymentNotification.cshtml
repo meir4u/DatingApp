@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Payment Failed";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Payment Failed</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>We were unable to process your recent payment. Please update your payment information to avoid any interruption to your service.</p>
+    <p><a href="@Model.PaymentUpdateLink">Update Payment Details</a></p>
+</body>
+</html>

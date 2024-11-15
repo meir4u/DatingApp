@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "הזמנה לאירוע!";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>הצטרף לאירוע הקרוב שלנו!</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>אתה מוזמן לאירוע הבא שלנו, @Model.EventName. התחבר לאחרים וצור התאמות חדשות!</p>
+    <p>
+        <strong>תאריך:</strong> @Model.EventDate<br />
+        <strong>מיקום:</strong> @Model.EventLocation
+    </p>
+    <p><a href="@Model.EventLink">אשר הגעה עכשיו</a></p>
+</body>
+</html>

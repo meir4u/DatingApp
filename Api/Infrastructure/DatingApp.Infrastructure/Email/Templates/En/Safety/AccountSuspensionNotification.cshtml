@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Account Suspension Notice";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Your Account Has Been Temporarily Suspended</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Due to a violation of our community guidelines, your account has been temporarily suspended. If you believe this is a mistake, please contact our support team.</p>
+    <p><a href="@Model.SupportLink">Contact Support</a></p>
+</body>
+</html>

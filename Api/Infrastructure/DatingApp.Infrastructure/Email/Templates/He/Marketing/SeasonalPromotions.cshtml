@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "הצעה מיוחדת לחג במיוחד בשבילך!";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>מיוחד לחג: @Model.DiscountPercentage% הנחה על פרימיום!</h1>
+    <p>ברכות חג שמח, @Model.UserName! לזמן מוגבל, תהנה מ-@Model.DiscountPercentage% הנחה על תוכניות הפרימיום שלנו. אל תפספס!</p>
+    <p><a href="@Model.PromotionLink">נצל את ההנחה שלך</a></p>
+</body>
+</html>

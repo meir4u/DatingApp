@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Start a Conversation with a New Match";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Need a Conversation Starter?</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Here's an idea to break the ice with @Model.MatchName: "@Model.IcebreakerTip"</p>
+    <p><a href="@Model.ChatLink">Start Chatting</a></p>
+</body>
+</html>

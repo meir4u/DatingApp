@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "התקבלה הודעה חדשה";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>קיבלת הודעה חדשה!</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>@Model.SenderName שלח לך הודעה חדשה. פתח את האפליקציה כדי לקרוא ולהשיב!</p>
+    <p><a href="@Model.MessagesLink">קרא את ההודעה</a></p>
+</body>
+</html>

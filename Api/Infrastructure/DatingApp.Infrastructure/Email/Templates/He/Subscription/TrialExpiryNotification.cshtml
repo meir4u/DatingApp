@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "תקופת הניסיון החינמית שלך מסתיימת בקרוב";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>תקופת הניסיון שלך מסתיימת</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>תקופת הניסיון החינמית שלך תסתיים בתאריך @Model.ExpiryDate. שדרג לתוכנית פרימיום כדי להמשיך ליהנות מכל היתרונות.</p>
+    <p><a href="@Model.SubscriptionLink">בחר תוכנית</a></p>
+</body>
+</html>

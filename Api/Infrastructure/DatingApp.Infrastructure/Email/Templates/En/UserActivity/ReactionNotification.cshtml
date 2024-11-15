@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "Someone Reacted to Your Post";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Your Content Got a Reaction!</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>@Model.ReactorName reacted to your post: <em>@Model.PostTitle</em>.</p>
+    <p>Click below to see their reaction and join the discussion:</p>
+    <p><a href="@Model.ActivityLink">View Reaction</a></p>
+</body>
+</html>

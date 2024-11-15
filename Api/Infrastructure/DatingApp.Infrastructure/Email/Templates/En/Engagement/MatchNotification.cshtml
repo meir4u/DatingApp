@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "You've Got a New Match!";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>It's a Match!</h1>
+    <p>Hi @Model.UserName,</p>
+    <p>You've matched with @Model.MatchName. Send a message and start chatting!</p>
+    <p><a href="@Model.MatchLink">View Match</a></p>
+</body>
+</html>

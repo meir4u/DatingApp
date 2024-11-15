@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Скоро продление подписки";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Напоминание о продлении подписки</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Ваша подписка будет продлена @Model.RenewalDate. Действие не требуется, если вы не хотите внести изменения в ваш план.</p>
+    <p><a href="@Model.ManageLink">Управлять подпиской</a></p>
+</body>
+</html>

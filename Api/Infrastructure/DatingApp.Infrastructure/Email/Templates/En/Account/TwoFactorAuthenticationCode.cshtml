@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Your Two-Factor Authentication Code";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Your 2FA Code</h1>
+    <p>Use the following code to complete your login:</p>
+    <h2>@Model.TwoFactorCode</h2>
+    <p>This code is valid for a limited time only.</p>
+</body>
+</html>

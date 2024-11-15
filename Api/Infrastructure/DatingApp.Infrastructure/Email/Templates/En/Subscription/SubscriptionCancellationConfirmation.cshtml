@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Subscription Canceled";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Subscription Canceled</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your subscription has been canceled. You’ll retain access until @Model.EndDate. If you change your mind, you can easily reactivate your subscription.</p>
+    <p><a href="@Model.ReactivationLink">Reactivate Subscription</a></p>
+</body>
+</html>

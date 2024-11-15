@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Ваше участие подтверждено!";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Вы в списке!</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Ваше участие в мероприятии <strong>@Model.EventName</strong> на @Model.EventDate подтверждено. Мы рады видеть вас там!</p>
+    <p>Место: @Model.EventLocation</p>
+    <p><a href="@Model.EventDetailsLink">Посмотреть детали мероприятия</a></p>
+</body>
+</html>

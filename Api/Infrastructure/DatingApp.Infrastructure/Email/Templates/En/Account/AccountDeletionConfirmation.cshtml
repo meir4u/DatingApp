@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Account Deleted";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Account Deleted</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your account has been deleted. If this was a mistake, <a href="@Model.ReactivationLink">click here</a> to reactivate within the next 30 days.</p>
+</body>
+</html>

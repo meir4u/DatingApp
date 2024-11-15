@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Ваши еженедельные совпадения";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Посмотрите ваши новые совпадения!</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Мы нашли для вас новые совпадения на основе ваших предпочтений. Вот несколько профилей, которые могут вам понравиться:</p>
+    <ul>
+        @foreach (var match in Model.Matches)
+        {
+            <li><a href="@match.ProfileLink">@match.Name</a> - @match.Age, @match.Location</li>
+        }
+    </ul>
+    <p>Узнайте больше, войдя в приложение!</p>
+</body>
+</html>

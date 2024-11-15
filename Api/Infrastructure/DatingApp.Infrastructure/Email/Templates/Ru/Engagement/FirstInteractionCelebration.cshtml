@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Поздравляем с вашим первым совпадением!";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Поздравляем!</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Вы только что создали свое первое совпадение на нашей платформе. Отправьте сообщение @Model.MatchName и начните знакомиться!</p>
+    <p><a href="@Model.MatchLink">Перейти к совпадению</a></p>
+</body>
+</html>

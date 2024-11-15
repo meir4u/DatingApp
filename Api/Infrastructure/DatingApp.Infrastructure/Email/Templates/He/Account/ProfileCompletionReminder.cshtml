@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "השלם את הפרופיל שלך";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>השלם את הפרופיל שלך</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>הפרופיל שלך הושלם רק ב-@Model.CompletionPercentage%. הוסף את הפרטים הבאים כדי לשפר את החוויה שלך:</p>
+    <ul>
+        <li>@Model.SuggestedFields</li>
+    </ul>
+    <p><a href="@Model.ProfileLink">השלם את הפרופיל שלך עכשיו</a>.</p>
+</body>
+</html>

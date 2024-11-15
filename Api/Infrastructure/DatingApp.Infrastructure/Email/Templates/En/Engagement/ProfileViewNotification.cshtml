@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Someone Viewed Your Profile";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Your Profile Was Viewed!</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>@Model.ViewerName checked out your profile. Take a look and see if you're interested in connecting.</p>
+    <p><a href="@Model.ProfileViewsLink">View Profile</a></p>
+</body>
+</html>

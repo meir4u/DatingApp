@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Congratulations on Your First Match!";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Congratulations!</h1>
+    <p>Hi @Model.UserName,</p>
+    <p>You’ve just made your first match on our platform. Send a message to @Model.MatchName and start getting to know each other!</p>
+    <p><a href="@Model.MatchLink">Go to Match</a></p>
+</body>
+</html>

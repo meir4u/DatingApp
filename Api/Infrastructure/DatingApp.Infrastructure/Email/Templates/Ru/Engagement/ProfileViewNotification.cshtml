@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Кто-то просмотрел ваш профиль";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Ваш профиль просмотрели!</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>@Model.ViewerName посмотрел ваш профиль. Узнайте, хотите ли вы установить контакт.</p>
+    <p><a href="@Model.ProfileViewsLink">Просмотреть профиль</a></p>
+</body>
+</html>

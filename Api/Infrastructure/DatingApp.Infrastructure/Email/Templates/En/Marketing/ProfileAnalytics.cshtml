@@ -1,0 +1,20 @@
+@{
+    ViewData["Title"] = "Your Monthly Profile Insights";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Your Profile Performance Summary</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Here’s a quick look at your profile’s performance this month:</p>
+    <ul>
+        <li><strong>Profile Views:</strong> @Model.ProfileViews</li>
+        <li><strong>New Likes:</strong> @Model.NewLikes</li>
+        <li><strong>Matches:</strong> @Model.Matches</li>
+    </ul>
+    <p>Take advantage of this data to optimize your interactions and make more connections!</p>
+</body>
+</html>

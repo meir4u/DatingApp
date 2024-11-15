@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "חידוש מנוי מתקרב";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>תזכורת לחידוש המנוי</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>המנוי שלך צפוי להתחדש בתאריך @Model.RenewalDate. אין צורך בפעולה אלא אם כן ברצונך לבצע שינויים בתוכנית שלך.</p>
+    <p><a href="@Model.ManageLink">נהל את המנוי</a></p>
+</body>
+</html>

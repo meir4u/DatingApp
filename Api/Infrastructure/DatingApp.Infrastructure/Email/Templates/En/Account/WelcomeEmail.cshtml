@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Welcome to Our App";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Welcome, @Model.UserName!</h1>
+    <p>Thank you for joining us! We're thrilled to have you. Here are a few key features to help you get started:</p>
+    <ul>
+        <li>Explore our main dashboard to get an overview</li>
+        <li>Update your profile to tailor your experience</li>
+        <li>Check out settings for additional features</li>
+    </ul>
+    <p>Complete your profile to unlock all features. Click <a href="@Model.ProfileLink">here</a> to get started.</p>
+    <p>Welcome aboard!</p>
+</body>
+</html>

@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Special Holiday Offer Just for You!";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Holiday Special: @Model.DiscountPercentage% Off Premium!</h1>
+    <p>Season's greetings, @Model.UserName! For a limited time, enjoy @Model.DiscountPercentage% off on our Premium plans. Don’t miss out!</p>
+    <p><a href="@Model.PromotionLink">Claim Your Discount</a></p>
+</body>
+</html>

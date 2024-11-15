@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Someone Likes Your Profile!";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>You've Got a New Like!</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>@Model.LikerName just liked your profile! Check it out and see if they're a match.</p>
+    <p><a href="@Model.LikesLink">View Likes</a></p>
+</body>
+</html>

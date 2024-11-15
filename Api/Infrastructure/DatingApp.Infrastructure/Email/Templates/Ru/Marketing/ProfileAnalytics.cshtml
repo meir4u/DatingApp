@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Ваши ежемесячные данные о профиле";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Результаты работы вашего профиля</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Вот краткий обзор работы вашего профиля за этот месяц:</p>
+    <ul>
+        <li><strong>Просмотры профиля:</strong> @Model.ProfileViews</li>
+        <li><strong>Новые лайки:</strong> @Model.NewLikes</li>
+        <li><strong>Совпадения:</strong> @Model.Matches</li>
+    </ul>
+    <p>Используйте эти данные, чтобы оптимизировать свои взаимодействия и находить больше совпадений!</p>
+</body>
+</html>

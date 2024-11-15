@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "קבלה על תשלום";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>קבלה על תשלום</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>תודה על התשלום שלך. להלן הפרטים:</p>
+    <ul>
+        <li><strong>תאריך:</strong> @Model.PaymentDate</li>
+        <li><strong>סכום:</strong> @Model.Amount</li>
+        <li><strong>מספר עסקה:</strong> @Model.TransactionId</li>
+    </ul>
+    <p>למידע נוסף, בקר בדף ה-<a href="@Model.AccountLink">חשבון שלך</a>.</p>
+</body>
+</html>

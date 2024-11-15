@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Your Post Has Been Approved";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Your Content is Now Live!</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>We’ve reviewed and approved your recent submission: <em>@Model.PostTitle</em>. It’s now visible to other users!</p>
+    <p><a href="@Model.ContentLink">View Your Post</a></p>
+</body>
+</html>

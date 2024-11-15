@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "תוצאות הסקר שלך מוכנות!";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>תוצאות הסקר כאן!</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>השתתפת בסקר: <em>@Model.PollTitle</em>. הנה התוצאות:</p>
+    <ul>
+        @foreach (var result in Model.Results)
+        {
+            <li>@result.Option: @result.Percentage%</li>
+        }
+    </ul>
+    <p>תודה שחלקת את דעתך!</p>
+</body>
+</html>

@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "אמת את כתובת האימייל שלך";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>אימות אימייל</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>כדי לאמת את כתובת האימייל שלך, אנא לחץ על הקישור הבא:</p>
+    <a href="@Model.VerificationLink">אמת אימייל</a>
+    <p>אם לא ביקשת זאת, התעלם מהמייל הזה.</p>
+</body>
+</html>

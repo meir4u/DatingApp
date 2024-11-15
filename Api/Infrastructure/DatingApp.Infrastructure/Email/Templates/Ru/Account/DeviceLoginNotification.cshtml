@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Обнаружен вход с нового устройства";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Вход с нового устройства</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Был зафиксирован вход в ваш аккаунт с нового устройства @Model.LoginDate. Если это были не вы, пожалуйста, <a href="@Model.SecurityLink">защитите свой аккаунт</a>.</p>
+</body>
+</html>

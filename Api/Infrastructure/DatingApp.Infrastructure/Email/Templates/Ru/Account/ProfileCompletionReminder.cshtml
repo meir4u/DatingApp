@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Заполните свой профиль";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Заполните свой профиль</h1>
+    <p>Здравствуйте, @Model.UserName,</p>
+    <p>Ваш профиль заполнен на @Model.CompletionPercentage%. Добавьте следующие детали, чтобы улучшить свой опыт:</p>
+    <ul>
+        <li>@Model.SuggestedFields</li>
+    </ul>
+    <p><a href="@Model.ProfileLink">Заполните свой профиль сейчас</a>.</p>
+</body>
+</html>

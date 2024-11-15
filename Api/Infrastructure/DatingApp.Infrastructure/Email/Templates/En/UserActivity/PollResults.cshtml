@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Your Poll Results Are In!";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Poll Results Are Here!</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>You participated in the poll: <em>@Model.PollTitle</em>. Here are the results:</p>
+    <ul>
+        @foreach (var result in Model.Results)
+        {
+            <li>@result.Option: @result.Percentage%</li>
+        }
+    </ul>
+    <p>Thanks for sharing your opinion!</p>
+</body>
+</html>

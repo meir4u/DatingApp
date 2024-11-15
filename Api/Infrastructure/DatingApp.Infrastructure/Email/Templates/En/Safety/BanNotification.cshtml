@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Account Ban Notice";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Your Account Has Been Permanently Banned</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your account has been permanently banned for repeated violations of our community guidelines. If you wish to appeal, please follow the instructions provided.</p>
+    <p><a href="@Model.AppealLink">Submit an Appeal</a></p>
+</body>
+</html>

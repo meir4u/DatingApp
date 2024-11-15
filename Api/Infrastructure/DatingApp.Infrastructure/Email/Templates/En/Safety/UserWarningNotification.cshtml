@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Account Warning";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Warning: Violation of Community Guidelines</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your account has received a warning for behavior that does not align with our community guidelines. Please review our guidelines to avoid further actions.</p>
+    <p><a href="@Model.GuidelinesLink">Review Guidelines</a></p>
+</body>
+</html>

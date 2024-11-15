@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "New Message Received";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>You've Got a New Message!</h1>
+    <p>Hi @Model.UserName,</p>
+    <p>@Model.SenderName sent you a new message. Open the app to read and respond!</p>
+    <p><a href="@Model.MessagesLink">Read Message</a></p>
+</body>
+</html>

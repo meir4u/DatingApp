@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "הפוסט שלך אושר";
+}
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>התוכן שלך זמין עכשיו!</h1>
+    <p>שלום @Model.UserName,</p>
+    <p>בדקנו ואישרנו את הפוסט האחרון שלך: <em>@Model.PostTitle</em>. הוא עכשיו גלוי למשתמשים אחרים!</p>
+    <p><a href="@Model.ContentLink">צפה בפוסט שלך</a></p>
+</body>
+</html>

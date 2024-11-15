@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "Your RSVP is Confirmed!";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>You’re In!</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your RSVP for <strong>@Model.EventName</strong> on @Model.EventDate has been confirmed. We’re excited to see you there!</p>
+    <p>Location: @Model.EventLocation</p>
+    <p><a href="@Model.EventDetailsLink">View Event Details</a></p>
+</body>
+</html>

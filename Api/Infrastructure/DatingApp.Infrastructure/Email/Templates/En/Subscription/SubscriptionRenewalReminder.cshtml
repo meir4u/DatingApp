@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Upcoming Subscription Renewal";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Subscription Renewal Reminder</h1>
+    <p>Hello @Model.UserName,</p>
+    <p>Your subscription is set to renew on @Model.RenewalDate. No action is required unless you wish to make changes to your plan.</p>
+    <p><a href="@Model.ManageLink">Manage Subscription</a></p>
+</body>
+</html>
