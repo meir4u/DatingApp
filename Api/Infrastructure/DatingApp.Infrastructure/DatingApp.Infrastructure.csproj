@@ -58,7 +58,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Email\Templates\En\Engagement\" />
     <Folder Include="Email\Templates\En\Marketing\" />
     <Folder Include="Email\Templates\En\UserActivity\" />
     <Folder Include="Email\Templates\En\Safety\" />
