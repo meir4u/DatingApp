@@ -32,6 +32,10 @@ namespace DatingApp.Infrastructure.Scheduling.Email
             // Deserialize the job data back to TemplatedEmailJobData
             var jobData = JsonConvert.DeserializeObject<TemplatedEmailJobData>(jobDataJson);
 
+            if(string.IsNullOrEmpty(jobData?.RecipientEmail))
+            {
+                throw new ArgumentNullException(nameof(jobData.RecipientEmail), $"{nameof(jobData.RecipientEmail)} email cannot be null or empty");
+            }
             // Dynamically determine the model type
             var modelType = Type.GetType(jobData.ModelType);
             var model = JsonConvert.DeserializeObject(jobData.Model.ToString(), modelType);
