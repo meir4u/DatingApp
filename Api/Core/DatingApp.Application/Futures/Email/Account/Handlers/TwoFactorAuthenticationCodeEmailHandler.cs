@@ -1,5 +1,8 @@
 ﻿using DatingApp.Application.Futures.Email.Account.Requests;
 using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +18,33 @@ namespace DatingApp.Application.Futures.Email.Account.Handlers
     /// <summary>
     /// Sends a temporary code for users who have enabled two-factor authentication.
     /// </summary>
-    public class TwoFactorAuthenticationCodeEmailHandler : IRequestHandler<TwoFactorAuthenticationCodeEmailRequest, TwoFactorAuthenticationCodeEmailResponse>
+    public class TwoFactorAuthenticationCodeEmailHandler : BaseEmailHandler<TwoFactorAuthenticationCodeEmailRequest, TwoFactorAuthenticationCodeEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
-
-        public TwoFactorAuthenticationCodeEmailHandler(IEnhancedEmailService enhancedEmailService)
+        protected override string _templateName { get; set; } = "TwoFactorAuthenticationCode";
+        public TwoFactorAuthenticationCodeEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<TwoFactorAuthenticationCodeEmailResponse> Handle(TwoFactorAuthenticationCodeEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<TwoFactorAuthenticationCodeEmailResponse> Handle(TwoFactorAuthenticationCodeEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new TwoFactorAuthenticationCodeEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

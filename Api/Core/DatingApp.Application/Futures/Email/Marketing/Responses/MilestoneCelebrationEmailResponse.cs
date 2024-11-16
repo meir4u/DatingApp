@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatingApp.Application.Futures.Email.Engagement.Responses
+namespace DatingApp.Application.Futures.Email.Marketing.Responses
 {
-    public class EventInvitationsEmailResponse : BaseCommandResponse
+    public class MilestoneCelebrationEmailResponse : BaseCommandResponse
     {
     }
 }

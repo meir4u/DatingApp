@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Marketing.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Marketing.Requests;
 using DatingApp.Application.Futures.Email.Marketing.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.Marketing.Handlers
     /// <summary>
     /// Invites users to refer friends to the app, often with an incentive (like a free month of premium service).
     /// </summary>
-    public class ReferralInvitationEmailHandler : IRequestHandler<ReferralInvitationEmailRequest, ReferralInvitationEmailResponse>
+    public class ReferralInvitationEmailHandler : BaseEmailHandler<ReferralInvitationEmailRequest, ReferralInvitationEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "ReferralInvitation";
 
-        public ReferralInvitationEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public ReferralInvitationEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<ReferralInvitationEmailResponse> Handle(ReferralInvitationEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<ReferralInvitationEmailResponse> Handle(ReferralInvitationEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new ReferralInvitationEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Subscription.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Subscription.Requests;
 using DatingApp.Application.Futures.Email.Subscription.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.Subscription.Handlers
     /// <summary>
     /// Confirms that a user’s subscription has been canceled.
     /// </summary>
-    public class SubscriptionCancellationConfirmationEmailHandler : IRequestHandler<SubscriptionCancellationConfirmationEmailRequest, SubscriptionCancellationConfirmationEmailResponse>
+    public class SubscriptionCancellationConfirmationEmailHandler : BaseEmailHandler<SubscriptionCancellationConfirmationEmailRequest, SubscriptionCancellationConfirmationEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "SubscriptionCancellationConfirmation";
 
-        public SubscriptionCancellationConfirmationEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public SubscriptionCancellationConfirmationEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<SubscriptionCancellationConfirmationEmailResponse> Handle(SubscriptionCancellationConfirmationEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<SubscriptionCancellationConfirmationEmailResponse> Handle(SubscriptionCancellationConfirmationEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new SubscriptionCancellationConfirmationEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

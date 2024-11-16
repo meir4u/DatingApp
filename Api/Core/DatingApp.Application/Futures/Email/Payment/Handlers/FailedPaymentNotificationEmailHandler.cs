@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Payment.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Payment.Requests;
 using DatingApp.Application.Futures.Email.Payment.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.Payment.Handlers
     /// <summary>
     /// Notifies users when a payment fails, including steps to update payment information.
     /// </summary>
-    public class FailedPaymentNotificationEmailHandler : IRequestHandler<FailedPaymentNotificationEmailRequest, FailedPaymentNotificationEmailResponse>
+    public class FailedPaymentNotificationEmailHandler : BaseEmailHandler<FailedPaymentNotificationEmailRequest, FailedPaymentNotificationEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "FailedPaymentNotification";
 
-        public FailedPaymentNotificationEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public FailedPaymentNotificationEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<FailedPaymentNotificationEmailResponse> Handle(FailedPaymentNotificationEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<FailedPaymentNotificationEmailResponse> Handle(FailedPaymentNotificationEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new FailedPaymentNotificationEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

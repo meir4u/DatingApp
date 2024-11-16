@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Marketing.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Marketing.Requests;
 using DatingApp.Application.Futures.Email.Marketing.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.Marketing.Handlers
     /// <summary>
     /// Offers discounts or limited-time promotions around holidays or special occasions.
     /// </summary>
-    public class SeasonalPromotionsEmailHandler : IRequestHandler<SeasonalPromotionsEmailRequest, SeasonalPromotionsEmailResponse>
+    public class SeasonalPromotionsEmailHandler : BaseEmailHandler<SeasonalPromotionsEmailRequest, SeasonalPromotionsEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "SeasonalPromotions";
 
-        public SeasonalPromotionsEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public SeasonalPromotionsEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<SeasonalPromotionsEmailResponse> Handle(SeasonalPromotionsEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<SeasonalPromotionsEmailResponse> Handle(SeasonalPromotionsEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new SeasonalPromotionsEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

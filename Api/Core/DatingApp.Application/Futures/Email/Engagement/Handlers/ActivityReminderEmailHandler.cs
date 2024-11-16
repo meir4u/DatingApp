@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Engagement.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Engagement.Requests;
 using DatingApp.Application.Futures.Email.Engagement.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,33 @@ namespace DatingApp.Application.Futures.Email.Engagement.Handlers
     /// <summary>
     /// Encourages users to log in if they haven’t been active for a certain period, potentially with suggestions on new features or updates.
     /// </summary>
-    public class ActivityReminderEmailHandler : IRequestHandler<ActivityReminderEmailRequest, ActivityReminderEmailResponse>
+    public class ActivityReminderEmailHandler : BaseEmailHandler<ActivityReminderEmailRequest, ActivityReminderEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
-
-        public ActivityReminderEmailHandler(IEnhancedEmailService enhancedEmailService)
+        protected override string _templateName { get; set; } = "ActivityReminder";
+        public ActivityReminderEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<ActivityReminderEmailResponse> Handle(ActivityReminderEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<ActivityReminderEmailResponse> Handle(ActivityReminderEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new ActivityReminderEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

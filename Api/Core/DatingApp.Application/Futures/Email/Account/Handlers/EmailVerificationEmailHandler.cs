@@ -1,5 +1,8 @@
 ﻿using DatingApp.Application.Futures.Email.Account.Requests;
 using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +18,33 @@ namespace DatingApp.Application.Futures.Email.Account.Handlers
     /// <summary>
     /// Sent immediately after signup or email update, requiring the user to verify their email address.
     /// </summary>
-    public class EmailVerificationEmailHandler : IRequestHandler<EmailVerificationEmailRequest, EmailVerificationEmailResponse>
+    public class EmailVerificationEmailHandler : BaseEmailHandler<EmailVerificationEmailRequest, EmailVerificationEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
-
-        public EmailVerificationEmailHandler(IEnhancedEmailService enhancedEmailService)
+        protected override string _templateName { get; set; } = "EmailVerification";
+        public EmailVerificationEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<EmailVerificationEmailResponse> Handle(EmailVerificationEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<EmailVerificationEmailResponse> Handle(EmailVerificationEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new EmailVerificationEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

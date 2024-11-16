@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Engagement.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Engagement.Requests;
 using DatingApp.Application.Futures.Email.Engagement.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,33 @@ namespace DatingApp.Application.Futures.Email.Engagement.Handlers
     /// <summary>
     ///  Congratulates users on their first match sent on the platform to encourage engagement.
     /// </summary>
-    public class FirstMatchEmailHandler : IRequestHandler<FirstMatchEmailRequest, FirstMatchEmailResponse>
+    public class FirstMatchEmailHandler : BaseEmailHandler<FirstMatchEmailRequest, FirstMatchEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
-
-        public FirstMatchEmailHandler(IEnhancedEmailService enhancedEmailService)
+        protected override string _templateName { get; set; } = "FirstMatchCelebration";
+        public FirstMatchEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<FirstMatchEmailResponse> Handle(FirstMatchEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<FirstMatchEmailResponse> Handle(FirstMatchEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new FirstMatchEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

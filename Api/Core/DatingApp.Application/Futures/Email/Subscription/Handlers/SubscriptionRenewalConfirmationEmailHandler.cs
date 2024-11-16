@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Subscription.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Subscription.Requests;
 using DatingApp.Application.Futures.Email.Subscription.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -12,17 +16,34 @@ using static Google.Apis.Requests.BatchRequest;
 
 namespace DatingApp.Application.Futures.Email.Subscription.Handlers
 {
-    public class SubscriptionRenewalConfirmationEmailHandler : IRequestHandler<SubscriptionRenewalConfirmationEmailRequest, SubscriptionRenewalConfirmationEmailResponse>
+    public class SubscriptionRenewalConfirmationEmailHandler : BaseEmailHandler<SubscriptionRenewalConfirmationEmailRequest, SubscriptionRenewalConfirmationEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "SubscriptionRenewalConfirmation";
 
-        public SubscriptionRenewalConfirmationEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public SubscriptionRenewalConfirmationEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<SubscriptionRenewalConfirmationEmailResponse> Handle(SubscriptionRenewalConfirmationEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<SubscriptionRenewalConfirmationEmailResponse> Handle(SubscriptionRenewalConfirmationEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new SubscriptionRenewalConfirmationEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

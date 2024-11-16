@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Marketing.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Marketing.Requests;
 using DatingApp.Application.Futures.Email.Marketing.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.Marketing.Handlers
     /// <summary>
     ///  Sends personalized suggestions for improving profile visibility or increasing engagement, based on the user's behavior.
     /// </summary>
-    public class PersonalizedRecommendationsEmailHandler : IRequestHandler<PersonalizedRecommendationsEmailRequest, PersonalizedRecommendationsEmailResponse>
+    public class PersonalizedRecommendationsEmailHandler : BaseEmailHandler<PersonalizedRecommendationsEmailRequest, PersonalizedRecommendationsEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "PersonalizedRecommendations";
 
-        public PersonalizedRecommendationsEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public PersonalizedRecommendationsEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<PersonalizedRecommendationsEmailResponse> Handle(PersonalizedRecommendationsEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<PersonalizedRecommendationsEmailResponse> Handle(PersonalizedRecommendationsEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new PersonalizedRecommendationsEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

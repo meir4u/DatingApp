@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Engagement.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Engagement.Requests;
 using DatingApp.Application.Futures.Email.Engagement.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.Engagement.Handlers
     /// <summary>
     /// Provides users with conversation starters or tips for messaging their matches.
     /// </summary>
-    public class IcebreakerSuggestionEmailHandler : IRequestHandler<IcebreakerSuggestionEmailRequest, IcebreakerSuggestionEmailResponse>
+    public class IcebreakerSuggestionEmailHandler : BaseEmailHandler<IcebreakerSuggestionEmailRequest, IcebreakerSuggestionEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "IcebreakerSuggestion";
 
-        public IcebreakerSuggestionEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public IcebreakerSuggestionEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<IcebreakerSuggestionEmailResponse> Handle(IcebreakerSuggestionEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<IcebreakerSuggestionEmailResponse> Handle(IcebreakerSuggestionEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new IcebreakerSuggestionEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

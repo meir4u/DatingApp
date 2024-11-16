@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Engagement.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Engagement.Requests;
 using DatingApp.Application.Futures.Email.Engagement.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.Engagement.Handlers
     /// <summary>
     /// Alerts the user when someone they might be interested in is in their vicinity (if location-based features are enabled).
     /// </summary>
-    public class UserNearbyNotificationEmailHandler : IRequestHandler<UserNearbyNotificationEmailRequest, UserNearbyNotificationEmailResponse>
+    public class UserNearbyNotificationEmailHandler : BaseEmailHandler<UserNearbyNotificationEmailRequest, UserNearbyNotificationEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "UserNearbyNotification";
 
-        public UserNearbyNotificationEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public UserNearbyNotificationEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<UserNearbyNotificationEmailResponse> Handle(UserNearbyNotificationEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<UserNearbyNotificationEmailResponse> Handle(UserNearbyNotificationEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new UserNearbyNotificationEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

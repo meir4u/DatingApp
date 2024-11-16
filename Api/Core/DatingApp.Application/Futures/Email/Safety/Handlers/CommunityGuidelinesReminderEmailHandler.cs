@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Safety.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Safety.Requests;
 using DatingApp.Application.Futures.Email.Safety.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.Safety.Handlers
     /// <summary>
     /// Sends periodic reminders about community guidelines and expected behavior on the platform.
     /// </summary>
-    public class CommunityGuidelinesReminderEmailHandler : IRequestHandler<CommunityGuidelinesReminderEmailRequest, CommunityGuidelinesReminderEmailResponse>
+    public class CommunityGuidelinesReminderEmailHandler : BaseEmailHandler<CommunityGuidelinesReminderEmailRequest, CommunityGuidelinesReminderEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "CommunityGuidelinesReminder";
 
-        public CommunityGuidelinesReminderEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public CommunityGuidelinesReminderEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<CommunityGuidelinesReminderEmailResponse> Handle(CommunityGuidelinesReminderEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<CommunityGuidelinesReminderEmailResponse> Handle(CommunityGuidelinesReminderEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new CommunityGuidelinesReminderEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

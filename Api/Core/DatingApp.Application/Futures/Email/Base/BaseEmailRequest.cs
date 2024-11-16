@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace DatingApp.Application.Futures.Email.Base
 {
-    public class BaseEmailRequest
+    public abstract class BaseEmailRequest
     {
-        public string RecipientEmail { get; set; }
-        public string TemplateName { get; set; }
+        public string Username { get; set; }
     }
 }

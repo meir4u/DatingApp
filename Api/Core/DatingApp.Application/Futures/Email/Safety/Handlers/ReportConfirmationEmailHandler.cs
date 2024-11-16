@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.Safety.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.Safety.Requests;
 using DatingApp.Application.Futures.Email.Safety.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.Safety.Handlers
     /// <summary>
     /// Confirms that the user’s report (e.g., for inappropriate behavior or content) has been received and will be reviewed.
     /// </summary>
-    public class ReportConfirmationEmailHandler : IRequestHandler<ReportConfirmationEmailRequest, ReportConfirmationEmailResponse>
+    public class ReportConfirmationEmailHandler : BaseEmailHandler<ReportConfirmationEmailRequest, ReportConfirmationEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "ReportConfirmation";
 
-        public ReportConfirmationEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public ReportConfirmationEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<ReportConfirmationEmailResponse> Handle(ReportConfirmationEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<ReportConfirmationEmailResponse> Handle(ReportConfirmationEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new ReportConfirmationEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

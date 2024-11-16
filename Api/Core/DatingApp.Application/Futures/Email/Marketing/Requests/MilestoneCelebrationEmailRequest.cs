@@ -1,5 +1,5 @@
 ﻿using DatingApp.Application.Futures.Email.Base;
-using DatingApp.Application.Futures.Email.Engagement.Responses;
+using DatingApp.Application.Futures.Email.Marketing.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using static Google.Apis.Requests.BatchRequest;
 
-namespace DatingApp.Application.Futures.Email.Engagement.Requests
+namespace DatingApp.Application.Futures.Email.Marketing.Requests
 {
-    public class EventInvitationsEmailRequest : BaseEmailRequest, IRequest<EventInvitationsEmailResponse>
+    public class MilestoneCelebrationEmailRequest : BaseEmailRequest, IRequest<MilestoneCelebrationEmailResponse>
     {
     }
 }

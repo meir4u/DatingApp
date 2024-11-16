@@ -1,5 +1,9 @@
-﻿using DatingApp.Application.Futures.Email.UserActivity.Requests;
+﻿using DatingApp.Application.Futures.Email.Account.Responses;
+using DatingApp.Application.Futures.Email.Base;
+using DatingApp.Application.Futures.Email.UserActivity.Requests;
 using DatingApp.Application.Futures.Email.UserActivity.Responses;
+using DatingApp.Domain.Entities;
+using DatingApp.Domain.Interfaces;
 using DatingApp.Domain.Services;
 using MediatR;
 using System;
@@ -15,17 +19,34 @@ namespace DatingApp.Application.Futures.Email.UserActivity.Handlers
     /// <summary>
     /// Notifies users when someone leaves a comment on their profile.
     /// </summary>
-    public class NewCommentOnProfileEmailHandler : IRequestHandler<NewCommentOnProfileEmailRequest, NewCommentOnProfileEmailResponse>
+    public class NewCommentOnProfileEmailHandler : BaseEmailHandler<NewCommentOnProfileEmailRequest, NewCommentOnProfileEmailResponse>
     {
-        private readonly IEnhancedEmailService _enhancedEmailService;
+        protected override string _templateName { get; set; } = "NewCommentNotification";
 
-        public NewCommentOnProfileEmailHandler(IEnhancedEmailService enhancedEmailService)
+        public NewCommentOnProfileEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+             : base(unitOfWork, enhancedEmailService)
         {
-            _enhancedEmailService = enhancedEmailService;
         }
-        public Task<NewCommentOnProfileEmailResponse> Handle(NewCommentOnProfileEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<NewCommentOnProfileEmailResponse> Handle(NewCommentOnProfileEmailRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = new NewCommentOnProfileEmailResponse();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
+
+                var emailJobData = new TemplatedEmailJobData()
+                {
+                    RecipientEmail = user.Email,
+                    TemplateName = _templateName,
+                };
+                await _enhancedEmailService.ScheduleEmailAsync(emailJobData, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message);
+            }
+
+            return response;
         }
     }
 }

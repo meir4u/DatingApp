@@ -17,19 +17,19 @@ using static Google.Apis.Requests.BatchRequest;
 namespace DatingApp.Application.Futures.Email.Marketing.Handlers
 {
     /// <summary>
-    /// Notifies users when a major app update has been released, highlighting improvements or new features.
+    /// Celebrates milestones such as the app’s anniversary, the user's anniversary on the platform, or reaching a certain number of matches/messages.
     /// </summary>
-    public class AppUpdateNotificationEmailHandler : BaseEmailHandler<AppUpdateNotificationEmailRequest, AppUpdateNotificationEmailResponse>
+    public class MilestoneCelebrationEmailHandler : BaseEmailHandler<MilestoneCelebrationEmailRequest, MilestoneCelebrationEmailResponse>
     {
-        protected override string _templateName { get; set; } = "AppUpdateNotification";
+        protected override string _templateName { get; set; } = "MilestoneCelebration";
 
-        public AppUpdateNotificationEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
+        public MilestoneCelebrationEmailHandler(IUnitOfWork unitOfWork, IEnhancedEmailService enhancedEmailService)
              : base(unitOfWork, enhancedEmailService)
         {
         }
-        public override async Task<AppUpdateNotificationEmailResponse> Handle(AppUpdateNotificationEmailRequest request, CancellationToken cancellationToken)
+        public override async Task<MilestoneCelebrationEmailResponse> Handle(MilestoneCelebrationEmailRequest request, CancellationToken cancellationToken)
         {
-            var response = new AppUpdateNotificationEmailResponse();
+            var response = new MilestoneCelebrationEmailResponse();
             try
             {
                 var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(request.Username);
