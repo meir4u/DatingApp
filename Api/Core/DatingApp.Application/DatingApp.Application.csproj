@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contract\" />
     <Folder Include="DTOs\Email\" />
   </ItemGroup>
 
