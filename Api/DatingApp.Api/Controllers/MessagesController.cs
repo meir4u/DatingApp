@@ -39,6 +39,7 @@ namespace DatingApp.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<MessageDto>> GetMessagesForUser([FromQuery] MessageParams messageParams)
         {
+            messageParams.Username = User.GetUsername();
             var command = new GetMessagesForUserQuery()
             {
                 Params = messageParams

@@ -37,9 +37,9 @@ namespace DatingApp.Application.Futures.Message.Handlers
             var messages = await _unitOfWork.MessageRepository.GetMessagesForUser(request.Params);
 
             var mappedMessages = messages.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
-
+            //response.Messages = mappedMessages
             var pagedList =  await PagedList<MessageDto>.CreateAsync(mappedMessages, request.Params.PageNumber, request.Params.PageSize);
-
+            response.Messages = pagedList;
             response.PaginationHeader = new PaginationHeader(pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalCount, pagedList.TotalPages);
 
             return response;
