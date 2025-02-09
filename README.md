@@ -162,7 +162,7 @@ This project is licensed under a **Proprietary License**.
 - **Copying, modifying, distributing, or using this project for commercial purposes is strictly prohibited**.
 - Any use beyond studying the code requires explicit permission from the project owner.
 
-For inquiries regarding permissions or licensing, please contact [Your Contact Email].
+For inquiries regarding permissions or licensing, please contact Meir Achildiev.
 
 
 
